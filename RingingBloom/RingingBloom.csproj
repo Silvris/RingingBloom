@@ -55,6 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="WWiseTypes\Common\Class1.cs" />
+    <Compile Include="WWiseTypes\Common\Wem.cs" />
+    <Compile Include="WWiseTypes\NBNKFile.cs" />
+    <Compile Include="WWiseTypes\NBNK\BKHD.cs" />
+    <Compile Include="WWiseTypes\NBNK\DIDX-DATA.cs" />
+    <Compile Include="WWiseTypes\NBNK\HIRC\HIRC1.cs" />
+    <Compile Include="WWiseTypes\NBNK\HIRC\HIRCObject.cs" />
+    <Compile Include="WWiseTypes\NPCKHeader.cs" />
+    <Compile Include="WWiseTypes\ViewModels\NPCKViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,9 +103,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WWiseTypes\Common\" />
-    <Folder Include="WWiseTypes\NBNK\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

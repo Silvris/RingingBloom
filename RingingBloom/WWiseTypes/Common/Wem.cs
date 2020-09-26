@@ -20,5 +20,13 @@ namespace RingingBloom.Common
             length = (uint)aFile.BaseStream.Length;
             file = aFile.ReadBytes((int)length);
         }
+
+        public Wem(string aName, uint aID, byte[] aBinary)
+        {
+            name = aName;
+            id = aID;
+            length = (uint)aBinary.Length;
+            file = aBinary;
+        }
     }
 }
