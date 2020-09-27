@@ -15,7 +15,7 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
         HIRC10 MusicSegment = null;
         HIRCUnkn Datums = null;
 
-        HIRCObject(BinaryReader br)
+        public HIRCObject(BinaryReader br)
         {
             byte HIRCType = br.ReadByte();
             uint HIRCLength = br.ReadUInt32();
@@ -34,6 +34,25 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
                     Datums = new HIRCUnkn(HIRCType, HIRCLength, br);
                     break;
             }
+        }
+
+        public void Export(BinaryWriter bw)
+        {
+            if(SettingsObject != null)
+            {
+                SettingsObject.Export(bw);
+            }
+            if (EventAction != null)
+            {
+                EventAction.Export(bw);
+            }
+            if (Event != null)
+            {
+                Event.Export(bw);
+            }
+            if (Datums != null)
+            {
+                Datums.Export(bw);
             }
         }
     }

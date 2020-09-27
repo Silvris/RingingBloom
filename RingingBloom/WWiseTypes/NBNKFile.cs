@@ -35,6 +35,9 @@ namespace RingingBloom
                         break;
                     case "HIRC":
                         ObjectHierarchy = new HIRC(br);
+                        break;
+                    default:
+                        break;
                 }
             }
         }
