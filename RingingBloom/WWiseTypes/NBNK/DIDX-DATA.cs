@@ -17,7 +17,6 @@ namespace RingingBloom.NBNK
         //these are combined since they're both wem data, best to read it immediately into a wem
         public DIDX_DATA(BinaryReader br)
         {
-            char[] didxRead = br.ReadChars(4);
             uint didxLength = br.ReadUInt32();
             wemCount = didxLength / 12;
             uint[] ids = new uint[wemCount];

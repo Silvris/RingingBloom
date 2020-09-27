@@ -16,7 +16,7 @@ namespace RingingBloom.NBNK
         uint thisIsAHash;
         uint[] unkns;
 
-        BKHD(uint SLength, BinaryReader br)
+        public BKHD(uint SLength, BinaryReader br)
         {
             sectionLength = SLength;
             unkn1 = br.ReadUInt32();

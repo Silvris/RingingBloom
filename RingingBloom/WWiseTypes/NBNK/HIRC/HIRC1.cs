@@ -14,16 +14,29 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
         uint length;
         uint objectID;
         byte settingsCount;
-        byte[] settingsType;
-        float[] settingsValue;
+        List<byte> settingsType;
+        List<float> settingsValue;
 
-        HIRC1(uint aID, byte aCount, byte[] aTypeArray, float[] aValueArray)
+        public HIRC1(BinaryReader br)
         {
-            objectID = aID;
-            length = ((uint)aCount * 5 )+ 1;
-            settingsCount = aCount;
-            settingsType = aTypeArray;
-            settingsValue = aValueArray;
+            objectID = br.ReadUInt32();
+            length = br.ReadUInt32();
+            settingsCount = br.ReadByte();
+            for (int i = 0; i < settingsCount; i++)
+            {
+                settingsType.Add(br.ReadByte());
+            }
+            for (int i = 0; i < settingsCount; i++)
+            {
+                settingsValue.Add(br.ReadSingle());
+            }
+        }
+
+        public void AddSetting()
+        {
+            settingsCount++;
+            settingsType.Add(0);
+            settingsValue.Add(0);
         }
 
         public void Export(BinaryWriter bw)
@@ -32,7 +45,10 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             bw.Write(length);
             bw.Write(objectID);
             bw.Write(settingsCount);
-            bw.Write(settingsType);
+            for (int i = 0; i < settingsCount; i++)
+            {
+                bw.Write(settingsType[i]);
+            }
             for(int i = 0; i < settingsCount; i++)
             {
                 bw.Write(settingsValue[i]);

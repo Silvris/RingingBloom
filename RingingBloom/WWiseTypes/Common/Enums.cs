@@ -59,4 +59,53 @@ namespace RingingBloom.Common
         OutputBusVolume,
         OutputBusLowPass
     }
+
+    public enum HIRC3ActionScope
+    {
+        Null,
+        SwitchTrigger,
+        Global,
+        GameObject,
+        StateObject,
+        All,
+        Null6,
+        Null7,
+        Null8,
+        AllExcept,
+    }
+
+    public enum HIRC3ActionType
+    {
+        Null0,
+        Stop,
+        Pause,
+        Resume,
+        Play,
+        Trigger,
+        Mute,
+        Unmute,
+        SetPitch,
+        ResetPitch,
+        SetVolume,
+        ResetVolume,
+        SetBusVolume,
+        ResetBusVolume,
+        SetLowPassFilter,
+        ResetLowPassFilter,
+        EnableState,
+        DisableState,
+        SetState,
+        SetGameParameter,
+        ResetGameParameter,
+        Unkn15,
+        Unkn16,
+        Unkn17,
+        Unkn18,
+        SetSwitch,
+        BypassToggle,
+        ResetBypass,
+        Break,
+        Unkn1D,
+        Seek
+    }
 }
