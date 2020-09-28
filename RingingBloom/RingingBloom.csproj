@@ -69,6 +69,7 @@
     <Compile Include="WWiseTypes\NBNK\HIRC\HIRCUnkn.cs" />
     <Compile Include="WWiseTypes\NPCKHeader.cs" />
     <Compile Include="WWiseTypes\ViewModels\NPCKViewModel.cs" />
+    <Compile Include="WWiseTypes\WWCTFile.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

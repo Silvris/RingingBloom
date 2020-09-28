@@ -55,6 +55,7 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             {
                 length += Datums.GetLength();
             }
+            return length;
         }
 
         public void Export(BinaryWriter bw)
