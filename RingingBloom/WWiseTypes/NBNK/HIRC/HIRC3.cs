@@ -144,12 +144,54 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             additionalParameters++;
             parameterType.Add(0);
             parameterValue.Add(0);
+            RecalcLength();
+        }
+
+        public void RecalcLength()
+        {
+            int addLength = 0;
+            switch ((int)type)
+            {
+                case 1:
+                    addLength = 5;
+                    break;
+                case 4:
+                    addLength = 5;
+                    break;
+                case 10:
+                    addLength = 18;
+                    break;
+                case 11:
+                    addLength = 18;
+                    break;
+                case 13:
+                    addLength = 18;
+                    break;
+                case 14:
+                    addLength = 18;
+                    break;
+                case 15:
+                    addLength = 18;
+                    break;
+                case 18:
+                    addLength = 8;
+                    break;
+                case 19:
+                    addLength = 19;
+                    break;
+                case 25:
+                    addLength = 8;
+                    break;
+                default:
+                    break;
+            }
+            length =(uint)(12 + (additionalParameters * 5) + addLength);
         }
 
         public void Export(BinaryWriter bw)
         {
             bw.Write((byte)Htype);
-            bw.Write(length);
+            bw.Write(length); //to do: figure out best approach for fixing length value
             bw.Write(objectID);
             bw.Write((byte)scope);
             bw.Write((byte)type);

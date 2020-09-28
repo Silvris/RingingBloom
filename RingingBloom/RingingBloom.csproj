@@ -55,13 +55,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="WWiseTypes\Common\Class1.cs" />
+    <Compile Include="WWiseTypes\Common\Enums.cs" />
     <Compile Include="WWiseTypes\Common\Wem.cs" />
     <Compile Include="WWiseTypes\NBNKFile.cs" />
     <Compile Include="WWiseTypes\NBNK\BKHD.cs" />
     <Compile Include="WWiseTypes\NBNK\DIDX-DATA.cs" />
+    <Compile Include="WWiseTypes\NBNK\HIRC.cs" />
     <Compile Include="WWiseTypes\NBNK\HIRC\HIRC1.cs" />
+    <Compile Include="WWiseTypes\NBNK\HIRC\HIRC10.cs" />
+    <Compile Include="WWiseTypes\NBNK\HIRC\HIRC3.cs" />
+    <Compile Include="WWiseTypes\NBNK\HIRC\HIRC4.cs" />
     <Compile Include="WWiseTypes\NBNK\HIRC\HIRCObject.cs" />
+    <Compile Include="WWiseTypes\NBNK\HIRC\HIRCUnkn.cs" />
     <Compile Include="WWiseTypes\NPCKHeader.cs" />
     <Compile Include="WWiseTypes\ViewModels\NPCKViewModel.cs" />
     <Page Include="MainWindow.xaml">
