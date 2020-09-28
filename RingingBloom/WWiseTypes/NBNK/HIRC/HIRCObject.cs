@@ -36,6 +36,27 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             }
         }
 
+        public int CalcuateSectionLength()
+        {
+            int length = 5;
+            if (SettingsObject != null)
+            {
+                length += SettingsObject.GetLength();
+            }
+            if (EventAction != null)
+            {
+                length += EventAction.GetLength();
+            }
+            if (Event != null)
+            {
+                length += Event.GetLength();
+            }
+            if (Datums != null)
+            {
+                length += Datums.GetLength();
+            }
+        }
+
         public void Export(BinaryWriter bw)
         {
             if(SettingsObject != null)

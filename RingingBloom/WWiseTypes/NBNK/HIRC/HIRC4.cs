@@ -31,6 +31,12 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
         {
             actionCount++;
             actionIds.Add(0);
+            length += 4;
+        }
+
+        public int GetLength()
+        {
+            return (int)length;
         }
 
         public void Export(BinaryWriter bw)

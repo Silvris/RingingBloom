@@ -14,12 +14,10 @@ namespace RingingBloom
         BKHD BankHeader = null;
         DIDX_DATA DataIndex = null;
         HIRC ObjectHierarchy = null;
-        NBNKFile()
-        {
-            
-        }
 
-        public void ImportNBNK(BinaryReader br)
+
+        //imported constructor
+        public NBNKFile(BinaryReader br)
         {
             while(br.BaseStream.Position < br.BaseStream.Length)
             {
@@ -42,9 +40,26 @@ namespace RingingBloom
             }
         }
 
+        //created constructor, this really shouldn't be used very often
+        public NBNKFile()
+        {
+            BankHeader = new BKHD();
+        }
+
         public void ExportNBNK(BinaryWriter bw)
         {
-
+            if(BankHeader != null)
+            {
+                BankHeader.Export(bw);
+            }
+            if(DataIndex != null)
+            {
+                DataIndex.ExportDIDXDATA(bw);
+            }
+            if(ObjectHierarchy != null)
+            {
+                ObjectHierarchy.ExportHIRC(bw);
+            }
         }
     }
 }

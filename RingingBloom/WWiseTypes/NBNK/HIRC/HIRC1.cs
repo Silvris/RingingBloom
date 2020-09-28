@@ -20,7 +20,6 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
         public HIRC1(BinaryReader br)
         {
             objectID = br.ReadUInt32();
-            length = br.ReadUInt32();
             settingsCount = br.ReadByte();
             for (int i = 0; i < settingsCount; i++)
             {
@@ -30,6 +29,11 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             {
                 settingsValue.Add(br.ReadSingle());
             }
+        }
+
+        public int GetLength()
+        {
+            return 5 + (settingsCount * 5);
         }
 
         public void AddSetting()

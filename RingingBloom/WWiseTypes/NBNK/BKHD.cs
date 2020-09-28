@@ -14,8 +14,9 @@ namespace RingingBloom.NBNK
         uint sectionLength;
         uint unkn1;
         uint thisIsAHash;
-        uint[] unkns;
+        List<uint> unkns;
 
+        //imported constructor, the most common one
         public BKHD(uint SLength, BinaryReader br)
         {
             sectionLength = SLength;
@@ -24,7 +25,31 @@ namespace RingingBloom.NBNK
             uint unknCount = (SLength / 4) - 2;
             for(int i = 0; i < unknCount; i++)
             {
-                unkns[i] = br.ReadUInt32();
+                unkns.Add(br.ReadUInt32());
+            }
+        }
+
+        //created constructor, shouldn't be used normally
+        public BKHD()
+        {
+            sectionLength = 24;
+            unkn1 = 120;
+            thisIsAHash = 0; //make sure to implement some form of editing this value
+            unkns.Add(0);
+            unkns.Add(0);
+            unkns.Add(1144);
+            unkns.Add(0);
+        }
+
+        public void Export(BinaryWriter bw)
+        {
+            bw.Write(magic);
+            bw.Write(8 + (unkns.Count * 4));
+            bw.Write(unkn1);
+            bw.Write(thisIsAHash);
+            for(int i = 0; i < unkns.Count; i++)
+            {
+                bw.Write(unkns[i]);
             }
         }
     }

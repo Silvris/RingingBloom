@@ -10,6 +10,7 @@ namespace RingingBloom.NBNK
 {
     class HIRC
     {
+        char[] magic = { 'H', 'I', 'R', 'C' };
         uint sectionLength;
         uint objectCount;
         List<HIRCObject> wwiseObjects;
@@ -24,8 +25,21 @@ namespace RingingBloom.NBNK
             }
         }
 
+        public int ReturnSectionLength()
+        {
+            int length = 4;
+            for(int i = 0; i < wwiseObjects.Count; i++)
+            {
+                length += wwiseObjects[i].CalculateSectionLength();
+            }
+            return length;
+        }
+
         public void ExportHIRC(BinaryWriter bw)
         {
+            bw.Write(magic);
+            bw.Write(ReturnSectionLength());
+            bw.Write(wwiseObjects.Count);
 
         }
     }

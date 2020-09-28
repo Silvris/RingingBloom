@@ -188,6 +188,12 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             length =(uint)(12 + (additionalParameters * 5) + addLength);
         }
 
+        public int GetLength()
+        {
+            RecalcLength();
+            return (int)length;
+        }
+
         public void Export(BinaryWriter bw)
         {
             bw.Write((byte)Htype);
