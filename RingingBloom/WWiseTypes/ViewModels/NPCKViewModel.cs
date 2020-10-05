@@ -8,13 +8,18 @@ using RingingBloom.Common;
 
 namespace RingingBloom
 {
-    class NPCKViewModel
+    public class NPCKViewModel
     {
         public ObservableCollection<Wem> wems;
 
         public NPCKViewModel(List<Wem> npck)
         {
             wems = new ObservableCollection<Wem>(npck);
+        }
+
+        public NPCKViewModel()
+        {
+            wems = new ObservableCollection<Wem>();
         }
 
     }

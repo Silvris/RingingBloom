@@ -108,4 +108,17 @@ namespace RingingBloom.Common
         Unkn1D,
         Seek
     }
+
+    public enum WWCTType
+    {
+        WWEV,
+        WWBK,
+        WWPK,
+        WWSW,
+        WWST,
+        WWGP,
+        WWENF,
+        Unkn3
+    }
+
 }

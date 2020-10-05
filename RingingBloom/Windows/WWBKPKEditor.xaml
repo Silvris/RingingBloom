@@ -1,0 +1,30 @@
+﻿<Window x:Class="RingingBloom.Windows.WWBKPKEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RingingBloom.Windows"
+        mc:Ignorable="d"
+        Title="WWBKPKEdit" Height="450" Width="450" ResizeMode="CanMinimize">
+    <Grid Name="MainGrid">
+        <ToolBar Height="30" VerticalAlignment="Top">
+            <Menu>
+                <MenuItem Header="New" Click="MakeWWPKBK"/>
+                <MenuItem Header="Import" Click="ImportWWPKBK"/>
+                <MenuItem Header="Export" Click="ExportWWPKBK"/>
+                <MenuItem Header="Help" Click="HelpMenu"/>
+            </Menu>
+        </ToolBar>
+        <ListBox Name="PKBKView" Height="275" Width="300" Margin="47,35,47,61">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="750">
+                        <TextBox Name="TextBox1" Margin="0,0,0,0" Text="{Binding Path, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="Add Entry" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="25" Click="AddEntry"/>
+        <Button Content="Delete Entry" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100" Height="25" Click="DeleteEntry"/>
+    </Grid>
+</Window>

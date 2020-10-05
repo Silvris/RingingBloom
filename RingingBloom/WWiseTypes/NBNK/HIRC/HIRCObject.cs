@@ -36,7 +36,7 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             }
         }
 
-        public int CalcuateSectionLength()
+        public int CalculateSectionLength()
         {
             int length = 5;
             if (SettingsObject != null)

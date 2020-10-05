@@ -5,30 +5,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using RingingBloom.Common;
 
 namespace RingingBloom.WWiseTypes
 {
-    class WWCTFile
+    public class WWCTString
+    {
+        public WWCTType Type { get; set; }
+        public string Path { get; set; }
+        public uint Index { get; set; }
+
+        public WWCTString(WWCTType aType, string aPath, uint aIndex)
+        {
+            Type = aType;
+            Path = aPath;
+            Index = aIndex;
+        }
+        public IList<WWCTType> WWCTTypes
+        {
+            get
+            {
+                return Enum.GetValues(typeof(WWCTType)).Cast<WWCTType>().ToList<WWCTType>();
+            }
+        }
+    }
+
+    public class WWCTFile
     {
         char[] WWCT = { 'W', 'W', 'C', 'T' };
         uint version = 6;
-        List<uint> WWBKIndex;
-        List<string> WWBKs; 
-        List<uint> WWPKIndex;
-        List<string> WWPKs;
-        List<uint> WWEVIndex;
-        List<string> WWEVs;
-        List<uint> WWSWIndex;
-        List<string> WWSWs;
-        List<uint> WWSTIndex;
-        List<string> WWSTs;
-        List<uint> WWGPIndex;
-        List<string> WWGPs;
-        List<uint> WWENFIndex;
-        List<string> WWENFs;
-        List<uint> Unkn3Index;
-        List<string> Unkn3s;
-
+        public List<WWCTString> wwctStrings = new List<WWCTString>();
         //imported constructor
         public WWCTFile(BinaryReader br)
         {
@@ -42,61 +48,85 @@ namespace RingingBloom.WWiseTypes
             uint WWGPCount = br.ReadUInt32();
             uint WWENFCount = br.ReadUInt32();
             uint Unkn3Count = br.ReadUInt32();
-            for(int i = 0; i < WWEVCount; i++)
+            if (WWEVCount > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                WWEVIndex.Add(newIndex);
-                string newString = br.ReadString();
-                WWEVs.Add(newString);
+                for (int i = 0; i < WWEVCount; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.WWEV, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
-            for (int i = 0; i < WWBKCount; i++)
+            if (WWBKCount > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                WWBKIndex.Add(newIndex);
-                string newString = br.ReadString();
-                WWBKs.Add(newString);
+                for (int i = 0; i < WWBKCount; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.WWBK, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
-            for (int i = 0; i < WWPKCount; i++)
+            if (WWPKCount > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                WWPKIndex.Add(newIndex);
-                string newString = br.ReadString();
-                WWPKs.Add(newString);
+                for (int i = 0; i < WWPKCount; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.WWPK, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
-            for (int i = 0; i < WWSWCount; i++)
+            if (WWSWCount > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                WWSWIndex.Add(newIndex);
-                string newString = br.ReadString();
-                WWSWs.Add(newString);
+                for (int i = 0; i < WWSWCount; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.WWSW, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
-            for (int i = 0; i < WWSTCount; i++)
+            if (WWSTCount > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                WWSTIndex.Add(newIndex);
-                string newString = br.ReadString();
-                WWSTs.Add(newString);
+                for (int i = 0; i < WWSTCount; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.WWST, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
-            for (int i = 0; i < WWGPCount; i++)
+            if (WWGPCount > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                WWGPIndex.Add(newIndex);
-                string newString = br.ReadString();
-                WWGPs.Add(newString);
+                for (int i = 0; i < WWGPCount; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.WWGP, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
-            for (int i = 0; i < WWENFCount; i++)
+            if (WWENFCount > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                WWENFIndex.Add(newIndex);
-                string newString = br.ReadString();
-                WWENFs.Add(newString);
+                for (int i = 0; i < WWENFCount; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.WWENF, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
-            for (int i = 0; i < Unkn3Count; i++)
+            if (Unkn3Count > 0)
             {
-                uint newIndex = br.ReadUInt32();
-                Unkn3Index.Add(newIndex);
-                string newString = br.ReadString();
-                Unkn3s.Add(newString);
+                for (int i = 0; i < Unkn3Count; i++)
+                {
+                    uint newIndex = br.ReadUInt32();
+                    string newString = HelperFunctions.ReadNullTerminatedString(br);
+                    WWCTString newWWCTS = new WWCTString(WWCTType.Unkn3, newString, newIndex);
+                    wwctStrings.Add(newWWCTS);
+                }
             }
         }
 
@@ -106,46 +136,28 @@ namespace RingingBloom.WWiseTypes
             //nothing needs to be done for this, since 0 value WWCTs exist
         }
 
-        //adds an extra path to the lists of specified type
-        public void AddPath(string type)
+        public int CalculateTypeCount(WWCTType type)
         {
-            switch (type)
+            int count = 0;
+            for(int i =0; i < wwctStrings.Count; i++)
             {
-                case "WWEV":
-                    WWEVIndex.Add((uint)WWEVIndex.Count);
-                    WWEVs.Add("");
-                    break;
-                case "WWBK":
-                    WWBKIndex.Add((uint)WWBKIndex.Count);
-                    WWBKs.Add("");
-                    break;
-                case "WWPK":
-                    WWPKIndex.Add((uint)WWPKIndex.Count);
-                    WWPKs.Add("");
-                    break;
-                case "WWSW":
-                    WWSWIndex.Add((uint)WWSWIndex.Count);
-                    WWSWs.Add("");
-                    break;
-                case "WWST":
-                    WWSTIndex.Add((uint)WWSTIndex.Count);
-                    WWSTs.Add("");
-                    break;
-                case "WWGP":
-                    WWGPIndex.Add((uint)WWGPIndex.Count);
-                    WWGPs.Add("");
-                    break;
-                case "WWENF":
-                    WWENFIndex.Add((uint)WWENFIndex.Count);
-                    WWENFs.Add("");
-                    break;
-                case "Unkn3":
-                    Unkn3Index.Add((uint)Unkn3Index.Count);
-                    Unkn3s.Add("");
-                    break;
-                default:
-                    MessageBox.Show("Invalid Type");
-                    break;
+                if(wwctStrings[i].Type == type)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public void ExportType(WWCTType aType,BinaryWriter bw)
+        {
+            for(int i = 0; i < wwctStrings.Count; i++)
+            {
+                if(wwctStrings[i].Type == aType)
+                {
+                    bw.Write(wwctStrings[i].Index);
+                    HelperFunctions.WriteNullTerminatedString(bw, wwctStrings[i].Path);
+                }
             }
         }
 
@@ -154,54 +166,22 @@ namespace RingingBloom.WWiseTypes
         {
             bw.Write(WWCT);
             bw.Write(version);
-            bw.Write(WWBKs.Count);
-            bw.Write(WWPKs.Count);
-            bw.Write(WWEVs.Count);
-            bw.Write(WWSWs.Count);
-            bw.Write(WWSTs.Count);
-            bw.Write(WWGPs.Count);
-            bw.Write(WWENFs.Count);
-            bw.Write(Unkn3s.Count);
-            for(int i = 0; i < WWEVs.Count; i++)
-            {
-                bw.Write(WWEVIndex[i]);
-                bw.Write(WWEVs[i]);
-            }
-            for (int i = 0; i < WWBKs.Count; i++)
-            {
-                bw.Write(WWBKIndex[i]);
-                bw.Write(WWBKs[i]);
-            }
-            for (int i = 0; i < WWPKs.Count; i++)
-            {
-                bw.Write(WWPKIndex[i]);
-                bw.Write(WWPKs[i]);
-            }
-            for (int i = 0; i < WWSWs.Count; i++)
-            {
-                bw.Write(WWSWIndex[i]);
-                bw.Write(WWSWs[i]);
-            }
-            for (int i = 0; i < WWSTs.Count; i++)
-            {
-                bw.Write(WWSTIndex[i]);
-                bw.Write(WWSTs[i]);
-            }
-            for (int i = 0; i < WWGPs.Count; i++)
-            {
-                bw.Write(WWGPIndex[i]);
-                bw.Write(WWGPs[i]);
-            }
-            for (int i = 0; i < WWENFs.Count; i++)
-            {
-                bw.Write(WWENFIndex[i]);
-                bw.Write(WWENFs[i]);
-            }
-            for (int i = 0; i < Unkn3s.Count; i++)
-            {
-                bw.Write(Unkn3Index[i]);
-                bw.Write(Unkn3s[i]);
-            }
+            bw.Write(CalculateTypeCount(WWCTType.WWBK));
+            bw.Write(CalculateTypeCount(WWCTType.WWPK));
+            bw.Write(CalculateTypeCount(WWCTType.WWEV));
+            bw.Write(CalculateTypeCount(WWCTType.WWSW));
+            bw.Write(CalculateTypeCount(WWCTType.WWST));
+            bw.Write(CalculateTypeCount(WWCTType.WWGP));
+            bw.Write(CalculateTypeCount(WWCTType.WWENF));
+            bw.Write(CalculateTypeCount(WWCTType.Unkn3));
+            ExportType(WWCTType.WWEV, bw);
+            ExportType(WWCTType.WWBK, bw);
+            ExportType(WWCTType.WWPK, bw);
+            ExportType(WWCTType.WWSW, bw);
+            ExportType(WWCTType.WWST, bw);
+            ExportType(WWCTType.WWGP, bw);
+            ExportType(WWCTType.WWENF, bw);
+            ExportType(WWCTType.Unkn3, bw);
         }
     }
 }

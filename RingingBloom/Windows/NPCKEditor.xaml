@@ -1,0 +1,41 @@
+﻿<Window x:Class="RingingBloom.Windows.NPCKEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RingingBloom.Windows"
+        mc:Ignorable="d"
+        Title="NPCKEditor" Height="450" Width="800" ResizeMode="CanMinimize">
+    <Grid>
+        <ToolBar Height="30" VerticalAlignment="Top">
+            <Menu>
+                <MenuItem Header="New" Click="MakeNPCK"></MenuItem>
+                <MenuItem Header="Import" Click="ImportNPCK"></MenuItem>
+                <MenuItem Header="Export" Click="ExportNPCK"></MenuItem>
+                <MenuItem Header="Import Wems" Click="Import_Wems"></MenuItem>
+                <MenuItem Header="Export Wems" Click="Export_Wems"></MenuItem>
+                <MenuItem Header="Delete Wem" Click="Delete_Wem"></MenuItem>
+                <MenuItem Header="Help" Click="HelpMenu"></MenuItem>
+            </Menu>
+        </ToolBar>
+        <ListBox Name="WemView" Height="350" Width="750" VerticalAlignment="Top" Margin="0,30,0,0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="750">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label  Content="Wem ID:"></Label>
+                        <TextBox Name="TextBox1" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <Label Grid.Column="1" Content="Wem Name:"></Label>
+                        <Label Grid.Column="1" Margin="75,0,0,0" Content="{Binding name}"></Label>
+                        <Label Grid.Column="2" Content="Wem Length:"></Label>
+                        <Label Grid.Column="2" Margin="75,0,0,0" Content="{Binding length}"></Label>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>

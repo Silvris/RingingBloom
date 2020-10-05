@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RingingBloom.Windows;
 
 namespace RingingBloom
 {
@@ -20,9 +21,29 @@ namespace RingingBloom
     /// </summary>
     public partial class MainWindow : Window
     {
+        WWCTEditor wwctEditor = null;
+        WWBKPKEditor wwbkpkEditor = null;
+        NPCKEditor npckEditor = null;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void WWCTEdit(object sender, RoutedEventArgs e)
+        {
+            wwctEditor = new WWCTEditor();
+            wwctEditor.Show();
+        }
+        private void WWPKBKEdit(object sender, RoutedEventArgs e)
+        {
+            wwbkpkEditor = new WWBKPKEditor();
+            wwbkpkEditor.Show();
+        }
+
+        private void NPCKEdit(object sender, RoutedEventArgs e)
+        {
+            npckEditor = new NPCKEditor();
+            npckEditor.Show();
         }
     }
 }

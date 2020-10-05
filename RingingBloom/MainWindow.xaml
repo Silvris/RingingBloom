@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <DockPanel Name="myDockPanel">
-        
-    </DockPanel>
+        Title="Ringing Bloom" Height="300" Width="300" ResizeMode="CanMinimize">
+    <Grid Name="myGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Column="0" Grid.Row="0" Content="WWCT Editor" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" Click="WWCTEdit"/>
+        <Button Grid.Column="1" Grid.Row="0" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="WWPKBKEdit">
+            <TextBlock Text="WWBK\PK Editor" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Column="2" Grid.Row="0" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="NPCKEdit">
+            <TextBlock Text="NPCK Editor" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Column="0" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+            <TextBlock Text="Wem Creator" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Column="1" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+            <TextBlock Text="NBNK Editor" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Column="2" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+            <TextBlock Text="Loop Calculator" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Column="0" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+            <TextBlock Text="EPVSP Editor" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Column="1" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+            <TextBlock Text="WWST/SW Editor" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Column="2" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+            <TextBlock Text="WWEV Editor" TextWrapping="Wrap"/>
+        </Button>
+    </Grid>
 </Window>

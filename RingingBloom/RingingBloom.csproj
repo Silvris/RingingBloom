@@ -55,6 +55,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HelperFunctions.cs" />
+    <Compile Include="Windows\NPCKEditor.xaml.cs">
+      <DependentUpon>NPCKEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WWBKPKEditor.xaml.cs">
+      <DependentUpon>WWBKPKEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WWCTEditor.xaml.cs">
+      <DependentUpon>WWCTEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WWiseTypes\Common\Enums.cs" />
     <Compile Include="WWiseTypes\Common\Wem.cs" />
     <Compile Include="WWiseTypes\NBNKFile.cs" />
@@ -69,7 +79,10 @@
     <Compile Include="WWiseTypes\NBNK\HIRC\HIRCUnkn.cs" />
     <Compile Include="WWiseTypes\NPCKHeader.cs" />
     <Compile Include="WWiseTypes\ViewModels\NPCKViewModel.cs" />
+    <Compile Include="WWiseTypes\ViewModels\WWCTViewModel.cs" />
+    <Compile Include="WWiseTypes\ViewModels\WWPKBKViewModel.cs" />
     <Compile Include="WWiseTypes\WWCTFile.cs" />
+    <Compile Include="WWiseTypes\WWPKBKFile.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,6 +95,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\NPCKEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WWBKPKEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WWCTEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
