@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom"
         mc:Ignorable="d"
-        Title="WWCT Editor" Height="400" Width="1000">
+        Name="Window"
+        Title="WWCT Editor" Height="400" Width="900">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top">
             <Menu>
@@ -23,14 +24,14 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox Name="TextBox1" Margin="0,0,0,0" Text="{Binding Path, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="0,0,0,0" Text="{Binding Path, Mode=TwoWay}" VerticalAlignment="Center"/>
                         <ComboBox Grid.Column="1" Margin="10,0,0,0" SelectedItem="{Binding Type, Mode=TwoWay}" VerticalAlignment="Center" ItemsSource="{Binding WWCTTypes}"/>
-                        <TextBox Grid.Column="2" Margin="10,0,0,0" Text="{Binding Index, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="2" Background="#303030" Foreground="#dcdcdc" Margin="10,0,0,0" Text="{Binding Index, Mode=TwoWay}" VerticalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Content="Add Entry" HorizontalAlignment="Left" Margin="96,290,0,0" VerticalAlignment="Top" Width="100" Height="50" Click="AddEntry"/>
-        <Button Content="Delete Entry" HorizontalAlignment="Left" Margin="796,290,0,0" VerticalAlignment="Top" Width="100" Height="50" Click="DeleteEntry"/>
+        <Button Content="Add Entry" HorizontalAlignment="Left" Margin="46,290,0,0" VerticalAlignment="Top" Width="100" Height="50" Click="AddEntry"/>
+        <Button Content="Delete Entry" HorizontalAlignment="Right" Margin="0,290,46,0" VerticalAlignment="Top" Width="100" Height="50" Click="DeleteEntry"/>
     </Grid>
 </Window>

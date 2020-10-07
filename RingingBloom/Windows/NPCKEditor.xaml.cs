@@ -28,6 +28,8 @@ namespace RingingBloom.Windows
         public NPCKEditor()
         {
             InitializeComponent();
+            Window.Background = HelperFunctions.GetBrushFromHex("#505050");
+            WemView.Background = HelperFunctions.GetBrushFromHex("#282828");
             WemView.ItemsSource = viewModel.wems;
         }
 

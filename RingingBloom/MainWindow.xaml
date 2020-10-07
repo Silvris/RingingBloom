@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom"
         mc:Ignorable="d"
+        Name="Window"
         Title="Ringing Bloom" Height="300" Width="300" ResizeMode="CanMinimize">
     <Grid Name="myGrid">
         <Grid.ColumnDefinitions>
@@ -30,7 +31,7 @@
         <Button Grid.Column="1" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
             <TextBlock Text="NBNK Editor" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="2" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+        <Button Grid.Column="2" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="LoopCalculator">
             <TextBlock Text="Loop Calculator" TextWrapping="Wrap"/>
         </Button>
         <Button Grid.Column="0" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">

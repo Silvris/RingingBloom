@@ -24,9 +24,11 @@ namespace RingingBloom
         WWCTEditor wwctEditor = null;
         WWBKPKEditor wwbkpkEditor = null;
         NPCKEditor npckEditor = null;
+        LoopCalculator loopCalculator = null;
         public MainWindow()
         {
             InitializeComponent();
+            Window.Background = HelperFunctions.GetBrushFromHex("#505050");
         }
 
         private void WWCTEdit(object sender, RoutedEventArgs e)
@@ -39,11 +41,15 @@ namespace RingingBloom
             wwbkpkEditor = new WWBKPKEditor();
             wwbkpkEditor.Show();
         }
-
         private void NPCKEdit(object sender, RoutedEventArgs e)
         {
             npckEditor = new NPCKEditor();
             npckEditor.Show();
+        }
+        private void LoopCalculator(object sender, RoutedEventArgs e)
+        {
+            loopCalculator = new LoopCalculator();
+            loopCalculator.Show();
         }
     }
 }

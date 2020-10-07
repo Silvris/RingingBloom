@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
+        Name="Window"
         Title="WWBKPKEdit" Height="450" Width="450" ResizeMode="CanMinimize">
     <Grid Name="MainGrid">
-        <ToolBar Height="30" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="235*"/>
+            <ColumnDefinition Width="209*"/>
+        </Grid.ColumnDefinitions>
+        <ToolBar Height="30" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <Menu>
                 <MenuItem Header="New" Click="MakeWWPKBK"/>
                 <MenuItem Header="Import" Click="ImportWWPKBK"/>
@@ -15,16 +20,16 @@
                 <MenuItem Header="Help" Click="HelpMenu"/>
             </Menu>
         </ToolBar>
-        <ListBox Name="PKBKView" Height="275" Width="300" Margin="47,35,47,61">
+        <ListBox Name="PKBKView" Height="300" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,50,0,0" Grid.ColumnSpan="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="750">
-                        <TextBox Name="TextBox1" Margin="0,0,0,0" Text="{Binding Path, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <Grid Width="385">
+                        <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="0,0,0,0" Text="{Binding Path, Mode=TwoWay}" VerticalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <Button Content="Add Entry" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="25" Click="AddEntry"/>
-        <Button Content="Delete Entry" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100" Height="25" Click="DeleteEntry"/>
+        <Button Content="Delete Entry" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100" Height="25" Click="DeleteEntry" Grid.Column="1"/>
     </Grid>
 </Window>

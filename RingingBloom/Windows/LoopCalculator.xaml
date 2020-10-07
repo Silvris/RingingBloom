@@ -1,0 +1,15 @@
+﻿<Window x:Class="RingingBloom.Windows.LoopCalculator"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RingingBloom.Windows"
+        mc:Ignorable="d"
+        Name="Window"
+        Background="#282828"
+        Title="LoopCalculator" Height="500" Width="450">
+    <Grid>
+        <Border BorderBrush="#505050" CornerRadius="3" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,30,0,0" Width="150" Height="175"></Border>
+        <TextBox Name="LoopView" Text="TEST COPY" Width="350" Height="200" Background="#303030" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" IsReadOnly="True"/>
+    </Grid>
+</Window>

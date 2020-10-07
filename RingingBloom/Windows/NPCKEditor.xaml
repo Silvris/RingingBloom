@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
+        Name="Window"
         Title="NPCKEditor" Height="450" Width="800" ResizeMode="CanMinimize">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top">
@@ -21,18 +22,18 @@
         <ListBox Name="WemView" Height="350" Width="750" VerticalAlignment="Top" Margin="0,30,0,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="750">
+                    <Grid HorizontalAlignment="Left" Width="715">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="2*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Label  Content="Wem ID:"></Label>
-                        <TextBox Name="TextBox1" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay}" VerticalAlignment="Center"/>
-                        <Label Grid.Column="1" Content="Wem Name:"></Label>
-                        <Label Grid.Column="1" Margin="75,0,0,0" Content="{Binding name}"></Label>
-                        <Label Grid.Column="2" Content="Wem Length:"></Label>
-                        <Label Grid.Column="2" Margin="75,0,0,0" Content="{Binding length}"></Label>
+                        <Label Foreground="#dcdcdc"  Content="Wem ID:"></Label>
+                        <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <Label Grid.Column="1" Foreground="#dcdcdc" Content="Wem Name:"></Label>
+                        <Label Grid.Column="1" Margin="75,0,0,0" Foreground="#dcdcdc" Content="{Binding name}"></Label>
+                        <Label Grid.Column="2" Foreground="#dcdcdc" Content="Wem Length:"></Label>
+                        <Label Grid.Column="2" Foreground="#dcdcdc" Margin="75,0,0,0" Content="{Binding length}"></Label>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using RingingBloom.Common;
 
 namespace RingingBloom
@@ -54,5 +55,11 @@ namespace RingingBloom
             return newWem;
         }
 
+        public static Brush GetBrushFromHex(string hexColor)
+        {
+            BrushConverter bc = new BrushConverter();
+            Brush newBrush = (Brush)bc.ConvertFrom(hexColor);
+            return newBrush;
+        }
     }
 }
