@@ -21,7 +21,6 @@ namespace RingingBloom.Windows
     {
         public LoopCalculator()
         { 
-            LoopView.Background = HelperFunctions.GetBrushFromHex("#282828");
             InitializeComponent();
         }
     }
