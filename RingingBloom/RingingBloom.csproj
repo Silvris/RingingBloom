@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="WWiseTypes\Common\Enums.cs" />
     <Compile Include="WWiseTypes\Common\Wem.cs" />
+    <Compile Include="WWiseTypes\LoopCalculate.cs" />
     <Compile Include="WWiseTypes\NBNKFile.cs" />
     <Compile Include="WWiseTypes\NBNK\BKHD.cs" />
     <Compile Include="WWiseTypes\NBNK\DIDX-DATA.cs" />
