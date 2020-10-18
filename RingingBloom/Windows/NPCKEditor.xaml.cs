@@ -2,12 +2,14 @@
 using RingingBloom.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -28,8 +30,6 @@ namespace RingingBloom.Windows
         public NPCKEditor()
         {
             InitializeComponent();
-            Window.Background = HelperFunctions.GetBrushFromHex("#505050");
-            WemView.Background = HelperFunctions.GetBrushFromHex("#282828");
             WemView.ItemsSource = viewModel.wems;
         }
 
@@ -139,5 +139,30 @@ namespace RingingBloom.Windows
                 "[Delete Wem] - Deletes the currently selected wem.");
         }
 
+        private void IDReplace(object sender, RoutedEventArgs e)
+        {
+            InputDialog input = new InputDialog();
+            input.LabelA.Content = "Input Wem IDs separated by a comma (,).";
+            if(input.ShowDialog() == true)
+            {
+                input.Close();
+                string IDs = input.Input.Text;
+                string[] id2 = IDs.Split(',');
+                for (int i = 0; i < id2.Length; i++)
+                {
+                    try
+                    {
+                        npck.WemList[i].id = Convert.ToUInt32(id2[i]);
+                        viewModel.wems = new ObservableCollection<Wem>(npck.WemList);
+                        WemView.ItemsSource = viewModel.wems;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        break;
+                    }
+                }
+                
+            }
+        }
     }
 }

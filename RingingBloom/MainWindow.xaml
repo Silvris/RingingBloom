@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:RingingBloom"
         mc:Ignorable="d"
         Name="Window"
-        Title="Ringing Bloom" Height="300" Width="300" ResizeMode="CanMinimize">
+        Title="Ringing Bloom" Height="300" Width="300" ResizeMode="CanMinimize"
+        Background="#404040">
     <Grid Name="myGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>

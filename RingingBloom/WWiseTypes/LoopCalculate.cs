@@ -160,7 +160,7 @@ namespace RingingBloom
             B8 = songLength;
             B9 = songLength - B2 - (B4 - (loopLength + loop2Disp));
             B10 = -loopStart;
-            B11 = H7;
+            B11 = -H7;
             B12 = songLength;
             B13 = loopLength + loop2Disp;
             //same values now
@@ -188,7 +188,7 @@ namespace RingingBloom
             C4 = songLength;
             C5 = C4 - loopStart - C2 + C3;
             C6 = loopStart;
-            C7 = H7;
+            C7 = -H7;
             C8 = songLength;
             C9 = loopLength;
             //different
@@ -198,7 +198,7 @@ namespace RingingBloom
             D4 = songLength;
             D5 = C5 + loop2Disp;
             D6 = loopStart;
-            D7 = H7;
+            D7 = -H7;
             D8 = songLength;
             D9 = loopLength + loop2Disp;
         }

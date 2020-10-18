@@ -1,0 +1,15 @@
+﻿<Window x:Class="RingingBloom.Windows.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RingingBloom.Windows"
+        mc:Ignorable="d"
+        Title="InputDialog" Height="150" Width="400"
+        Background="#282828">
+    <Grid>
+        <Label Name="LabelA" Content="Default Content" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,10,0,0"/>
+        <TextBox x:Name="Input" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0"/>
+        <Button Height="20" Width="65" Content="Confirm" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10" Click="Confirm"/>
+    </Grid>
+</Window>

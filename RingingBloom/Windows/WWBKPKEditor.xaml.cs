@@ -28,8 +28,6 @@ namespace RingingBloom.Windows
         public WWBKPKEditor()
         {
             InitializeComponent();
-            Window.Background=HelperFunctions.GetBrushFromHex("#505050");
-            PKBKView.Background = HelperFunctions.GetBrushFromHex("#282828");
             PKBKView.ItemsSource = viewModel.pkbk;
         }
 

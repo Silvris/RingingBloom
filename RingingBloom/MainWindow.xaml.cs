@@ -28,7 +28,6 @@ namespace RingingBloom
         public MainWindow()
         {
             InitializeComponent();
-            Window.Background = HelperFunctions.GetBrushFromHex("#505050");
         }
 
         private void WWCTEdit(object sender, RoutedEventArgs e)

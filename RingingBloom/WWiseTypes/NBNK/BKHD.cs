@@ -14,7 +14,7 @@ namespace RingingBloom.NBNK
         uint sectionLength;
         uint unkn1;
         uint thisIsAHash;
-        List<uint> unkns;
+        List<uint> unkns = new List<uint>();
 
         //imported constructor, the most common one
         public BKHD(uint SLength, BinaryReader br)

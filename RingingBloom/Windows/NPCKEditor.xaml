@@ -6,20 +6,23 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Name="Window"
-        Title="NPCKEditor" Height="450" Width="800" ResizeMode="CanMinimize">
+        Title="NPCKEditor" Height="450" Width="800" ResizeMode="CanMinimize"
+        Background="#404040">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top">
             <Menu>
-                <MenuItem Header="New" Click="MakeNPCK"></MenuItem>
-                <MenuItem Header="Import" Click="ImportNPCK"></MenuItem>
-                <MenuItem Header="Export" Click="ExportNPCK"></MenuItem>
-                <MenuItem Header="Import Wems" Click="Import_Wems"></MenuItem>
-                <MenuItem Header="Export Wems" Click="Export_Wems"></MenuItem>
-                <MenuItem Header="Delete Wem" Click="Delete_Wem"></MenuItem>
-                <MenuItem Header="Help" Click="HelpMenu"></MenuItem>
+                <MenuItem Header="New" Click="MakeNPCK"/>
+                <MenuItem Header="Import" Click="ImportNPCK"/>
+                <MenuItem Header="Export" Click="ExportNPCK"/>
+                <MenuItem Header="Import Wems" Click="Import_Wems"/>
+                <MenuItem Header="Export Wems" Click="Export_Wems"/>
+                <MenuItem Header="Delete Wem" Click="Delete_Wem"/>
+                <MenuItem Header="Help" Click="HelpMenu"/>
+                <MenuItem Header="ID Replace" Click="IDReplace"/>
+
             </Menu>
         </ToolBar>
-        <ListBox Name="WemView" Height="350" Width="750" VerticalAlignment="Top" Margin="0,30,0,0">
+        <ListBox Name="WemView" Height="350" Width="750" Background="#282828" VerticalAlignment="Top" Margin="0,30,0,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="715">
@@ -29,7 +32,7 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Label Foreground="#dcdcdc"  Content="Wem ID:"></Label>
-                        <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                         <Label Grid.Column="1" Foreground="#dcdcdc" Content="Wem Name:"></Label>
                         <Label Grid.Column="1" Margin="75,0,0,0" Foreground="#dcdcdc" Content="{Binding name}"></Label>
                         <Label Grid.Column="2" Foreground="#dcdcdc" Content="Wem Length:"></Label>

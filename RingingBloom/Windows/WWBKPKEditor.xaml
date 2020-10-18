@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Name="Window"
-        Title="WWBKPKEdit" Height="450" Width="450" ResizeMode="CanMinimize">
+        Title="WWBKPKEdit" Height="450" Width="450" ResizeMode="CanMinimize"
+        Background="#404040">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="235*"/>
@@ -20,11 +21,11 @@
                 <MenuItem Header="Help" Click="HelpMenu"/>
             </Menu>
         </ToolBar>
-        <ListBox Name="PKBKView" Height="300" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,50,0,0" Grid.ColumnSpan="2">
+        <ListBox Name="PKBKView" Height="300" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,50,0,0" Grid.ColumnSpan="2" Background="#282828">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="385">
-                        <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="0,0,0,0" Text="{Binding Path, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <TextBox Name="TextBox1" Background="#101010" Foreground="#dcdcdc" Margin="0,0,0,0" Text="{Binding Path, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

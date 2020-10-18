@@ -29,8 +29,6 @@ namespace RingingBloom.Windows
         public WWCTEditor()
         {
             InitializeComponent();
-            Window.Background = HelperFunctions.GetBrushFromHex("#505050");
-            WWCTView.Background = HelperFunctions.GetBrushFromHex("#282828");
             WWCTView.ItemsSource = viewModel.wwct;
         }
 

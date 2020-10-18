@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:RingingBloom"
         mc:Ignorable="d"
         Name="Window"
-        Title="WWCT Editor" Height="400" Width="900">
+        Title="WWCT Editor" Height="400" Width="900"
+        Background="#404040">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top">
             <Menu>
@@ -15,7 +16,7 @@
                 <MenuItem Header="Export" Click="ExportWWCT"></MenuItem>
             </Menu>
         </ToolBar>
-        <ListBox Name="WWCTView" Height="200" Width="800" Margin="46,50,46,69">
+        <ListBox Name="WWCTView" Height="200" Width="800" Margin="46,50,46,69" Background="#282828">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="750">
