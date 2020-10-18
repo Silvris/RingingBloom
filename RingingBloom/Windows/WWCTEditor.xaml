@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Name="Window"
         Title="WWCT Editor" Height="400" Width="900"
-        Background="#404040">
+        Background="#404040" ResizeMode="CanMinimize">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top">
             <Menu>

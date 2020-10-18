@@ -7,8 +7,10 @@
         mc:Ignorable="d"
         Name="Window"
         Background="#282828"
-        Title="LoopCalculator" Height="500" Width="450">
+        SizeToContent="WidthAndHeight"
+        Title="LoopCalculator" Height="500" Width="450" ResizeMode="CanMinimize">
     <Grid>
+        <Grid x:Name="ResizeDefault" Height="500" Width="450"/>
         <Label Content="User Values" Foreground="#aaaaaa" Margin="25,0,0,0"/>
         <Label Content="Default Values" HorizontalAlignment="Right" Foreground="#aaaaaa" Margin="0,0,25,0"/>
         <Border BorderBrush="#505050" CornerRadius="3" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,30,0,0" Width="150" Height="175"></Border>

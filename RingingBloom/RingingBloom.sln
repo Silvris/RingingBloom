@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.30406.217
+VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingingBloom", "RingingBloom.csproj", "{10538087-2C05-46D3-9FB9-5E81E76C7619}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingingBloom", "RingingBloom.csproj", "{D77B1469-CD3F-4501-85CE-A0198389551F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{10538087-2C05-46D3-9FB9-5E81E76C7619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10538087-2C05-46D3-9FB9-5E81E76C7619}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10538087-2C05-46D3-9FB9-5E81E76C7619}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10538087-2C05-46D3-9FB9-5E81E76C7619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D77B1469-CD3F-4501-85CE-A0198389551F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D77B1469-CD3F-4501-85CE-A0198389551F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D77B1469-CD3F-4501-85CE-A0198389551F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D77B1469-CD3F-4501-85CE-A0198389551F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3A9C876B-9E15-4016-97A5-B96C05C315DC}
+		SolutionGuid = {42D6658A-8215-4379-88AA-883770AE84F9}
 	EndGlobalSection
 EndGlobal
