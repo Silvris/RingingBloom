@@ -52,6 +52,24 @@ namespace RingingBloom.Windows
 
         }
 
+        private void Replace_Wem(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Multiselect = false;
+            openFile.Filter = "WWise Wem files (*.wem)|*.wem";
+            if (openFile.ShowDialog() == true)
+            {
+                foreach (string fileName in openFile.FileNames)
+                {
+                    Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
+                    npck.WemList[WemView.SelectedIndex] = newWem;
+                    viewModel.wems[WemView.SelectedIndex] = newWem;
+                    WemView.ItemsSource = viewModel.wems;
+                }
+
+            }
+        }
+
         private void Export_Wems(object sender, RoutedEventArgs e)
         {
             OpenFileDialog exportFile = new OpenFileDialog();

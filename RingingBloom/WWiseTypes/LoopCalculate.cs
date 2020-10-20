@@ -125,7 +125,7 @@ namespace RingingBloom
             //intro simple
             F1 = -introStart;
             F2 = introStart;
-            F3 = songLength - loopStart;
+            F3 = -(songLength - loopStart-loop2Disp);
             F4 = songLength;
             F5 = (loopStart+loop2Disp) - introStart;
 
@@ -187,7 +187,7 @@ namespace RingingBloom
             C3 = -(songLength - loopLength - loopStart);
             C4 = songLength;
             C5 = C4 - loopStart - C2 + C3;
-            C6 = loopStart;
+            C6 = loopStart +loopDisp;
             C7 = -H7;
             C8 = songLength;
             C9 = loopLength;
@@ -197,7 +197,7 @@ namespace RingingBloom
             D3 = C3;
             D4 = songLength;
             D5 = C5 + loop2Disp;
-            D6 = loopStart;
+            D6 = loopStart + loopDisp;
             D7 = -H7;
             D8 = songLength;
             D9 = loopLength + loop2Disp;

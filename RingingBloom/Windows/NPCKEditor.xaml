@@ -14,11 +14,12 @@
                 <MenuItem Header="New" Click="MakeNPCK"/>
                 <MenuItem Header="Import" Click="ImportNPCK"/>
                 <MenuItem Header="Export" Click="ExportNPCK"/>
+                <MenuItem Header="Replace Wem" Click="Replace_Wem"></MenuItem>
                 <MenuItem Header="Import Wems" Click="Import_Wems"/>
                 <MenuItem Header="Export Wems" Click="Export_Wems"/>
                 <MenuItem Header="Delete Wem" Click="Delete_Wem"/>
-                <MenuItem Header="Help" Click="HelpMenu"/>
                 <MenuItem Header="ID Replace" Click="IDReplace"/>
+                <MenuItem Header="Help" Click="HelpMenu"/>
 
             </Menu>
         </ToolBar>
