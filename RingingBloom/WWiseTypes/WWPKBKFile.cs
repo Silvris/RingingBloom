@@ -20,8 +20,9 @@ namespace RingingBloom.WWiseTypes
     {
         char[] WWPK = { 'W', 'W', 'P', 'K' };
         char[] WWBK = { 'W', 'W', 'B', 'K' };
-        uint PKVersion = 4;
-        uint BKVersion = 3;
+        uint PKVersion = 3;
+        uint BKVersion = 4;
+        uint Version = 0;
         public List<PKBKString> paths = new List<PKBKString>();
 
         //these are together since there is a very minute difference between them
@@ -30,12 +31,12 @@ namespace RingingBloom.WWiseTypes
         public WWPKBKFile(BinaryReader br)
         {
             char[] magic = br.ReadChars(4);
-            uint version = br.ReadUInt32();
+            Version = br.ReadUInt32();
             uint pathCount = br.ReadUInt32();
             uint null1 = br.ReadUInt32();
             for(int i = 0; i < pathCount; i++)
             {
-                if(magic.ToString() == WWPK.ToString())
+                if(magic[2] == 'P')
                 {
                     paths.Add(new PKBKString(HelperFunctions.ReadNullTerminatedString(br)));
                     byte null2 = br.ReadByte();
@@ -58,8 +59,12 @@ namespace RingingBloom.WWiseTypes
         {
             if(type == "wwpk")
             {
+                if(Version == 0)
+                {
+                    Version = PKVersion;
+                }
                 bw.Write(WWPK);
-                bw.Write(PKVersion);
+                bw.Write(Version);
                 bw.Write((uint)paths.Count);
                 bw.Write(0);
                 for(int i = 0; i < paths.Count; i++)
@@ -70,8 +75,12 @@ namespace RingingBloom.WWiseTypes
             }
             else
             {
+                if (Version == 0)
+                {
+                    Version = BKVersion;
+                }
                 bw.Write(WWBK);
-                bw.Write(BKVersion);
+                bw.Write(Version);
                 bw.Write((uint)paths.Count);
                 bw.Write(0);
                 for (int i = 0; i < paths.Count; i++)

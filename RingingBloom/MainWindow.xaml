@@ -26,7 +26,7 @@
         <Button Grid.Column="2" Grid.Row="0" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="NPCKEdit">
             <TextBlock Text="NPCK Editor" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="0" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+        <Button Grid.Column="0" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="WemCreate">
             <TextBlock Text="Wem Creator" TextWrapping="Wrap"/>
         </Button>
         <Button Grid.Column="1" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
@@ -39,7 +39,7 @@
             <TextBlock Text="EPVSP Editor" TextWrapping="Wrap"/>
         </Button>
         <Button Grid.Column="1" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
-            <TextBlock Text="WWST/SW Editor" TextWrapping="Wrap"/>
+            <TextBlock Text="" TextWrapping="Wrap"/>
         </Button>
         <Button Grid.Column="2" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
             <TextBlock Text="WWEV Editor" TextWrapping="Wrap"/>

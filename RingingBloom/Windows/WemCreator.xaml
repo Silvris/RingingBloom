@@ -1,0 +1,18 @@
+﻿<Window x:Class="RingingBloom.Windows.WemCreator"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RingingBloom.Windows"
+        mc:Ignorable="d"
+        Title="Wem Creator" Height="450" Width="450" ResizeMode="CanResizeWithGrip"
+        Background="#404040">
+    <Grid>
+        <ToolBar Height="30" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <Menu>
+                <MenuItem Header="Set WWise Path" Click="SetWWisePath"/>
+                <MenuItem Header="Help" Click="HelpMenu"/>
+            </Menu>
+        </ToolBar>        
+    </Grid>
+</Window>

@@ -25,6 +25,7 @@ namespace RingingBloom
         WWBKPKEditor wwbkpkEditor = null;
         NPCKEditor npckEditor = null;
         LoopCalculator loopCalculator = null;
+        WemCreator wemCreator = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -49,6 +50,11 @@ namespace RingingBloom
         {
             loopCalculator = new LoopCalculator();
             loopCalculator.Show();
+        }
+        private void WemCreate(object sender, RoutedEventArgs e)
+        {
+            wemCreator = new WemCreator();
+            wemCreator.Show();
         }
     }
 }
