@@ -58,6 +58,50 @@ namespace RingingBloom.Windows
             
 
         }
+
+        public void ImportNonDuplicate(object sender, RoutedEventArgs e)
+        {
+            if (wwct != null) {
+                OpenFileDialog importFile = new OpenFileDialog();
+                importFile.Multiselect = false;
+                importFile.Filter = "WWise Container files (*.wwct)|*.wwct";
+                WWCTFile import;
+                List<WWCTString> newStrings = new List<WWCTString>();
+                if (importFile.ShowDialog() == true)
+                {
+                    BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
+                    import = new WWCTFile(readFile);
+                    //look for non-duplicates
+                    for (int i = 0; i < import.wwctStrings.Count; i++)
+                    {
+                        bool isDuplicate = false;
+                        for(int j = 0; j < wwct.wwctStrings.Count; j++)
+                        {
+                            if (!isDuplicate)
+                            {
+                                isDuplicate = import.CompareWWCTString(import.wwctStrings[i], wwct.wwctStrings[j]);
+                            }
+                        }
+                        if (!isDuplicate)
+                        {
+                            newStrings.Add(import.wwctStrings[i]);
+                        }
+                    }
+                    //add strings to current file
+                    for(int i = 0; i < newStrings.Count; i++)
+                    {
+                        wwct.wwctStrings.Add(newStrings[i]);
+                        viewModel.wwct.Add(newStrings[i]);
+                    }
+                    readFile.Close();
+                }
+            }
+            else
+            {
+                ImportWWCT(sender, e);
+            }
+        }
+
         public void ExportWWCT(object sender, RoutedEventArgs e)
         {
             WWCTView.Focus();

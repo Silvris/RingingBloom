@@ -14,6 +14,7 @@
                 <MenuItem Header="New" Click="MakeWWCT"></MenuItem>
                 <MenuItem Header="Import" Click="ImportWWCT"></MenuItem>
                 <MenuItem Header="Export" Click="ExportWWCT"></MenuItem>
+                <MenuItem Header="Import Non-Duplicate" Click="ImportNonDuplicate"></MenuItem>
             </Menu>
         </ToolBar>
         <ListBox Name="WWCTView" Height="200" Width="800" Margin="46,50,46,69" Background="#282828">

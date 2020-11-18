@@ -136,6 +136,18 @@ namespace RingingBloom.WWiseTypes
             //nothing needs to be done for this, since 0 value WWCTs exist
         }
 
+        public bool CompareWWCTString(WWCTString string1, WWCTString string2)
+        {
+            if (string1.Index == string2.Index&&string1.Path==string2.Path&&string1.Type==string2.Type)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public int CalculateTypeCount(WWCTType type)
         {
             int count = 0;
