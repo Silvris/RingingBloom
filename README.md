@@ -8,5 +8,5 @@ Documentation coming soon.
 * Elliot in the MHW Modding Discord for several things, most notably proper class names for several files.
 * NSACloud for testing
 
-#Installation
+# Installation
 Just download the most recent release in the Releases tab to the right. Alternatively, clone the repository and build the solution.
