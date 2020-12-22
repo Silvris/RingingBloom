@@ -27,6 +27,8 @@ namespace RingingBloom.Windows
             InitializeComponent();
             loop = new LoopCalculate();
             DataContext = loop;
+            IntroCount.SelectedIndex = 1;
+            LoopCount.SelectedIndex = 1;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

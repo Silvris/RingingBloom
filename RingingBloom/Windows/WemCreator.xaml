@@ -5,14 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
-        Title="Wem Creator" Height="450" Width="450" ResizeMode="CanResizeWithGrip"
+        Title="Wem Creator" Height="500" Width="600" ResizeMode="CanMinimize"
         Background="#404040">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <Menu>
                 <MenuItem Header="Set WWise Path" Click="SetWWisePath"/>
+                <MenuItem Header="Set WWise Project Path" Click="SetProjectPath"/>
+                <MenuItem Header="Set Export Path" Click="SetExportPath"/>
                 <MenuItem Header="Help" Click="HelpMenu"/>
             </Menu>
-        </ToolBar>        
+        </ToolBar>
+        <Button Content="Import Wavs" FontSize="15" Click="ImportWavs" Height="35" Width="175" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,35,0,0"/>
+        <Button Name="RemovWav" Content="Remove Selected Wav" FontSize="15" IsEnabled="False"  Click="RemoveWav" Height="35" Width="175" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,35,0,0"/>
+        <Button Name="ExportWav" Content="Create Wems" FontSize="15" IsEnabled="False" Click="ExportWems" Height="35" Width="175" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,35,25,0"/>
+        <Border Width="550" Height="100" VerticalAlignment="Top" Margin="0,75,0,0" BorderThickness="2" BorderBrush="#AAAAAA" CornerRadius="3">
+            <TextBox Name="SysOutput" Text="" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="#393939" Foreground="#cccccc"/>
+        </Border>
+        <ListBox Name="WavView" Width="550" Height="250" VerticalAlignment="Bottom" Margin="0,0,0,25" Background="#333333" ItemsSource="{Binding wavs}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Left" Width="525">
+                        <Label Margin="15,0,0,0" Foreground="#dcdcdc" Content="{Binding}"></Label>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>

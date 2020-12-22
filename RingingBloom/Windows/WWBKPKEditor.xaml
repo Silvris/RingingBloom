@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Name="Window"
-        Title="WWBKPKEdit" Height="450" Width="450" ResizeMode="CanMinimize"
+        Title="WWBKPK Editor" Height="450" Width="450" ResizeMode="CanMinimize"
         Background="#404040">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>

@@ -6,51 +6,51 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Name="Window"
-        Background="#282828"
+        Background="#404040"
         SizeToContent="WidthAndHeight"
-        Title="LoopCalculator" Height="500" Width="450" ResizeMode="CanMinimize">
+        Title="Loop Calculator" Height="700" Width="450" ResizeMode="CanMinimize">
     <Grid>
         <Grid x:Name="ResizeDefault" Height="500" Width="450"/>
         <Label Content="User Values" Foreground="#aaaaaa" Margin="25,0,0,0"/>
         <Label Content="Default Values" HorizontalAlignment="Right" Foreground="#aaaaaa" Margin="0,0,25,0"/>
-        <Border BorderBrush="#505050" CornerRadius="3" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,30,0,0" Width="150" Height="175"></Border>
-        <Label Content="Intro Start" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,35,0,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,60,0,0" Text="{Binding introStart, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="Loop Start" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,70,0,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,95,0,0" Text="{Binding loopStart, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="Loop Length" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,105,0,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,130,0,0" Text="{Binding loopLength, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="Song Length" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,140,0,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,165,0,0" Text="{Binding songLength, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Border BorderBrush="#505050" CornerRadius="3" BorderThickness="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,30,0" Width="150" Height="175"></Border>
-        <Label Content="True Intro" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,40,120,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,45,0" Text="{Binding defIntroTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="Displaced Intro" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="8" Margin="0,70,120,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,80,45,0" Text="{Binding defIntroDisp, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="True Loop" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,100,120,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,110,45,0" Text="{Binding defLoopTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="Displaced Loop" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="8" Margin="0,130,120,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,140,45,0" Text="{Binding defLoopDisp, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="2nd Loop Start" HorizontalAlignment="Right" FontSize="8" VerticalAlignment="Top" Margin="0,160,120,0" Foreground="#AAAAAA"></Label>
-        <TextBox Height="15" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,170,45,0" Text="{Binding defLoop2, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <CheckBox Name="IntroDiff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50,0,0,300"></CheckBox>
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Intro Doubles Displaced? " FontSize="7" Foreground="#AAAAAA" Margin="0,0,0,325"></Label>
-        <ComboBox Width="35" Height="20" Name="IntroCount" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="45,0,0,250">
+        <Border BorderBrush="#505050" CornerRadius="3" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,30,0,0" Width="150" Height="250"></Border>
+        <Label Content="Intro Start" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,50,0,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,75,0,0" Text="{Binding introStart, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Content="Loop Start" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,100,0,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,125,0,0" Text="{Binding loopStart, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Content="Loop Length" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,150,0,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,175,0,0" Text="{Binding loopLength, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Content="Song Length" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,200,0,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,225,0,0" Text="{Binding songLength, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Border BorderBrush="#505050" CornerRadius="3" BorderThickness="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,30,0" Width="150" Height="250"></Border>
+        <Label Content="True Intro" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,25,75,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,65,0" Text="{Binding defIntroTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Content="Disp. Intro" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,75,75,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,100,65,0" Text="{Binding defIntroDisp, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Content="True Loop" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,125,75,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,150,65,0" Text="{Binding defLoopTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Content="Disp. Loop" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,175,75,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,200,65,0" Text="{Binding defLoopDisp, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Content="2nd Loop Start" HorizontalAlignment="Right" FontSize="11" VerticalAlignment="Top" Margin="0,225,60,0" Foreground="#AAAAAA"></Label>
+        <TextBox Height="20" VerticalContentAlignment="Center" Width="75" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,65,0" Text="{Binding defLoop2, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <CheckBox Name="IntroDiff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,500"></CheckBox>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Intro Disp.? " FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,550"></Label>
+        <ComboBox Width="35" Height="20" Name="IntroCount" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,400">
             <ComboBoxItem Content="0" Tag="0"></ComboBoxItem>
             <ComboBoxItem Content="1" Tag="1"></ComboBoxItem>
             <ComboBoxItem Content="2" Tag="2"></ComboBoxItem>
         </ComboBox>
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Intro Count:" FontSize="8" Foreground="#AAAAAA" Margin="0,0,35,250"></Label>
-        <CheckBox Name="LoopDiff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50,0,0,175"></CheckBox>
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Loop Doubles Different?  " FontSize="7" Foreground="#AAAAAA" Margin="0,0,0,200"></Label>
-        <ComboBox Width="35" Height="20" Name="LoopCount" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="45,0,0,125">
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Intro Count:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,450"></Label>
+        <CheckBox Name="LoopDiff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,300"></CheckBox>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Loops Diff.?  " FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,350"></Label>
+        <ComboBox Width="35" Height="20" Name="LoopCount" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,200">
             <ComboBoxItem Content="0" Tag="0"></ComboBoxItem>
             <ComboBoxItem Content="1" Tag="1"></ComboBoxItem>
             <ComboBoxItem Content="2" Tag="2"></ComboBoxItem>
             <ComboBoxItem Content="3" Tag="3"></ComboBoxItem>
         </ComboBox>
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Loop Count:" FontSize="8" Foreground="#AAAAAA" Margin="0,0,35,125"></Label>
-        <Button Height="30" Content="Calculate" Width="100" Click="Button_Click"></Button>
-        <TextBox Name="LoopView" Text="TEST COPY" Width="350" Height="200" Background="#303030" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" IsReadOnly="True"/>
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Loop Count:" FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,250"></Label>
+        <Button Height="30" Content="Calculate" Width="100" Margin="0,25,0,0" Click="Button_Click"></Button>
+        <TextBox Name="LoopView" Text="" Width="350" Height="200" Background="#303030" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10" IsReadOnly="True"/>
     </Grid>
 </Window>

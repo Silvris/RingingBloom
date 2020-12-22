@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Name="Window"
-        Title="NPCKEditor" Height="450" Width="800" ResizeMode="CanMinimize"
+        Title="NPCK Editor" Height="450" Width="800" ResizeMode="CanMinimize"
         Background="#404040">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top">
