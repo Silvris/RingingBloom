@@ -1,28 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using RingingBloom.Common;
 
 namespace RingingBloom.NBNK
 {
-    class DIDX_DATA
+    class DIDX : IChunk
     {
-        char[] DIDX = new char[] { 'D', 'I', 'D', 'X' };
-        uint wemCount;
-        char[] DATA = new char[] { 'D', 'A', 'T', 'A' };
+        //this includes data chunk as well, because no point in separating them
+        private char[] magic = new char[] { 'D', 'I', 'D', 'X' };
+        private char[] DATA = new char[] { 'D', 'A', 'T', 'A' };
         List<Wem> wemList;
-        //these are combined since they're both wem data, best to read it immediately into a wem
-        public DIDX_DATA(BinaryReader br)
+        private int pLoadedMedia { get => wemList.Count; }
+        public int didxSize { get => wemList.Count * 12; }
+        public int dataSize { get
+            {
+                int size = 0;
+                for(int i = 0; i < wemList.Count; i++)
+                {
+                    size += (int)wemList[i].length;
+                }
+                return size;
+            } }
+
+        public DIDX(BinaryReader br)
         {
             uint didxLength = br.ReadUInt32();
-            wemCount = didxLength / 12;
+            uint wemCount = didxLength / 12;
             uint[] ids = new uint[wemCount];
             uint[] offsets = new uint[wemCount];
             uint[] lengths = new uint[wemCount];
-            for(int i = 0; i < wemCount; i++)
+            for (int i = 0; i < wemCount; i++)
             {
                 ids[i] = br.ReadUInt32();
                 offsets[i] = br.ReadUInt32();
@@ -32,30 +42,31 @@ namespace RingingBloom.NBNK
             char[] dataRead = br.ReadChars(4);
             uint dataLength = br.ReadUInt32();
             List<byte[]> wemDatas = new List<byte[]>();
-            for(int i = 0; i < wemCount; i++)
+            for (int i = 0; i < wemCount; i++)
             {
-                br.BaseStream.Seek(DataOff + offsets[i],SeekOrigin.Begin);
+                br.BaseStream.Seek(DataOff + offsets[i], SeekOrigin.Begin);
                 wemDatas[i] = br.ReadBytes((int)lengths[i]);
             }
-            for(int i = 0; i < wemCount; i++)
+            for (int i = 0; i < wemCount; i++)
             {
                 Wem newWem = new Wem("Imported Wem " + i, ids[i], wemDatas[i]);
                 wemList.Add(newWem);
             }
         }
+        public char[] dwTag { get => magic;}
 
+        public uint dwChunkSize { get => (uint)didxSize; set => throw new NotImplementedException(); }//not using dwChunkSize for this one since we have a combo
         public void AddWem(string aName, uint aId, BinaryReader br)
         {
             Wem newWem = new Wem(aName, Convert.ToString(aId), br);
             wemList.Add(newWem);
         }
-
-        public void ExportDIDXDATA(BinaryWriter bw)
+        public void Export(BinaryWriter bw)
         {
-            bw.Write(DIDX);
-            bw.Write(wemCount * 12);
+            bw.Write(dwTag);
+            bw.Write(didxSize);
             uint currentOffset = 0;
-            for(int i = 0; i < wemCount; i++)
+            for (int i = 0; i < pLoadedMedia; i++)
             {
                 bw.Write(wemList[i].id);
                 bw.Write(currentOffset);
@@ -64,7 +75,7 @@ namespace RingingBloom.NBNK
             }
             bw.Write(DATA);
             bw.Write(currentOffset);
-            for(int i = 0; i < wemCount; i++)
+            for (int i = 0; i < pLoadedMedia; i++)
             {
                 bw.Write(wemList[i].file);
             }

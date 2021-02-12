@@ -44,7 +44,7 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             public uint id;
         }
 
-        HIRCTypes Htype = HIRCTypes.EventAction;
+        HIRCTypes Htype = HIRCTypes.Action;
         uint length;
         uint objectID;
         HIRC3ActionScope scope;

@@ -9,6 +9,7 @@ namespace RingingBloom
 {
     public class NPCKHeader
     {
+        public SupportedGames mode = SupportedGames.MHWorld;//can't set it to null
         public byte[] magic = { (byte)'A', (byte)'K', (byte)'P', (byte)'K' };
         public uint headerLength;
         uint unkn2 = 1;
@@ -29,13 +30,14 @@ namespace RingingBloom
         public List<Wem> WemList = new List<Wem>();
 
         //created constructor
-        public NPCKHeader()
+        public NPCKHeader(SupportedGames Mode)
         {
-            //nothing to do here either
+            mode = Mode;
         }
         //imported constructor
-        public NPCKHeader(BinaryReader br)
+        public NPCKHeader(BinaryReader br,SupportedGames Mode)
         {
+            mode = Mode;
             char[] magicBytes = br.ReadChars(4);
             uint headerLen = br.ReadUInt32();
             unkn2 = br.ReadUInt32();
@@ -50,9 +52,23 @@ namespace RingingBloom
             {
                 unknValue = br.ReadUInt32();
                 unknA = br.ReadUInt32();
-                audioLang = HelperFunctions.ReadUniNullTerminatedString(br);
+                if (mode == SupportedGames.MHRise)
+                {
+                    audioLang = HelperFunctions.ReadNullTerminatedString(br);
+                }
+                else
+                {
+                    audioLang = HelperFunctions.ReadUniNullTerminatedString(br);
+                }
             }
-            string Asfx = HelperFunctions.ReadUniNullTerminatedString(br);
+            if (mode == SupportedGames.MHRise)
+            {
+                string sfx = HelperFunctions.ReadNullTerminatedString(br);
+            }
+            else
+            {
+                string sfx = HelperFunctions.ReadUniNullTerminatedString(br);
+            }
             unkn10 = br.ReadUInt32();
             uint wemACount = br.ReadUInt32();
             for(int i = 0; i < wemACount; i++)
@@ -77,7 +93,14 @@ namespace RingingBloom
             headerLength = (wemTableLength) + 56;
             if(unknCount > 0)
             {
-                headerLength += (uint)(8 + (audioLang.Length * 2) + 2);
+                if (mode == SupportedGames.MHRise)
+                {
+                    headerLength += (uint)(8 + (audioLang.Length) + 2);
+                }
+                else
+                {
+                    headerLength += (uint)(8 + (audioLang.Length * 2) + 2);
+                }
             }
             BinaryWriter bw = new BinaryWriter(File.Create(aFilePath));
             bw.Write(magic);
@@ -94,9 +117,23 @@ namespace RingingBloom
             {
                 bw.Write(unknValue);
                 bw.Write(unknA);
-                HelperFunctions.WriteUniNullTerminatedString(bw, audioLang);
+                if(mode == SupportedGames.MHRise)
+                {
+                    HelperFunctions.WriteNullTerminatedString(bw, audioLang);
+                }
+                else
+                {
+                    HelperFunctions.WriteUniNullTerminatedString(bw, audioLang);
+                }
             }
-            HelperFunctions.WriteUniNullTerminatedString(bw, SFX);
+            if (mode == SupportedGames.MHRise)
+            {
+                HelperFunctions.WriteNullTerminatedString(bw, SFX);
+            }
+            else
+            {
+                HelperFunctions.WriteUniNullTerminatedString(bw, SFX);
+            }
             bw.Write(unkn10);
             bw.Write(WemList.Count);
             uint currentOffset = headerLength+4;

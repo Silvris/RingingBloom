@@ -6,42 +6,49 @@
         xmlns:local="clr-namespace:RingingBloom"
         mc:Ignorable="d"
         Name="Window"
-        Title="Ringing Bloom" Height="300" Width="300" ResizeMode="CanMinimize"
+        Title="Ringing Bloom" Height="600" Width="200" ResizeMode="CanMinimize"
         Background="#404040">
     <Grid Name="myGrid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height=".5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Column="0" Grid.Row="0" Content="WWCT Editor" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" Click="WWCTEdit"/>
-        <Button Grid.Column="1" Grid.Row="0" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="WWPKBKEdit">
+        <Menu Height="20" VerticalAlignment="Top">
+            <MenuItem Name="GameSelect" Header="Mode:">
+                <MenuItem Header="MHWorld" Tag="0" Click="ChangeMode"></MenuItem>
+                <MenuItem Header="MHRise" Tag="1" Click="ChangeMode"></MenuItem>
+                <MenuItem Header="DMC5" Tag="2" Click="ChangeMode"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Button Grid.Row="1" Height="30" VerticalAlignment="Top" Width="150" Click="WWCTEdit">
+            <TextBlock Text="WWCT Editor" TextWrapping="Wrap"/>
+        </Button>
+        <Button Grid.Row="2" Height="30" VerticalAlignment="Top" Width="150" Click="WWPKBKEdit">
             <TextBlock Text="WWBK\PK Editor" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="2" Grid.Row="0" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="NPCKEdit">
+        <Button Grid.Row="3" Height="30" VerticalAlignment="Top" Width="150" Click="NPCKEdit">
             <TextBlock Text="NPCK Editor" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="0" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="WemCreate">
+        <Button Grid.Row="4" Height="30" VerticalAlignment="Top" Width="150" Click="WemCreate">
             <TextBlock Text="Wem Creator" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="1" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+        <Button Grid.Row="5" Height="30" VerticalAlignment="Top" Width="150" IsEnabled="False" Click="WWCTEdit">
             <TextBlock Text="NBNK Editor" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="2" Grid.Row="1" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="True" Click="LoopCalculator">
+        <Button Grid.Row="6" Height="30" VerticalAlignment="Top" Width="150" IsEnabled="True" Click="LoopCalculator">
             <TextBlock Text="Loop Calculator" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="0" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+        <Button Grid.Row="7" Height="30" VerticalAlignment="Top" Width="150" IsEnabled="False" Click="WWCTEdit">
             <TextBlock Text="EPVSP Editor" TextWrapping="Wrap"/>
         </Button>
-        <Button Grid.Column="1" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
-            <TextBlock Text="" TextWrapping="Wrap"/>
-        </Button>
-        <Button Grid.Column="2" Grid.Row="2" Height="55" VerticalAlignment="Top" Width="76" Margin="0,10,0,0" IsEnabled="False" Click="WWCTEdit">
+        <Button Grid.Row="8" Height="30" VerticalAlignment="Top" Width="150" IsEnabled="False" Click="WWCTEdit">
             <TextBlock Text="WWEV Editor" TextWrapping="Wrap"/>
         </Button>
     </Grid>

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RingingBloom.Windows;
+using RingingBloom.Common;
 
 namespace RingingBloom
 {
@@ -21,14 +22,23 @@ namespace RingingBloom
     /// </summary>
     public partial class MainWindow : Window
     {
-        WWCTEditor wwctEditor = null;
-        WWBKPKEditor wwbkpkEditor = null;
+        SupportedGames mode = SupportedGames.MHWorld;
+        //Common programs
+        //NBNKEditor nbnkEditor = null;
         NPCKEditor npckEditor = null;
         LoopCalculator loopCalculator = null;
         WemCreator wemCreator = null;
+        //MHWorld programs
+        WWCTEditor wwctEditor = null;
+        WWBKPKEditor wwbkpkEditor = null;
+        //EPVSPEditor epvspEditor = null;
+        //WWEVEditor wwevEditor = null;
+        //RE Engine programs
+        //RSZEditor rszEditor = null;
         public MainWindow()
         {
             InitializeComponent();
+            ChangeView();
         }
 
         private void WWCTEdit(object sender, RoutedEventArgs e)
@@ -43,7 +53,7 @@ namespace RingingBloom
         }
         private void NPCKEdit(object sender, RoutedEventArgs e)
         {
-            npckEditor = new NPCKEditor();
+            npckEditor = new NPCKEditor(mode);
             npckEditor.Show();
         }
         private void LoopCalculator(object sender, RoutedEventArgs e)
@@ -55,6 +65,69 @@ namespace RingingBloom
         {
             wemCreator = new WemCreator();
             wemCreator.Show();
+        }
+
+        private void NullAllWindows()
+        {
+            /*if (nbnkEditor != null)
+            {
+                nbnkEditor.Close();
+                nbnkEditor = null;
+            }*/
+            if (npckEditor != null)
+            {
+                npckEditor.Close();
+                npckEditor = null;
+            }
+            if (loopCalculator != null)
+            {
+                loopCalculator.Close();
+                loopCalculator = null;
+            }
+            if (wemCreator != null)
+            {
+                wemCreator.Close();
+                wemCreator = null;
+            }
+            if (wwctEditor != null)
+            {
+                wwctEditor.Close();
+                wwctEditor = null;
+            }
+            if (wwbkpkEditor != null)
+            {
+                wwbkpkEditor.Close();
+                wwbkpkEditor = null;
+            }
+            /*if (epvspEditor != null)
+            {
+                epvspEditor.Close();
+                epvspEditor = null;
+            }*/
+            /*if (wwevEditor != null)
+            {
+                wwevEditor.Close();
+                wwevEditor = null;
+            }*/
+            /*if (rszEditor != null)
+            {
+                rszEditor.Close();
+                rszEditor = null;
+            }*/
+        }
+
+        private void ChangeView()
+        {
+            GameSelect.Header = "Mode: " + mode.ToString();
+        }
+
+        private void ChangeMode(object sender, RoutedEventArgs e)
+        {
+            //should only be called by MenuItems
+            MenuItem item = (MenuItem)sender;
+            mode = (SupportedGames)Convert.ToInt32(item.Tag);
+            ChangeView();
+            NullAllWindows();
         }
     }
 }

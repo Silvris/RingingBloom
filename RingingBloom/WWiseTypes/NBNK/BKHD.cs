@@ -5,51 +5,84 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace RingingBloom.NBNK
 {
-    public class BKHD
+    /// <summary>
+    /// Bank Header
+    /// This doesn't change between WWise versions, so it gets a single file
+    /// </summary>
+    public class BKHD : IChunk
     {
-        char[] magic = new char[] { 'B', 'K', 'H', 'D' };
-        uint sectionLength;
-        uint unkn1;
-        uint thisIsAHash;
-        List<uint> unkns = new List<uint>();
+        private char[] magic = new char[] { 'B', 'K', 'H', 'D' };
+        private uint sectionLength;
+        uint dwBankGeneratorVersion;
+        uint dwSoundbankID;
+        uint dwLanguageID;
+        uint bFeedbackInBank;
+        uint dwProjectID;//MHW = 1114
+        List<uint> gap = new List<uint>();
+
+        public char[] dwTag
+        {
+            get
+            {
+                return magic;
+            }
+        }
+        public uint dwChunkSize { get {
+                if (sectionLength >= 20 + (gap.Count * 4)){
+                    return sectionLength;
+                }
+                else
+                {
+                    sectionLength = (uint)(20 + (gap.Count * 4));
+                    return sectionLength;
+                }
+
+            }  set => sectionLength = value; }
 
         //imported constructor, the most common one
         public BKHD(uint SLength, BinaryReader br)
         {
-            sectionLength = SLength;
-            unkn1 = br.ReadUInt32();
-            thisIsAHash = br.ReadUInt32();
-            uint unknCount = (SLength / 4) - 2;
+            dwChunkSize = SLength;
+            dwBankGeneratorVersion = br.ReadUInt32();
+            dwSoundbankID = br.ReadUInt32();
+            dwLanguageID = br.ReadUInt32();
+            bFeedbackInBank = br.ReadUInt32();
+            dwProjectID = br.ReadUInt32();
+            uint unknCount = (SLength / 4) - 5;
             for(int i = 0; i < unknCount; i++)
             {
-                unkns.Add(br.ReadUInt32());
+                gap.Add(br.ReadUInt32());
             }
         }
 
         //created constructor, shouldn't be used normally
         public BKHD()
         {
-            sectionLength = 24;
-            unkn1 = 120;
-            thisIsAHash = 0; //make sure to implement some form of editing this value
-            unkns.Add(0);
-            unkns.Add(0);
-            unkns.Add(1144);
-            unkns.Add(0);
+            dwChunkSize = 24;
+            dwBankGeneratorVersion = 120;
+            dwSoundbankID = 0; //make sure to implement some form of editing this value
+            dwLanguageID = 0;
+            bFeedbackInBank = 0;
+            dwProjectID = 1114;
+            gap.Add(0);
         }
 
         public void Export(BinaryWriter bw)
         {
-            bw.Write(magic);
-            bw.Write(8 + (unkns.Count * 4));
-            bw.Write(unkn1);
-            bw.Write(thisIsAHash);
-            for(int i = 0; i < unkns.Count; i++)
+            bw.Write(dwTag);
+            bw.Write(dwChunkSize);
+            bw.Write(dwBankGeneratorVersion);
+            bw.Write(dwSoundbankID);
+            bw.Write(dwLanguageID);
+            bw.Write(bFeedbackInBank);
+            bw.Write(dwProjectID);
+            for(int i = 0; i < gap.Count; i++)
             {
-                bw.Write(unkns[i]);
+                bw.Write(gap[i]);
             }
         }
     }

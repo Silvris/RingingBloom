@@ -12,7 +12,7 @@ namespace RingingBloom
     class NBNKFile
     {
         BKHD BankHeader = null;
-        DIDX_DATA DataIndex = null;
+        DIDX DataIndex = null;
         HIRC ObjectHierarchy = null;
 
 
@@ -29,7 +29,7 @@ namespace RingingBloom
                         BankHeader = new BKHD(SLength, br);
                         break;
                     case "DIDX":
-                        DataIndex = new DIDX_DATA(br);
+                        DataIndex = new DIDX(br);
                         break;
                     case "HIRC":
                         ObjectHierarchy = new HIRC(br);
@@ -54,7 +54,7 @@ namespace RingingBloom
             }
             if(DataIndex != null)
             {
-                DataIndex.ExportDIDXDATA(bw);
+                DataIndex.Export(bw);
             }
             if(ObjectHierarchy != null)
             {

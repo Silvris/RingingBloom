@@ -24,12 +24,14 @@ namespace RingingBloom.Windows
     /// </summary>
     public partial class NPCKEditor : Window
     {
+        public SupportedGames mode = SupportedGames.MHWorld;
         public static NPCKHeader npck = null;
         public NPCKViewModel viewModel = new NPCKViewModel();
 
-        public NPCKEditor()
+        public NPCKEditor(SupportedGames Mode)
         {
             InitializeComponent();
+            mode = Mode;
             WemView.ItemsSource = viewModel.wems;
         }
 
@@ -111,7 +113,7 @@ namespace RingingBloom.Windows
 
         private void MakeNPCK(object sender, RoutedEventArgs e)
         {
-            npck = new NPCKHeader();
+            npck = new NPCKHeader(mode);
             viewModel.wems.Clear();
             Import_Wems(sender, e);
         }
@@ -125,7 +127,7 @@ namespace RingingBloom.Windows
             {
                 viewModel.wems.Clear();
                 BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
-                npck = new NPCKHeader(readFile);
+                npck = new NPCKHeader(readFile,mode);
                 for (int i = 0; i < npck.WemList.Count; i++)
                 {
                     viewModel.wems.Add(npck.WemList[i]);

@@ -6,29 +6,37 @@ using System.Threading.Tasks;
 
 namespace RingingBloom.Common
 {
+    public enum SupportedGames
+    {
+        MHWorld,
+        MHRise,
+        DMC5
+    }
     public enum HIRCTypes
     {
-        Settings,
-        SoundSFXVoice,
-        EventAction,
+        State,
+        Sound,
+        Action,
         Event,
-        RandomContainer,
-        SwitchContainer,
+        RandomSequence,
+        Switch,
         ActorMixer,
         AudioBus,
-        BlendContainer,
+        LayerContain,
         MusicSegment,
         MusicTrack,
-        MusicSwitchContainer,
-        PlaylistContainer,
+        MusicSwitch,
+        MusicPlaylist,
         Attenuation,
         DialogueEvent,
-        MotionBus,
-        MotionFX,
-        Effect,
-        Type19,
-        AuxiliaryBus
-
+        FeedbackBus,
+        FeedbackNode,
+        FxShareSet,
+        FxCustom,
+        AuxBus,
+        LFOModulator,
+        EnvelopeModulator,
+        AudioDevice
     }
 
     public enum SoundSettingsTypes

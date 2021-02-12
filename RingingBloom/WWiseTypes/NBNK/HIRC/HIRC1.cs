@@ -10,7 +10,7 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
 {
     class HIRC1
     {
-        HIRCTypes type = HIRCTypes.Settings;
+        HIRCTypes type = HIRCTypes.State;
         uint length;
         uint objectID;
         byte settingsCount;

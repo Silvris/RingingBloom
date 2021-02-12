@@ -9,7 +9,7 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
 {
     class HIRC10
     {
-        HIRCTypes type = HIRCTypes.Settings;
+        HIRCTypes type = HIRCTypes.MusicTrack;
         uint length;
         uint objectID;
 
