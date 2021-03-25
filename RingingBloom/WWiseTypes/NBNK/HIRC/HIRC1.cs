@@ -1,4 +1,5 @@
 ﻿using RingingBloom.Common;
+using RingingBloom.NBNK;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace RingingBloom.WWiseTypes.NBNK.HIRC
 {
-    class HIRC1
+    class HIRC1 : HIRCNode
     {
-        HIRCTypes type = HIRCTypes.State;
-        uint length;
-        uint objectID;
+        HIRCTypes eHircType = HIRCTypes.State;
+        uint dwSectionSize { get; set; }
+        uint ulId { get; set; }
         byte settingsCount;
         List<byte> settingsType;
         List<float> settingsValue;
 
         public HIRC1(BinaryReader br)
         {
-            objectID = br.ReadUInt32();
+            ulId = br.ReadUInt32();
             settingsCount = br.ReadByte();
             for (int i = 0; i < settingsCount; i++)
             {
@@ -45,9 +46,9 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
 
         public void Export(BinaryWriter bw)
         {
-            bw.Write((byte)type);
-            bw.Write(length);
-            bw.Write(objectID);
+            bw.Write((byte)eHircType);
+            bw.Write(dwSectionSize);
+            bw.Write(ulId);
             bw.Write(settingsCount);
             for (int i = 0; i < settingsCount; i++)
             {
