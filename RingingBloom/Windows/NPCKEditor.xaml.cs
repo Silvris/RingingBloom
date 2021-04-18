@@ -155,7 +155,23 @@ namespace RingingBloom.Windows
         private void ExportNPCK(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.Filter = "WWise Package file (*.npck, *.pck)|*.npck;*.pck";
+            saveFile.Filter = "WWise Package file (*.pck)|*.pck";
+            switch (mode)
+            {
+                case SupportedGames.MHWorld:
+                    saveFile.Filter += "|Monster Hunter World WWise Package (*.npck)|*.npck";
+                    break;
+                case SupportedGames.MHRise:
+                    saveFile.Filter += "|Monster Hunter Rise Switch WWise Package (*.nsw)|*.nsw";
+                    break;
+                case SupportedGames.DMC5:
+                    saveFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
+                    saveFile.Filter += "|Devil May Cry 5 English WWise Package (*.En)|*.En";
+                    saveFile.Filter += "|Devil May Cry 5 Japanese WWise Package (*.Ja)|*.Ja";
+                    break;
+                default:
+                    break;
+            }
             if (saveFile.ShowDialog() == true)
             {
                 npck.ExportFile(saveFile.FileName);
