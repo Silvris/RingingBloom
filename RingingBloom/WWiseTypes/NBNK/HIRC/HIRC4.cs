@@ -10,44 +10,42 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
 {
     class HIRC4
     {
-        HIRCTypes type = HIRCTypes.Event;
-        uint length;
-        uint objectId;
-        uint actionCount;
-        List<uint> actionIds;
+        HIRCTypes eHircType = HIRCTypes.Event;
+        uint dwSectionSize;
+        uint ulId;
+        List<uint> ulActionIDs;
 
         public HIRC4(BinaryReader br)
         {
-            objectId = br.ReadUInt32();
-            actionCount = br.ReadUInt32();
-            for(int i = 0; i < actionCount; i++)
+            ulId = br.ReadUInt32();
+            uint ulActionListSize = br.ReadUInt32();
+            for(int i = 0; i < ulActionListSize; i++)
             {
-                actionIds.Add(br.ReadUInt32());
+                ulActionIDs.Add(br.ReadUInt32());
             }
-            length = (actionCount * 4) + 8;
+            dwSectionSize = (ulActionListSize * 4) + 8;
         }
 
         public void AddAction()
         {
-            actionCount++;
-            actionIds.Add(0);
-            length += 4;
+            ulActionIDs.Add(0);
+            dwSectionSize += 4;
         }
 
         public int GetLength()
         {
-            return (int)length;
+            return (int)dwSectionSize;
         }
 
         public void Export(BinaryWriter bw)
         {
-            bw.Write((byte)type);
-            bw.Write(length);
-            bw.Write(objectId);
-            bw.Write(actionCount);
-            for (int i = 0; i < actionCount; i++)
+            bw.Write((byte)eHircType);
+            bw.Write(dwSectionSize);
+            bw.Write(ulId);
+            bw.Write(ulActionIDs.Count);
+            for (int i = 0; i < ulActionIDs.Count; i++)
             {
-                bw.Write(actionIds[i]);
+                bw.Write(ulActionIDs[i]);
             }
         }
     }

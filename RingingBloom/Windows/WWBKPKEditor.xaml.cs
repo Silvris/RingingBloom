@@ -64,7 +64,7 @@ namespace RingingBloom.Windows
             saveFile.Filter = "WWise Soundbank Container files (*.wwbk)|*.wwbk|WWise Package Container files (*.wwpk)|*.wwpk";
             if (saveFile.ShowDialog() == true)
             {
-                BinaryWriter exportFile = new BinaryWriter(new FileStream(saveFile.FileName, FileMode.CreateNew));
+                BinaryWriter exportFile = new BinaryWriter(new FileStream(saveFile.FileName, FileMode.OpenOrCreate));
                 wwpkbk.ExportFile(saveFile.FileName.Substring(saveFile.FileName.Length-4,4),exportFile);
                 exportFile.Close();
             }

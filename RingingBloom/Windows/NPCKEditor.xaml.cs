@@ -122,7 +122,23 @@ namespace RingingBloom.Windows
         {
             OpenFileDialog importFile = new OpenFileDialog();
             importFile.Multiselect = false;
-            importFile.Filter = "WWise Package file (*.npck, *.pck)|*.npck;*.pck";
+            importFile.Filter = "WWise Package file (*.pck)|*.pck";
+            switch (mode)
+            {
+                case SupportedGames.MHWorld:
+                    importFile.Filter += "|Monster Hunter World WWise Package (*.npck)|*.npck";
+                    break;
+                case SupportedGames.MHRise:
+                    importFile.Filter += "|Monster Hunter Rise Switch WWise Package (*.nsw)|*.nsw";
+                    break;
+                case SupportedGames.DMC5:
+                    importFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
+                    importFile.Filter += "|Devil May Cry 5 English WWise Package (*.En)|*.En";
+                    importFile.Filter += "|Devil May Cry 5 Japanese WWise Package (*.Ja)|*.Ja";
+                    break;
+                default:
+                    break;
+            }
             if (importFile.ShowDialog() == true)
             {
                 viewModel.wems.Clear();

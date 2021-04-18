@@ -109,7 +109,7 @@ namespace RingingBloom.Windows
             saveFile.Filter = "WWise Container files (*.wwct)|*.wwct";
             if (saveFile.ShowDialog() == true)
             {
-                BinaryWriter exportFile = new BinaryWriter(new FileStream(saveFile.FileName, FileMode.CreateNew));
+                BinaryWriter exportFile = new BinaryWriter(new FileStream(saveFile.FileName, FileMode.OpenOrCreate));
                 wwct.ExportFile(exportFile);
                 exportFile.Close();
             }
