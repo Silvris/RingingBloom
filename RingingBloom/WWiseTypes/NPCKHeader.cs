@@ -70,6 +70,12 @@ namespace RingingBloom
                 string sfx = HelperFunctions.ReadUniNullTerminatedString(br);
             }
             unkn10 = br.ReadUInt32();
+            //this is 4-aligned at least in RE Engine games
+            byte pad;
+            while(br.BaseStream.Position%4 != 0)
+            {
+                pad = br.ReadByte();
+            }
             uint wemACount = br.ReadUInt32();
             for(int i = 0; i < wemACount; i++)
             {
@@ -135,6 +141,10 @@ namespace RingingBloom
                 HelperFunctions.WriteUniNullTerminatedString(bw, SFX);
             }
             bw.Write(unkn10);
+            while(bw.BaseStream.Position%4 != 0)
+            {
+                bw.Write((byte)1);
+            }
             bw.Write(WemList.Count);
             uint currentOffset = headerLength+4;
             foreach(Wem wem in WemList)

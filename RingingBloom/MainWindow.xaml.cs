@@ -24,7 +24,7 @@ namespace RingingBloom
     {
         SupportedGames mode = SupportedGames.MHWorld;
         //Common programs
-        //NBNKEditor nbnkEditor = null;
+        BNKEditor bnkEditor = null;
         NPCKEditor npckEditor = null;
         LoopCalculator loopCalculator = null;
         WemCreator wemCreator = null;
@@ -65,6 +65,12 @@ namespace RingingBloom
         {
             wemCreator = new WemCreator();
             wemCreator.Show();
+        }
+
+        private void BNKEdit(object sender, RoutedEventArgs e)
+        {
+            bnkEditor = new BNKEditor(mode);
+            bnkEditor.Show();
         }
 
         private void NullAllWindows()
