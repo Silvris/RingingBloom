@@ -130,6 +130,9 @@ namespace RingingBloom.Windows
                     break;
                 case SupportedGames.MHRise:
                     importFile.Filter += "|Monster Hunter Rise Switch WWise Package (*.nsw)|*.nsw";
+                    importFile.Filter += "|Monster Hunter Rise English WWise Package (*.En)|*.En";
+                    importFile.Filter += "|Monster Hunter Rise Japanese WWise Package (*.Ja)|*.Ja";
+                    importFile.Filter += "|Monster Hunter Rise Fictional WWise Package (*.Fc)|*.Fc";
                     break;
                 case SupportedGames.DMC5:
                     importFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
@@ -163,6 +166,9 @@ namespace RingingBloom.Windows
                     break;
                 case SupportedGames.MHRise:
                     saveFile.Filter += "|Monster Hunter Rise Switch WWise Package (*.nsw)|*.nsw";
+                    saveFile.Filter += "|Monster Hunter Rise English WWise Package (*.En)|*.En";
+                    saveFile.Filter += "|Monster Hunter Rise Japanese WWise Package (*.Ja)|*.Ja";
+                    saveFile.Filter += "|Monster Hunter Rise Fictional WWise Package (*.Fc)|*.Fc";
                     break;
                 case SupportedGames.DMC5:
                     saveFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
