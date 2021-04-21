@@ -27,6 +27,7 @@ namespace RingingBloom.NBNK
 
         public DIDX(BinaryReader br)
         {
+            wemList = new List<Wem>();
             uint didxLength = br.ReadUInt32();
             uint wemCount = didxLength / 12;
             uint[] ids = new uint[wemCount];
@@ -38,20 +39,25 @@ namespace RingingBloom.NBNK
                 offsets[i] = br.ReadUInt32();
                 lengths[i] = br.ReadUInt32();
             }
-            long DataOff = br.BaseStream.Position;
             char[] dataRead = br.ReadChars(4);
+            if(new string(dataRead) != "DATA")
+            {
+                MessageBox.Show("Error reading DATA section");
+            }
             uint dataLength = br.ReadUInt32();
+            long DataOff = br.BaseStream.Position;
             List<byte[]> wemDatas = new List<byte[]>();
             for (int i = 0; i < wemCount; i++)
             {
                 br.BaseStream.Seek(DataOff + offsets[i], SeekOrigin.Begin);
-                wemDatas[i] = br.ReadBytes((int)lengths[i]);
+                wemDatas.Add(br.ReadBytes((int)lengths[i]));
             }
             for (int i = 0; i < wemCount; i++)
             {
                 Wem newWem = new Wem("Imported Wem " + i, ids[i], wemDatas[i]);
                 wemList.Add(newWem);
             }
+            br.BaseStream.Seek(DataOff+dataLength,SeekOrigin.Begin);
         }
         public char[] dwTag { get => magic;}
 

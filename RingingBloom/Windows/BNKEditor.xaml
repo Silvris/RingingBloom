@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
+        Background="#404040"
         Title="BNKEditor" Height="450" Width="800">
     <Grid>
-        
+        <Menu Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <MenuItem Click="ImportBNK" FontSize="15" Header="Import BNK"/>
+            <MenuItem Click="ExportBNK" FontSize="15" Header="Export BNK"/>
+        </Menu>
+        <TreeView Grid.Column="0" Margin="10,40,10,20" Background="#222222" Name="treeView1" SelectedItemChanged="treeView1_SelectedItemChanged">
+            
+        </TreeView>
+        <Grid Grid.Column="1"  Margin="10,40,10,20" Background="#222222">
+            <Border BorderThickness="1" BorderBrush="#AAAAAA"></Border>
+        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".5*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
     </Grid>
 </Window>

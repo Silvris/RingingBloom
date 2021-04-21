@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RingingBloom.Common;
 using RingingBloom.NBNK;
 using RingingBloom.WWiseTypes.NBNK.HIRC;
 
@@ -13,15 +14,18 @@ namespace RingingBloom
     {
         BKHD BankHeader = null;
         DIDX DataIndex = null;
-        HIRC ObjectHierarchy = null;
+        //HIRC ObjectHierarchy = null;
+        List<byte[]> holding;//fun fact a list of lists is doable, but I don't really need it for this
 
 
         //imported constructor
-        public NBNKFile(BinaryReader br)
+        public NBNKFile(BinaryReader br, SupportedGames mode)
         {
+            holding = new List<byte[]>();
             while(br.BaseStream.Position < br.BaseStream.Length)
             {
-                string magic = Convert.ToString(br.ReadChars(4));
+                byte[] magicArr = br.ReadBytes(4);
+                string magic = Encoding.UTF8.GetString(magicArr);
                 switch (magic)
                 {
                     case "BKHD":
@@ -31,10 +35,16 @@ namespace RingingBloom
                     case "DIDX":
                         DataIndex = new DIDX(br);
                         break;
-                    case "HIRC":
+                    /*case "HIRC":
                         ObjectHierarchy = new HIRC(br);
-                        break;
+                        break;*/
                     default:
+                        //this adds 
+                        SLength = br.ReadUInt32();
+                        byte[] tLength = BitConverter.GetBytes(SLength);
+                        byte[] data = br.ReadBytes((int)SLength);
+                        byte[] section = HelperFunctions.Combine(HelperFunctions.Combine(magicArr, tLength), data);
+                        holding.Add(section);
                         break;
                 }
             }
@@ -56,9 +66,13 @@ namespace RingingBloom
             {
                 DataIndex.Export(bw);
             }
-            if(ObjectHierarchy != null)
+            /*if(ObjectHierarchy != null)
             {
                 ObjectHierarchy.ExportHIRC(bw);
+            }*/
+            for(int i = 0; i < holding.Count; i++)
+            {
+                bw.Write(holding[i]);
             }
         }
     }

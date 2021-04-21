@@ -35,6 +35,7 @@ namespace RingingBloom
         //WWEVEditor wwevEditor = null;
         //RE Engine programs
         //RSZEditor rszEditor = null;
+        //WELEditor welEditor = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -75,11 +76,11 @@ namespace RingingBloom
 
         private void NullAllWindows()
         {
-            /*if (nbnkEditor != null)
+            if (bnkEditor != null)
             {
-                nbnkEditor.Close();
-                nbnkEditor = null;
-            }*/
+                bnkEditor.Close();
+                bnkEditor = null;
+            }
             if (npckEditor != null)
             {
                 npckEditor.Close();
@@ -119,6 +120,11 @@ namespace RingingBloom
             {
                 rszEditor.Close();
                 rszEditor = null;
+            }*/
+            /*if (welEditor != null)
+            {
+                welEditor.Close();
+                welEditor = null;
             }*/
         }
 
