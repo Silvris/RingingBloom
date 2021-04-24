@@ -26,6 +26,7 @@
                 <MenuItem Header="MHRise" Tag="1" Click="ChangeMode"></MenuItem>
                 <MenuItem Header="DMC5" Tag="2" Click="ChangeMode"></MenuItem>
             </MenuItem>
+            <MenuItem Name="Options" Header="Options" Click="SetOptions"/>
         </Menu>
         <Button Grid.Row="1" Height="30" VerticalAlignment="Top" Width="150" IsEnabled="True" Click="BNKEdit">
             <TextBlock Text="NBNK Editor" TextWrapping="Wrap"/>

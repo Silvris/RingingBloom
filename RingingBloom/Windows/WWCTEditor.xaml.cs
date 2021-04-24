@@ -26,10 +26,20 @@ namespace RingingBloom.Windows
     {
         public WWCTFile wwct = null;
         public WWCTViewModel viewModel = new WWCTViewModel();
-        public WWCTEditor()
+        private string ImportPath = null;
+        private string ExportPath = null;
+        public WWCTEditor(Options options)
         {
             InitializeComponent();
             WWCTView.ItemsSource = viewModel.wwct;
+            if (options.defaultImport != null)
+            {
+                ImportPath = options.defaultImport;
+            }
+            if (options.defaultExport != null)
+            {
+                ExportPath = options.defaultExport;
+            }
         }
 
         public void MakeWWCT(object sender, RoutedEventArgs e)
@@ -43,6 +53,10 @@ namespace RingingBloom.Windows
         public void ImportWWCT(object sender, RoutedEventArgs e)
         {
             OpenFileDialog importFile = new OpenFileDialog();
+            if (ImportPath != null)
+            {
+                importFile.InitialDirectory = ImportPath;
+            }
             importFile.Multiselect = false;
             importFile.Filter = "WWise Container files (*.wwct)|*.wwct";
             if(importFile.ShowDialog() == true)
@@ -63,6 +77,10 @@ namespace RingingBloom.Windows
         {
             if (wwct != null) {
                 OpenFileDialog importFile = new OpenFileDialog();
+                if (ImportPath != null)
+                {
+                    importFile.InitialDirectory = ImportPath;
+                }
                 importFile.Multiselect = false;
                 importFile.Filter = "WWise Container files (*.wwct)|*.wwct";
                 WWCTFile import;
@@ -106,6 +124,10 @@ namespace RingingBloom.Windows
         {
             WWCTView.Focus();
             SaveFileDialog saveFile = new SaveFileDialog();
+            if (ExportPath != null)
+            {
+                saveFile.InitialDirectory = ExportPath;
+            }
             saveFile.Filter = "WWise Container files (*.wwct)|*.wwct";
             if (saveFile.ShowDialog() == true)
             {

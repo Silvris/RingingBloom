@@ -22,14 +22,34 @@ namespace RingingBloom.Windows
     {
         public string WWiseCLIPath { get; set; }
         public string ProjectPath { get; set; }
+        private string ImportPath = null;
         public string ExportPath { get; set; }
         public List<string> wavs { get; set; }
-        public WemCreator()
+        public WemCreator(Options options)
         {
             InitializeComponent();
             wavs = new List<string>();
-            ExportPath = Directory.GetCurrentDirectory();
+            if(options.defaultExport != null)
+            {
+                ExportPath = options.defaultExport;
+            }
+            else
+            {
+                ExportPath = Directory.GetCurrentDirectory();
+            }
             ExportPath += "/Wems/";
+            if(options.defaultImport != null)
+            {
+                ImportPath = options.defaultImport;
+            }
+            if(options.wwisePath != null)
+            {
+                WWiseCLIPath = options.wwisePath;
+            }
+            if(options.defaultProjectPath != null)
+            {
+                ProjectPath = options.defaultProjectPath;
+            }
         }
         public void SetWWisePath(object sender, RoutedEventArgs e)
         {
@@ -69,6 +89,10 @@ namespace RingingBloom.Windows
         public void ImportWavs(object sender, RoutedEventArgs e)
         {
             OpenFileDialog wavOpen = new OpenFileDialog();
+            if(ImportPath != null)
+            {
+                wavOpen.InitialDirectory = ImportPath;
+            }
             wavOpen.Filter = "Waveform Audio (*.wav) | *.wav";
             wavOpen.Multiselect = true;
             wavOpen.Title = "Select All Wavs to Convert";

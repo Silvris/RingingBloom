@@ -52,6 +52,7 @@ namespace RingingBloom
         public static Wem MakeWems(string name, BinaryReader fs)
         {
             Wem newWem = new Wem(name, "0", fs);
+            fs.Close();
             return newWem;
         }
 

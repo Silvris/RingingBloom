@@ -12,10 +12,10 @@ namespace RingingBloom
 {
     class NBNKFile
     {
-        BKHD BankHeader = null;
-        DIDX DataIndex = null;
+        public BKHD BankHeader = null;
+        public DIDX DataIndex = null;
         //HIRC ObjectHierarchy = null;
-        List<byte[]> holding;//fun fact a list of lists is doable, but I don't really need it for this
+        public List<byte[]> holding;//fun fact a list of lists is doable, but I don't really need it for this
 
 
         //imported constructor

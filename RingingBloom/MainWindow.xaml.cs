@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RingingBloom.Windows;
 using RingingBloom.Common;
+using System.Xml;
 
 namespace RingingBloom
 {
@@ -23,6 +25,7 @@ namespace RingingBloom
     public partial class MainWindow : Window
     {
         SupportedGames mode = SupportedGames.MHWorld;
+        Options options;
         //Common programs
         BNKEditor bnkEditor = null;
         NPCKEditor npckEditor = null;
@@ -39,22 +42,31 @@ namespace RingingBloom
         public MainWindow()
         {
             InitializeComponent();
+            if (File.Exists("Options.xml"))
+            {
+                options = new Options(XmlReader.Create(new FileStream("Options.xml",FileMode.Open)));
+            }
+            else
+            {
+                options = new Options();
+            }
+            mode = options.defaultGame;
             ChangeView();
         }
 
         private void WWCTEdit(object sender, RoutedEventArgs e)
         {
-            wwctEditor = new WWCTEditor();
+            wwctEditor = new WWCTEditor(options);
             wwctEditor.Show();
         }
         private void WWPKBKEdit(object sender, RoutedEventArgs e)
         {
-            wwbkpkEditor = new WWBKPKEditor();
+            wwbkpkEditor = new WWBKPKEditor(options);
             wwbkpkEditor.Show();
         }
         private void NPCKEdit(object sender, RoutedEventArgs e)
         {
-            npckEditor = new NPCKEditor(mode);
+            npckEditor = new NPCKEditor(mode, options);
             npckEditor.Show();
         }
         private void LoopCalculator(object sender, RoutedEventArgs e)
@@ -64,14 +76,29 @@ namespace RingingBloom
         }
         private void WemCreate(object sender, RoutedEventArgs e)
         {
-            wemCreator = new WemCreator();
+            wemCreator = new WemCreator(options);
             wemCreator.Show();
         }
 
         private void BNKEdit(object sender, RoutedEventArgs e)
         {
-            bnkEditor = new BNKEditor(mode);
+            bnkEditor = new BNKEditor(mode, options);
             bnkEditor.Show();
+        }
+
+        private void SetOptions(object sender, RoutedEventArgs e)
+        {
+            OptionsWindow optionWindow = new OptionsWindow(options);
+            optionWindow.ShowDialog();
+            if(optionWindow.DialogResult == true)
+            {
+                ComboBoxItem DefaultGame = (ComboBoxItem)optionWindow.DefaultGame.SelectedItem;
+                int defaultGame = Convert.ToInt32(DefaultGame.Tag);
+                options = new Options(optionWindow.DefaultImport.Text, optionWindow.DefaultExport.Text, (SupportedGames)defaultGame, optionWindow.WWiseExePath.Text, optionWindow.DefaultProjectPath.Text);
+                options.WriteOptions();
+                mode = options.defaultGame;
+                ChangeView();
+            }
         }
 
         private void NullAllWindows()

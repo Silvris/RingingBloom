@@ -1,0 +1,27 @@
+﻿<Window x:Class="RingingBloom.Windows.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RingingBloom.Windows"
+        mc:Ignorable="d"
+        Title="Options" Height="400" Width="400"
+        Background="#282828">
+    <Grid>
+        <Label Name="LabelA" Content="Default Import Path" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,15,0,0"/>
+        <TextBox x:Name="DefaultImport" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,50,10,0"/>
+        <Label Name="LabelB" Content="Default Export Path" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,70,0,0"/>
+        <TextBox x:Name="DefaultExport" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,105,10,0"/>
+        <Label Name="LabelC" Content="Default Game" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,125,0,0"/>
+        <ComboBox x:Name="DefaultGame" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,160,250,0">
+            <ComboBoxItem Content="MHWorld" Tag="0"/>
+            <ComboBoxItem Content="MHRise" Tag="1"/>
+            <ComboBoxItem Content="DMC5" Tag="2"/>
+        </ComboBox>
+        <Label Name="LabelD" Content="Wwise Exe Path" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,185,0,0"/>
+        <TextBox x:Name="WWiseExePath" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,215,10,0"/>
+        <Label Name="LabelE" Content="Default Wwise Project" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,235,0,0"/>
+        <TextBox x:Name="DefaultProjectPath" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,270,10,0"/>
+        <Button Height="20" Width="65" Content="Confirm" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,10" Click="Confirm"/>
+    </Grid>
+</Window>

@@ -17,11 +17,11 @@ namespace RingingBloom.NBNK
     {
         private char[] magic = new char[] { 'B', 'K', 'H', 'D' };
         private uint sectionLength;
-        uint dwBankGeneratorVersion;
-        uint dwSoundbankID;
-        uint dwLanguageID;
-        uint bFeedbackInBank;
-        uint dwProjectID;//MHW = 1114
+        public uint dwBankGeneratorVersion { get; set; }
+        public uint dwSoundbankID { get; set; }
+        public uint dwLanguageID { get; set; }
+        public uint bFeedbackInBank { get; set; }
+        public uint dwProjectID { get; set; }//MHW = 1114
         List<uint> gap = new List<uint>();
 
         public char[] dwTag
@@ -29,6 +29,13 @@ namespace RingingBloom.NBNK
             get
             {
                 return magic;
+            }
+        }
+        public string dwTagStr
+        {
+            get
+            {
+                return new string(magic);
             }
         }
         public uint dwChunkSize { get {

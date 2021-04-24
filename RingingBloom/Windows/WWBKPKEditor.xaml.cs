@@ -25,10 +25,20 @@ namespace RingingBloom.Windows
     {
         public WWPKBKFile wwpkbk = null;
         public WWPKBKViewModel viewModel = new WWPKBKViewModel();
-        public WWBKPKEditor()
+        private string ImportPath = null;
+        private string ExportPath = null;
+        public WWBKPKEditor(Options options)
         {
             InitializeComponent();
             PKBKView.ItemsSource = viewModel.pkbk;
+            if (options.defaultImport != null)
+            {
+                ImportPath = options.defaultImport;
+            }
+            if (options.defaultExport != null)
+            {
+                ExportPath = options.defaultExport;
+            }
         }
 
         public void MakeWWPKBK(object sender, RoutedEventArgs e)
@@ -42,6 +52,10 @@ namespace RingingBloom.Windows
         public void ImportWWPKBK(object sender, RoutedEventArgs e)
         {
             OpenFileDialog importFile = new OpenFileDialog();
+            if(ImportPath != null)
+            {
+                importFile.InitialDirectory = ImportPath;
+            }
             importFile.Multiselect = false;
             importFile.Filter = "All readable files|*.wwbk;*.wwpk|WWise Soundbank Container files (*.wwbk)|*.wwbk|WWise Package Container files (*.wwpk)|*.wwpk";
             if (importFile.ShowDialog() == true)
@@ -61,6 +75,10 @@ namespace RingingBloom.Windows
         {
             PKBKView.Focus();
             SaveFileDialog saveFile = new SaveFileDialog();
+            if (ExportPath != null)
+            {
+                saveFile.InitialDirectory = ExportPath;
+            }
             saveFile.Filter = "WWise Soundbank Container files (*.wwbk)|*.wwbk|WWise Package Container files (*.wwpk)|*.wwpk";
             if (saveFile.ShowDialog() == true)
             {

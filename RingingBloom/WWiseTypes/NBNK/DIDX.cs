@@ -12,7 +12,7 @@ namespace RingingBloom.NBNK
         //this includes data chunk as well, because no point in separating them
         private char[] magic = new char[] { 'D', 'I', 'D', 'X' };
         private char[] DATA = new char[] { 'D', 'A', 'T', 'A' };
-        List<Wem> wemList;
+        public List<Wem> wemList;
         private int pLoadedMedia { get => wemList.Count; }
         public int didxSize { get => wemList.Count * 12; }
         public int dataSize { get

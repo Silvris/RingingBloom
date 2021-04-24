@@ -7,20 +7,53 @@
         mc:Ignorable="d"
         Background="#404040"
         Title="BNKEditor" Height="450" Width="800">
+    <Window.Resources>
+        <local:LanguageConvert x:Key="LanConvert"/>
+        <DataTemplate x:Key="BKHD">
+            <Grid>
+                <Label Margin="0,20,500,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwTagStr}"/>
+                <Label Margin="0,20,350,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwBankGeneratorVersion}" ContentStringFormat="Bank Generator Version: {0}"/>
+                <Label Margin="0,60,500,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwSoundbankID}" ContentStringFormat="Soundbank ID: {0}"/>
+                <Label Margin="0,60,350,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwLanguageID, Converter={StaticResource LanConvert}}" ContentStringFormat="Language: {0}"/>
+                <Label Margin="0,100,350,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding bFeedbackInBank}" ContentStringFormat="Use Feedback: {0}"/>
+                <Label Margin="0,100,500,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwProjectID}" ContentStringFormat="Project ID: {0}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="Wem">
+            <Grid>
+                <Label Foreground="#AAAAAA" Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,30,0,0" Content="{Binding name,UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="Name: {0}"/>
+                <TextBox Width="200" Height="20" Background="#202020" Foreground="#AAAAAA" Text="{Binding id,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30,70,0,0"/>
+                <Label Foreground="#AAAAAA" Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0" Content="{Binding length,UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="Length: {0}"/>
+            </Grid>
+        </DataTemplate>
+        <ContextMenu x:Key="WemRightClick">
+            <MenuItem Header="Replace" Click="Replace_Wem"/>
+            <MenuItem Header="Delete" Click="Delete_Wem"/>
+        </ContextMenu>
+        <ContextMenu x:Key="DIDXRightClick">
+            <MenuItem Header="Import Wems" Click="Import_Wems"/>
+            <MenuItem Header="Export Wems" Click="Export_Wems"/>
+        </ContextMenu>
+        <local:ChunkSelector x:Key="ChunkSelect" BKHDTemplate="{StaticResource BKHD}" WemTemplate="{StaticResource Wem}"/>
+    </Window.Resources>
+    
     <Grid>
-        <Menu Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
+        <Menu Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem Click="ImportBNK" FontSize="15" Header="Import BNK"/>
             <MenuItem Click="ExportBNK" FontSize="15" Header="Export BNK"/>
         </Menu>
-        <TreeView Grid.Column="0" Margin="10,40,10,20" Background="#222222" Name="treeView1" SelectedItemChanged="treeView1_SelectedItemChanged">
+        
+        <TreeView Grid.Column="0" Margin="10,40,10,20" Background="#222222" Name="treeView1" MouseDown="treeView1_MouseDown" SelectedItemChanged="treeView1_SelectedItemChanged">
             
         </TreeView>
         <Grid Grid.Column="1"  Margin="10,40,10,20" Background="#222222">
             <Border BorderThickness="1" BorderBrush="#AAAAAA"></Border>
+            <ContentControl Name="ContentController" Grid.Column="1" ContentTemplateSelector="{StaticResource ChunkSelect}"/>
         </Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".5*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
     </Grid>
+    
 </Window>

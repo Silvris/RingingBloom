@@ -9,7 +9,11 @@ namespace RingingBloom.WWiseTypes
     {
         public static void MakeWSource(List<string> wavs)
         {
-            XmlWriter xml = XmlWriter.Create("Wems.wsources");
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.Encoding = Encoding.UTF8;
+            settings.OmitXmlDeclaration = true;
+            XmlWriter xml = XmlWriter.Create("Wems.wsources", settings);
             xml.WriteStartElement("ExternalSourcesList");
             xml.WriteAttributeString("SchemaVersion","1");
             xml.WriteAttributeString("Root", "");

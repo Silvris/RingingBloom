@@ -27,17 +27,31 @@ namespace RingingBloom.Windows
         public SupportedGames mode = SupportedGames.MHWorld;
         public static NPCKHeader npck = null;
         public NPCKViewModel viewModel = new NPCKViewModel();
+        private string ImportPath = null;
+        private string ExportPath = null;
 
-        public NPCKEditor(SupportedGames Mode)
+        public NPCKEditor(SupportedGames Mode,Options options)
         {
             InitializeComponent();
             mode = Mode;
             WemView.ItemsSource = viewModel.wems;
+            if(options.defaultImport != null)
+            {
+                ImportPath = options.defaultImport;
+            }
+            if (options.defaultExport != null)
+            {
+                ExportPath = options.defaultExport;
+            }
         }
 
         private void Import_Wems(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
+            if(ImportPath != null)
+            {
+                openFile.InitialDirectory = ImportPath;
+            }
             openFile.Multiselect = true;
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
@@ -57,6 +71,10 @@ namespace RingingBloom.Windows
         private void Replace_Wem(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
+            if (ImportPath != null)
+            {
+                openFile.InitialDirectory = ImportPath;
+            }
             openFile.Multiselect = false;
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
@@ -75,6 +93,10 @@ namespace RingingBloom.Windows
         private void Export_Wems(object sender, RoutedEventArgs e)
         {
             OpenFileDialog exportFile = new OpenFileDialog();
+            if (ExportPath != null)
+            {
+                exportFile.InitialDirectory = ExportPath;
+            }
             exportFile.CheckFileExists = false;
             exportFile.FileName = "Save Here";
             if (exportFile.ShowDialog() == true)
@@ -121,23 +143,30 @@ namespace RingingBloom.Windows
         private void ImportNPCK(object sender, RoutedEventArgs e)
         {
             OpenFileDialog importFile = new OpenFileDialog();
+            if (ImportPath != null)
+            {
+                importFile.InitialDirectory = ImportPath;
+            }
             importFile.Multiselect = false;
             importFile.Filter = "WWise Package file (*.pck)|*.pck";
             switch (mode)
             {
                 case SupportedGames.MHWorld:
                     importFile.Filter += "|Monster Hunter World WWise Package (*.npck)|*.npck";
+                    importFile.Filter = "All supported files (*.pck,*.npck)|*.pck;*.npck|" + importFile.Filter;
                     break;
                 case SupportedGames.MHRise:
                     importFile.Filter += "|Monster Hunter Rise Switch WWise Package (*.nsw)|*.nsw";
                     importFile.Filter += "|Monster Hunter Rise English WWise Package (*.En)|*.En";
                     importFile.Filter += "|Monster Hunter Rise Japanese WWise Package (*.Ja)|*.Ja";
                     importFile.Filter += "|Monster Hunter Rise Fictional WWise Package (*.Fc)|*.Fc";
+                    importFile.Filter = "All supported files (*.pck,*.nsw,*.En,*.Ja,*.Fc)|*.pck;*.nsw;*.En;*.Ja;*.Fc|" + importFile.Filter;
                     break;
                 case SupportedGames.DMC5:
                     importFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
                     importFile.Filter += "|Devil May Cry 5 English WWise Package (*.En)|*.En";
                     importFile.Filter += "|Devil May Cry 5 Japanese WWise Package (*.Ja)|*.Ja";
+                    importFile.Filter = "All supported files (*.pck,*.x64,*.En,*.Ja)|*.pck;*.x64;*.En;*.Ja|" + importFile.Filter;
                     break;
                 default:
                     break;
@@ -158,22 +187,29 @@ namespace RingingBloom.Windows
         private void ExportNPCK(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
+            if (ExportPath != null)
+            {
+                saveFile.InitialDirectory = ExportPath;
+            }
             saveFile.Filter = "WWise Package file (*.pck)|*.pck";
             switch (mode)
             {
                 case SupportedGames.MHWorld:
                     saveFile.Filter += "|Monster Hunter World WWise Package (*.npck)|*.npck";
+                    saveFile.Filter = "All supported files (*.pck,*.npck)|*.pck;*.npck|" + saveFile.Filter;
                     break;
                 case SupportedGames.MHRise:
                     saveFile.Filter += "|Monster Hunter Rise Switch WWise Package (*.nsw)|*.nsw";
                     saveFile.Filter += "|Monster Hunter Rise English WWise Package (*.En)|*.En";
                     saveFile.Filter += "|Monster Hunter Rise Japanese WWise Package (*.Ja)|*.Ja";
                     saveFile.Filter += "|Monster Hunter Rise Fictional WWise Package (*.Fc)|*.Fc";
+                    saveFile.Filter = "All supported files (*.pck,*.nsw,*.En,*.Ja,*.Fc)|*.pck;*.nsw;*.En;*.Ja;*.Fc|" + saveFile.Filter;
                     break;
                 case SupportedGames.DMC5:
                     saveFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
                     saveFile.Filter += "|Devil May Cry 5 English WWise Package (*.En)|*.En";
                     saveFile.Filter += "|Devil May Cry 5 Japanese WWise Package (*.Ja)|*.Ja";
+                    saveFile.Filter = "All supported files (*.pck,*.x64,*.En,*.Ja)|*.pck;*.x64;*.En;*.Ja|" + saveFile.Filter;
                     break;
                 default:
                     break;
