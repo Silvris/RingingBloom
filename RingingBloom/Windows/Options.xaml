@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Title="Options" Height="400" Width="400"
+        ResizeMode="CanMinimize"
         Background="#282828">
     <Grid>
         <Label Name="LabelA" Content="Default Import Path" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,15,0,0"/>

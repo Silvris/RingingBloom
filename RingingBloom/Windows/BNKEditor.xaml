@@ -6,17 +6,18 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Background="#404040"
-        Title="BNKEditor" Height="450" Width="800">
+        ResizeMode="CanMinimize"
+        Title="BNK Editor" Height="450" Width="800">
     <Window.Resources>
         <local:LanguageConvert x:Key="LanConvert"/>
         <DataTemplate x:Key="BKHD">
             <Grid>
-                <Label Margin="0,20,500,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwTagStr}"/>
-                <Label Margin="0,20,350,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwBankGeneratorVersion}" ContentStringFormat="Bank Generator Version: {0}"/>
-                <Label Margin="0,60,500,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwSoundbankID}" ContentStringFormat="Soundbank ID: {0}"/>
-                <Label Margin="0,60,350,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwLanguageID, Converter={StaticResource LanConvert}}" ContentStringFormat="Language: {0}"/>
-                <Label Margin="0,100,350,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding bFeedbackInBank}" ContentStringFormat="Use Feedback: {0}"/>
-                <Label Margin="0,100,500,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwProjectID}" ContentStringFormat="Project ID: {0}"/>
+                <Label Margin="0,20,300,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwTagStr}"/>
+                <Label Margin="0,20,50,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwBankGeneratorVersion}" ContentStringFormat="Bank Generator Version: {0}"/>
+                <Label Margin="0,60,300,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwSoundbankID}" ContentStringFormat="Soundbank ID: {0}"/>
+                <Label Margin="0,60,50,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwLanguageID, Converter={StaticResource LanConvert}}" ContentStringFormat="Language: {0}"/>
+                <Label Margin="0,100,50,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding bFeedbackInBank}" ContentStringFormat="Use Feedback: {0}"/>
+                <Label Margin="0,100,300,0" Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#AAAAAA" Content="{Binding dwProjectID}" ContentStringFormat="Project ID: {0}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="Wem">
@@ -51,7 +52,7 @@
             <ContentControl Name="ContentController" Grid.Column="1" ContentTemplateSelector="{StaticResource ChunkSelect}"/>
         </Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width=".5*"/>
+            <ColumnDefinition Width=".75*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
     </Grid>
