@@ -4,8 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml;
 using RingingBloom.Common;
 using RingingBloom.NBNK;
+using RingingBloom.WWiseTypes;
 using RingingBloom.WWiseTypes.NBNK.HIRC;
 
 namespace RingingBloom
@@ -16,6 +19,7 @@ namespace RingingBloom
         public DIDX DataIndex = null;
         //HIRC ObjectHierarchy = null;
         public List<byte[]> holding;//fun fact a list of lists is doable, but I don't really need it for this
+        public Labels labels =null;
 
 
         //imported constructor
@@ -31,15 +35,33 @@ namespace RingingBloom
                     case "BKHD":
                         uint SLength = br.ReadUInt32();
                         BankHeader = new BKHD(SLength, br);
+                        uint bnkId = BankHeader.dwSoundbankID;
+                        string path = Directory.GetCurrentDirectory() +"/" +mode.ToString() + "/BNK/" + bnkId.ToString() + ".lbl";
+                        if (File.Exists(path))
+                        {
+                            MessageBoxResult labelRead = MessageBox.Show("Label file found. Read labels?","Labels", MessageBoxButton.YesNo);
+                            if (labelRead == MessageBoxResult.Yes)
+                            {
+                                labels = new Labels(XmlReader.Create(path));
+                            }
+                            else
+                            {
+                                labels = new Labels();
+                            }
+                        }
+                        else
+                        {
+                            labels = new Labels();
+                        }
                         break;
                     case "DIDX":
-                        DataIndex = new DIDX(br);
+                        DataIndex = new DIDX(br,labels);
                         break;
                     /*case "HIRC":
                         ObjectHierarchy = new HIRC(br);
                         break;*/
                     default:
-                        //this adds 
+                        //this adds support to not-immediately-interpreted versions of WWise, assuming that the main 3 (BKHD, DIDX, DATA) do not change in structure
                         SLength = br.ReadUInt32();
                         byte[] tLength = BitConverter.GetBytes(SLength);
                         byte[] data = br.ReadBytes((int)SLength);

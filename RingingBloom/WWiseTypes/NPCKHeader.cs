@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Windows;
+using System.Xml;
 using RingingBloom.Common;
+using RingingBloom.WWiseTypes;
 
 namespace RingingBloom
 {
     public class NPCKHeader
     {
         public SupportedGames mode = SupportedGames.MHWorld;//can't set it to null
+        public Labels labels = new Labels();
         public byte[] magic = { (byte)'A', (byte)'K', (byte)'P', (byte)'K' };
         public uint headerLength;
         uint unkn2 = 1;
@@ -35,9 +39,18 @@ namespace RingingBloom
             mode = Mode;
         }
         //imported constructor
-        public NPCKHeader(BinaryReader br,SupportedGames Mode)
+        public NPCKHeader(BinaryReader br,SupportedGames Mode,string fileName)
         {
             mode = Mode;
+            string labelPath = Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/PCK/" + fileName + ".lbl";
+            if (File.Exists(labelPath))
+            {
+                MessageBoxResult labelRead = MessageBox.Show("Label file found. Read labels?", "Labels", MessageBoxButton.YesNo);
+                if (labelRead == MessageBoxResult.Yes)
+                {
+                    labels = new Labels(XmlReader.Create(labelPath));
+                }
+            }
             char[] magicBytes = br.ReadChars(4);
             uint headerLen = br.ReadUInt32();
             unkn2 = br.ReadUInt32();
@@ -88,16 +101,95 @@ namespace RingingBloom
                 br.BaseStream.Seek(offset, SeekOrigin.Begin);
                 byte[] file = br.ReadBytes((int)length);
                 br.BaseStream.Seek(workingOffset, SeekOrigin.Begin);
-                Wem newWem = new Wem("Imported Wem" + i, id, file);
+                string name;
+                if (labels.wemLabels.ContainsKey(id))
+                {
+                    name = labels.wemLabels[id];
+                }
+                else
+                {
+                    name = "Imported Wem " + i;
+                }
+                Wem newWem = new Wem(name, id, file);
                 WemList.Add(newWem);
             }
         }
 
+        public void ExportHeader(string aFilePath)
+        {
+            wemTableLength = ((uint)WemList.Count * 20)+4;
+            headerLength = (wemTableLength) + 48;
+            if (unknCount > 0)
+            {
+                if (mode == SupportedGames.MHRise)
+                {
+                    headerLength += (uint)(4 + (audioLang.Length) + 2);
+                }
+                else
+                {
+                    headerLength += (uint)(8 + (audioLang.Length * 2) + 2);
+                }
+            }
+            BinaryWriter bw = new BinaryWriter(File.Create(aFilePath));
+            bw.Write(magic);
+            bw.Write(headerLength);
+            bw.Write(unkn2);
+            bw.Write(unkn3);
+            bw.Write(unkn4);
+            bw.Write(wemTableLength);
+            bw.Write(unkn6);
+            bw.Write(unkn7);
+            bw.Write(unkn8);
+            bw.Write(unknCount);
+            if (unknCount > 0)
+            {
+                bw.Write(unknValue);
+                bw.Write(unknA);
+                if (mode == SupportedGames.MHRise)
+                {
+                    HelperFunctions.WriteNullTerminatedString(bw, audioLang);
+                }
+                else
+                {
+                    HelperFunctions.WriteUniNullTerminatedString(bw, audioLang);
+                }
+            }
+            if (mode == SupportedGames.MHRise)
+            {
+                HelperFunctions.WriteNullTerminatedString(bw, SFX);
+            }
+            else
+            {
+                HelperFunctions.WriteUniNullTerminatedString(bw, SFX);
+            }
+            bw.Write(unkn10);
+            while (bw.BaseStream.Position % 4 != 0)
+            {
+                bw.Write((byte)1);
+            }
+            bw.Write(WemList.Count);
+            uint currentOffset = headerLength + 8;
+            foreach (Wem wem in WemList)
+            {
+                bw.Write(wem.id);
+                bw.Write(1);
+                bw.Write(wem.length);
+                bw.Write(currentOffset);
+                currentOffset += wem.length;
+                bw.Write(0);
+            }
+            while(bw.BaseStream.Position < headerLength + 8)
+            {
+                bw.Write((byte)0);
+            }
+            bw.Close();
+        }
+
         public void ExportFile(string aFilePath)
         {
-            wemTableLength = (uint)WemList.Count * 20;
-            headerLength = (wemTableLength) + 56;
-            if(unknCount > 0)
+            wemTableLength = ((uint)WemList.Count * 20) + 4;
+            headerLength = (wemTableLength) + 48;
+            if (unknCount > 0)
             {
                 if (mode == SupportedGames.MHRise)
                 {
@@ -146,7 +238,7 @@ namespace RingingBloom
                 bw.Write((byte)1);
             }
             bw.Write(WemList.Count);
-            uint currentOffset = headerLength+4;
+            uint currentOffset = headerLength+8;
             foreach(Wem wem in WemList)
             {
                 bw.Write(wem.id);

@@ -31,6 +31,14 @@ namespace RingingBloom.WWiseTypes
             EpvElement = br.ReadUInt32();
             EpvIndex = br.ReadUInt32();
         }
+        public void Export(BinaryWriter bw)
+        {
+            bw.Write(mElemNo);
+            bw.Write(mReqID);
+            bw.Write(mKillReqID);
+            bw.Write(EpvElement);
+            bw.Write(EpvIndex);
+        }
     }
     public class TriggerData
     {
@@ -59,6 +67,16 @@ namespace RingingBloom.WWiseTypes
             mOption = br.ReadUInt32();
             EpvElement = br.ReadUInt32();
             EpvIndex = br.ReadUInt32();
+        }
+
+        public void Export(BinaryWriter bw)
+        {
+            bw.Write(mElemNo);
+            bw.Write(mReqID);
+            bw.Write(mCallState);
+            bw.Write(mOption);
+            bw.Write(EpvElement);
+            bw.Write(EpvIndex);
         }
     }
     public class EPVSPFile
@@ -108,6 +126,32 @@ namespace RingingBloom.WWiseTypes
             {
                 triggerDatas.Add(new TriggerData(br));
             }
+        }
+        public void Export(BinaryWriter bw)
+        {
+            bw.Write(IceborneMark);
+            bw.Write(magic);
+            bw.Write(version);
+            if(WWCTPath != null)
+            {
+                hashType = 0x45185BED;
+            }
+            bw.Write(hashType);
+            if(hashType == 0x45185BED)
+            {
+                HelperFunctions.WriteNullTerminatedString(bw, WWCTPath);
+            }
+            bw.Write(requestDatas.Count);
+            for(int i = 0; i < requestDatas.Count; i++)
+            {
+                requestDatas[i].Export(bw);
+            }
+            bw.Write(triggerDatas.Count);
+            for(int i = 0; i < triggerDatas.Count; i++)
+            {
+                triggerDatas[i].Export(bw);
+            }
+            bw.Close();
         }
     }
 }

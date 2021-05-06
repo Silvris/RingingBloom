@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Name="Window"
         Title="NPCK Editor" Height="450" Width="800" ResizeMode="CanMinimize"
+        Closing="SaveLabels"
         Background="#404040">
     <Grid>
         <ToolBar Height="30" VerticalAlignment="Top">
@@ -23,7 +24,7 @@
 
             </Menu>
         </ToolBar>
-        <ListBox Name="WemView" Height="350" Width="750" Background="#282828" VerticalAlignment="Top" Margin="0,30,0,0">
+        <ListBox Name="WemView" Height="350" Width="750" Background="#282828" VerticalAlignment="Center" Margin="25,0,25,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="715">
@@ -35,7 +36,7 @@
                         <Label Foreground="#dcdcdc"  Content="Wem ID:"></Label>
                         <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                         <Label Grid.Column="1" Foreground="#dcdcdc" Content="Wem Name:"></Label>
-                        <Label Grid.Column="1" Margin="75,0,0,0" Foreground="#dcdcdc" Content="{Binding name}"></Label>
+                        <TextBox Grid.Column="1" Margin="75,0,0,0" Background="#303030" Foreground="#dcdcdc" Text="{Binding name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="LabelChanged"></TextBox>
                         <Label Grid.Column="2" Foreground="#dcdcdc" Content="Wem Length:"></Label>
                         <Label Grid.Column="2" Foreground="#dcdcdc" Margin="75,0,0,0" Content="{Binding length}"></Label>
                     </Grid>

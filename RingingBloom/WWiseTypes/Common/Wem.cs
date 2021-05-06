@@ -12,6 +12,7 @@ namespace RingingBloom.Common
         public uint id { get; set; }
         public uint length { get; set; }
         public byte[] file;
+        public bool nameChanged = false;
 
         public Wem(string aName, string aId, BinaryReader aFile)
         {

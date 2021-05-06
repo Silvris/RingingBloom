@@ -3,6 +3,7 @@ using RingingBloom.Common;
 using RingingBloom.NBNK;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -26,6 +27,8 @@ namespace RingingBloom.Windows
         NBNKFile nbnk = null;
         private string ImportPath = null;
         private string ExportPath = null;
+        private bool LabelsChanged = false;
+        private List<uint> changedIds = new List<uint>();
         public BNKEditor(SupportedGames Mode,Options options)
         {
             InitializeComponent();
@@ -42,6 +45,8 @@ namespace RingingBloom.Windows
 
         public void ImportBNK(object sender, RoutedEventArgs e)
         {
+            SaveLabels(sender, new CancelEventArgs());
+            LabelsChanged = false;
             OpenFileDialog importFile = new OpenFileDialog();
             if(ImportPath != null)
             {
@@ -62,11 +67,35 @@ namespace RingingBloom.Windows
                     importFile.Filter += "|Monster Hunter Rise Fictional WWise Soundbank (*.Fc)|*.Fc";
                     importFile.Filter = "All supported files (*.bnk,*.nsw,*.En,*.Ja,*.Fc)|*.bnk;*.nsw;*.En;*.Ja;*.Fc|" + importFile.Filter;
                     break;
-                case SupportedGames.DMC5:
-                    importFile.Filter += "|Devil May Cry 5 WWise Soundbank (*.x64)|*.x64";
-                    importFile.Filter += "|Devil May Cry 5 English WWise Soundbank (*.En)|*.En";
-                    importFile.Filter += "|Devil May Cry 5 Japanese WWise Soundbank (*.Ja)|*.Ja";
+                case SupportedGames.RE2DMC5:
+                    importFile.Filter += "|RE Engine WWise Soundbank (*.x64)|*.x64";
+                    importFile.Filter += "|RE Engine English WWise Soundbank (*.En)|*.En";
+                    importFile.Filter += "|RE Engine Japanese WWise Soundbank (*.Ja)|*.Ja";
                     importFile.Filter = "All supported files (*.bnk,*.x64,*.En,*.Ja)|*.bnk;*.x64;*.En;*.Ja|" + importFile.Filter;
+                    break;
+                case SupportedGames.RE3R:
+                    importFile.Filter += "|RE Engine WWise Soundbank (*.stm)|*.stm";
+                    importFile.Filter += "|RE Engine German WWise Soundbank (*.De)|*.De";
+                    importFile.Filter += "|RE Engine English WWise Soundbank (*.En)|*.En";
+                    importFile.Filter += "|RE Engine Spanish WWise Soundbank (*.Es)|*.Es";
+                    importFile.Filter += "|RE Engine French WWise Soundbank (*.Fr)|*.Fr";
+                    importFile.Filter += "|RE Engine Italian WWise Soundbank (*.It)|*.It";
+                    importFile.Filter += "|RE Engine Japanese WWise Soundbank (*.Ja)|*.Ja";
+                    importFile.Filter += "|RE Engine Chinese WWise Soundbank (*.ZhCN)|*.ZhCN";
+                    importFile.Filter = "All supported files (*.bnk,*.stm,*.En,*.Ja,...)|*.bnk;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.ZhCN|" + importFile.Filter;
+                    break;
+                case SupportedGames.RE8:
+                    importFile.Filter += "|RE Engine WWise Soundbank (*.x64)|*.x64";
+                    importFile.Filter += "|RE Engine WWise Soundbank (*.stm)|*.stm";
+                    importFile.Filter += "|RE Engine German WWise Soundbank (*.De)|*.De";
+                    importFile.Filter += "|RE Engine English WWise Soundbank (*.En)|*.En";
+                    importFile.Filter += "|RE Engine Spanish WWise Soundbank (*.Es)|*.Es";
+                    importFile.Filter += "|RE Engine French WWise Soundbank (*.Fr)|*.Fr";
+                    importFile.Filter += "|RE Engine Italian WWise Soundbank (*.It)|*.It";
+                    importFile.Filter += "|RE Engine Japanese WWise Soundbank (*.Ja)|*.Ja";
+                    importFile.Filter += "|RE Engine Russian WWise Soundbank (*.Ru)|*.Ru";
+                    importFile.Filter += "|RE Engine Chinese WWise Soundbank (*.ZhCN)|*.ZhCN";
+                    importFile.Filter = "All supported files (*.bnk,*.x64,*.stm,*.En,...)|*.bnk;*.x64;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.ZhCN|" + importFile.Filter;
                     break;
                 default:
                     break;
@@ -100,11 +129,35 @@ namespace RingingBloom.Windows
                     saveFile.Filter += "|Monster Hunter Rise Fictional WWise Soundbank (*.Fc)|*.Fc";
                     saveFile.Filter = "All supported files (*.bnk,*.nsw,*.En,*.Ja,*.Fc)|*.bnk;*.nsw;*.En;*.Ja;*.Fc|" + saveFile.Filter;
                     break;
-                case SupportedGames.DMC5:
+                case SupportedGames.RE2DMC5:
                     saveFile.Filter += "|Devil May Cry 5 WWise Soundbank (*.x64)|*.x64";
                     saveFile.Filter += "|Devil May Cry 5 English WWise Soundbank (*.En)|*.En";
                     saveFile.Filter += "|Devil May Cry 5 Japanese WWise Soundbank (*.Ja)|*.Ja";
                     saveFile.Filter = "All supported files (*.bnk,*.x64,*.En,*.Ja)|*.bnk;*.x64;*.En;*.Ja|" + saveFile.Filter;
+                    break;
+                case SupportedGames.RE3R:
+                    saveFile.Filter += "|RE Engine WWise Soundbank (*.stm)|*.stm";
+                    saveFile.Filter += "|RE Engine German WWise Soundbank (*.De)|*.De";
+                    saveFile.Filter += "|RE Engine English WWise Soundbank (*.En)|*.En";
+                    saveFile.Filter += "|RE Engine Spanish WWise Soundbank (*.Es)|*.Es";
+                    saveFile.Filter += "|RE Engine French WWise Soundbank (*.Fr)|*.Fr";
+                    saveFile.Filter += "|RE Engine Italian WWise Soundbank (*.It)|*.It";
+                    saveFile.Filter += "|RE Engine Japanese WWise Soundbank (*.Ja)|*.Ja";
+                    saveFile.Filter += "|RE Engine Chinese WWise Soundbank (*.ZhCN)|*.ZhCN";
+                    saveFile.Filter = "All supported files (*.bnk,*.stm,*.En,*.Ja,...)|*.bnk;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.ZhCN|" + saveFile.Filter;
+                    break;
+                case SupportedGames.RE8:
+                    saveFile.Filter += "|RE Engine WWise Soundbank (*.x64)|*.x64";
+                    saveFile.Filter += "|RE Engine WWise Soundbank (*.stm)|*.stm";
+                    saveFile.Filter += "|RE Engine German WWise Soundbank (*.De)|*.De";
+                    saveFile.Filter += "|RE Engine English WWise Soundbank (*.En)|*.En";
+                    saveFile.Filter += "|RE Engine Spanish WWise Soundbank (*.Es)|*.Es";
+                    saveFile.Filter += "|RE Engine French WWise Soundbank (*.Fr)|*.Fr";
+                    saveFile.Filter += "|RE Engine Italian WWise Soundbank (*.It)|*.It";
+                    saveFile.Filter += "|RE Engine Japanese WWise Soundbank (*.Ja)|*.Ja";
+                    saveFile.Filter += "|RE Engine Russian WWise Soundbank (*.Ru)|*.Ru";
+                    saveFile.Filter += "|RE Engine Chinese WWise Soundbank (*.ZhCN)|*.ZhCN";
+                    saveFile.Filter = "All supported files (*.bnk,*.x64,*.stm,*.En,...)|*.bnk;*.x64;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.ZhCN|" + saveFile.Filter;
                     break;
                 default:
                     break;
@@ -171,6 +224,7 @@ namespace RingingBloom.Windows
             }
             treeView1_SelectedItemChanged(0, new RoutedEventArgs());
         }
+
 
         public void treeView1_SelectedItemChanged(object sender, RoutedEventArgs e)
         {
@@ -262,9 +316,19 @@ namespace RingingBloom.Windows
             {
                 string fullPath = exportFile.FileName;
                 string savePath = System.IO.Path.GetDirectoryName(fullPath);
+                MessageBoxResult exportIds = MessageBox.Show("Export with names?", "Export", MessageBoxButton.YesNo);
                 foreach (Wem newWem in nbnk.DataIndex.wemList)
                 {
-                    BinaryWriter bw = new BinaryWriter(new FileStream(savePath + "\\" + newWem.id + ".wem", FileMode.OpenOrCreate));
+                    string name;
+                    if(exportIds == MessageBoxResult.Yes)
+                    {
+                        name = savePath + "\\" + newWem.name + ".wem";
+                    }
+                    else
+                    {
+                        name = savePath + "\\" + newWem.id + ".wem";
+                    }
+                    BinaryWriter bw = new BinaryWriter(new FileStream(name, FileMode.OpenOrCreate));
                     bw.Write(newWem.file);
                     bw.Close();
                 }
@@ -298,6 +362,21 @@ namespace RingingBloom.Windows
             PopulateTreeView(true);
         }
 
+        private void LabelChanged(object sender, RoutedEventArgs e)
+        {
+            if(LabelsChanged == false)
+            {
+                LabelsChanged = true;
+            }
+            TextBox textbox = (TextBox)sender;
+            Wem nWem = (Wem)textbox.DataContext;
+            if(!changedIds.Contains(nWem.id))
+            {
+                changedIds.Add(nWem.id);
+            }
+
+        }
+
         private void treeView1_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // Make sure this is the right button.
@@ -326,6 +405,21 @@ namespace RingingBloom.Windows
                 }
             }
             
+        }
+
+        private void SaveLabels(object sender, CancelEventArgs e)
+        {
+            if (LabelsChanged)
+            {
+                //prompt user
+                MessageBoxResult saveLabels = MessageBox.Show("Save changed labels?", "", MessageBoxButton.YesNo);
+                if(saveLabels == MessageBoxResult.Yes)
+                {
+                    nbnk.labels.Export(Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/BNK/" + nbnk.BankHeader.dwSoundbankID.ToString()+".lbl",nbnk.DataIndex.wemList,changedIds);
+                }
+            }
+            LabelsChanged = false;
+            changedIds = new List<uint>();
         }
     }
     public class LanguageConvert : IValueConverter

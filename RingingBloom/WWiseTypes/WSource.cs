@@ -26,6 +26,7 @@ namespace RingingBloom.WWiseTypes
             }
             xml.WriteEndElement();
             xml.Flush();
+            xml.Close();
         }
     }
 }

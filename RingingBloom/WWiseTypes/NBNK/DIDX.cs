@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using RingingBloom.Common;
+using RingingBloom.WWiseTypes;
 
 namespace RingingBloom.NBNK
 {
@@ -25,7 +26,7 @@ namespace RingingBloom.NBNK
                 return size;
             } }
 
-        public DIDX(BinaryReader br)
+        public DIDX(BinaryReader br, Labels labels)
         {
             wemList = new List<Wem>();
             uint didxLength = br.ReadUInt32();
@@ -54,7 +55,12 @@ namespace RingingBloom.NBNK
             }
             for (int i = 0; i < wemCount; i++)
             {
-                Wem newWem = new Wem("Imported Wem " + i, ids[i], wemDatas[i]);
+                string name = "Imported Wem " + i;
+                if (labels.wemLabels.ContainsKey(ids[i]))
+                {
+                    name = labels.wemLabels[ids[i]];
+                }
+                Wem newWem = new Wem(name, ids[i], wemDatas[i]);
                 wemList.Add(newWem);
             }
             br.BaseStream.Seek(DataOff+dataLength,SeekOrigin.Begin);

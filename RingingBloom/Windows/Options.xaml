@@ -15,9 +15,12 @@
         <TextBox x:Name="DefaultExport" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,105,10,0"/>
         <Label Name="LabelC" Content="Default Game" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,125,0,0"/>
         <ComboBox x:Name="DefaultGame" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,160,250,0">
-            <ComboBoxItem Content="MHWorld" Tag="0"/>
-            <ComboBoxItem Content="MHRise" Tag="1"/>
-            <ComboBoxItem Content="DMC5" Tag="2"/>
+            <ComboBoxItem Content="None" Tag="0"/>
+            <ComboBoxItem Content="MHWorld" Tag="1"/>
+            <ComboBoxItem Content="RE2/DMC5" Tag="2"/>
+            <ComboBoxItem Content="RE3R" Tag="3"/>
+            <ComboBoxItem Content="MHRise" Tag="4"/>
+            <ComboBoxItem Content="RE8" Tag="5"/>
         </ComboBox>
         <Label Name="LabelD" Content="Wwise Exe Path" HorizontalAlignment="Left" Foreground="#AAAAAA" VerticalAlignment="Top" Margin="10,185,0,0"/>
         <TextBox x:Name="WWiseExePath" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,215,10,0"/>

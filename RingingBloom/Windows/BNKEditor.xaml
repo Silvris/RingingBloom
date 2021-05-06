@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Background="#404040"
+        Closing="SaveLabels"
         ResizeMode="CanMinimize"
         Title="BNK Editor" Height="450" Width="800">
     <Window.Resources>
@@ -22,7 +23,7 @@
         </DataTemplate>
         <DataTemplate x:Key="Wem">
             <Grid>
-                <Label Foreground="#AAAAAA" Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,30,0,0" Content="{Binding name,UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="Name: {0}"/>
+                <TextBox Foreground="#AAAAAA" Background="#202020" Height="20" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,30,0,0" Text="{Binding name,UpdateSourceTrigger=PropertyChanged}" TextChanged="LabelChanged"/>
                 <TextBox Width="200" Height="20" Background="#202020" Foreground="#AAAAAA" Text="{Binding id,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="30,70,0,0"/>
                 <Label Foreground="#AAAAAA" Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,0,0" Content="{Binding length,UpdateSourceTrigger=PropertyChanged}" ContentStringFormat="Length: {0}"/>
             </Grid>

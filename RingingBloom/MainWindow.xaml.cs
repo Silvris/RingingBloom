@@ -34,7 +34,7 @@ namespace RingingBloom
         //MHWorld programs
         WWCTEditor wwctEditor = null;
         WWBKPKEditor wwbkpkEditor = null;
-        //EPVSPEditor epvspEditor = null;
+        EPVSPEditor epvspEditor = null;
         //WWEVEditor wwevEditor = null;
         //RE Engine programs
         //RSZEditor rszEditor = null;
@@ -79,11 +79,15 @@ namespace RingingBloom
             wemCreator = new WemCreator(options);
             wemCreator.Show();
         }
-
         private void BNKEdit(object sender, RoutedEventArgs e)
         {
             bnkEditor = new BNKEditor(mode, options);
             bnkEditor.Show();
+        }
+        private void EPVSPEdit(object sender, RoutedEventArgs e)
+        {
+            epvspEditor = new EPVSPEditor(options);
+            epvspEditor.Show();
         }
 
         private void SetOptions(object sender, RoutedEventArgs e)
@@ -158,6 +162,7 @@ namespace RingingBloom
         private void ChangeView()
         {
             GameSelect.Header = "Mode: " + mode.ToString();
+            MainControl.Content = mode;
         }
 
         private void ChangeMode(object sender, RoutedEventArgs e)
@@ -168,5 +173,35 @@ namespace RingingBloom
             ChangeView();
             NullAllWindows();
         }
+
+    }
+    public class ModeSelect : DataTemplateSelector
+    {
+        public DataTemplate NoneType { get; set; }
+        public DataTemplate MHWorld { get; set; }
+        public DataTemplate REEngine { get; set; }
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            if (item != null)
+            {
+                if (item is SupportedGames.MHWorld)
+                {
+                    return MHWorld;
+                }
+                else if (item is SupportedGames.MHRise||item is SupportedGames.RE2DMC5||item is SupportedGames.RE3R||item is SupportedGames.RE8)
+                {
+                    return REEngine;
+                }
+                else
+                {
+                    return NoneType;
+                }
+            }
+            else
+            {
+                return NoneType;
+            }
+        }
     }
 }
+

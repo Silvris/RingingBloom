@@ -8,9 +8,13 @@ namespace RingingBloom.Common
 {
     public enum SupportedGames
     {
-        MHWorld,
-        MHRise,
-        DMC5
+        None,//generic version for maximum support
+        MHWorld,//WWise version 120
+        RE2DMC5,//WWise version 125
+        RE3R,//WWise version 132
+        MHRise,//WWise verison 134
+        RE8 //WWise version 135
+
     }
     public enum HIRCTypes
     {

@@ -3,6 +3,7 @@ using RingingBloom.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,9 @@ namespace RingingBloom.Windows
         public NPCKViewModel viewModel = new NPCKViewModel();
         private string ImportPath = null;
         private string ExportPath = null;
+        private string currentFileName = null;
+        private bool LabelsChanged = false;
+        public List<uint> changedIds = new List<uint>();
 
         public NPCKEditor(SupportedGames Mode,Options options)
         {
@@ -103,13 +107,22 @@ namespace RingingBloom.Windows
             {
                 string fullPath = exportFile.FileName;
                 string savePath = System.IO.Path.GetDirectoryName(fullPath);
+                MessageBoxResult exportIds = MessageBox.Show("Export with names?", "Export", MessageBoxButton.YesNo);
                 foreach (Wem newWem in npck.WemList)
                 {
-                    BinaryWriter bw = new BinaryWriter(new FileStream(savePath + "\\" + newWem.id + ".wem",FileMode.OpenOrCreate));
+                    string name;
+                    if (exportIds == MessageBoxResult.Yes)
+                    {
+                        name = savePath + "\\" + newWem.name + ".wem";
+                    }
+                    else
+                    {
+                        name = savePath + "\\" + newWem.id + ".wem";
+                    }
+                    BinaryWriter bw = new BinaryWriter(new FileStream(name, FileMode.OpenOrCreate));
                     bw.Write(newWem.file);
                     bw.Close();
                 }
-
             }
 
 
@@ -135,6 +148,7 @@ namespace RingingBloom.Windows
 
         private void MakeNPCK(object sender, RoutedEventArgs e)
         {
+            SaveLabels(sender, new CancelEventArgs());
             npck = new NPCKHeader(mode);
             viewModel.wems.Clear();
             Import_Wems(sender, e);
@@ -142,6 +156,7 @@ namespace RingingBloom.Windows
 
         private void ImportNPCK(object sender, RoutedEventArgs e)
         {
+            SaveLabels(sender, new CancelEventArgs());
             OpenFileDialog importFile = new OpenFileDialog();
             if (ImportPath != null)
             {
@@ -162,11 +177,35 @@ namespace RingingBloom.Windows
                     importFile.Filter += "|Monster Hunter Rise Fictional WWise Package (*.Fc)|*.Fc";
                     importFile.Filter = "All supported files (*.pck,*.nsw,*.En,*.Ja,*.Fc)|*.pck;*.nsw;*.En;*.Ja;*.Fc|" + importFile.Filter;
                     break;
-                case SupportedGames.DMC5:
-                    importFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
-                    importFile.Filter += "|Devil May Cry 5 English WWise Package (*.En)|*.En";
-                    importFile.Filter += "|Devil May Cry 5 Japanese WWise Package (*.Ja)|*.Ja";
+                case SupportedGames.RE2DMC5:
+                    importFile.Filter += "|RE Engine WWise Package (*.x64)|*.x64";
+                    importFile.Filter += "|RE Engine English WWise Package (*.En)|*.En";
+                    importFile.Filter += "|RE Engine Japanese WWise Package (*.Ja)|*.Ja";
                     importFile.Filter = "All supported files (*.pck,*.x64,*.En,*.Ja)|*.pck;*.x64;*.En;*.Ja|" + importFile.Filter;
+                    break;
+                case SupportedGames.RE3R:
+                    importFile.Filter += "|RE Engine WWise Package (*.stm)|*.stm";
+                    importFile.Filter += "|RE Engine German WWise Package (*.De)|*.De";
+                    importFile.Filter += "|RE Engine English WWise Package (*.En)|*.En";
+                    importFile.Filter += "|RE Engine Spanish WWise Package (*.Es)|*.Es";
+                    importFile.Filter += "|RE Engine French WWise Package (*.Fr)|*.Fr";
+                    importFile.Filter += "|RE Engine Italian WWise Package (*.It)|*.It";
+                    importFile.Filter += "|RE Engine Japanese WWise Package (*.Ja)|*.Ja";
+                    importFile.Filter += "|RE Engine Chinese WWise Package (*.ZhCN)|*.ZhCN";
+                    importFile.Filter = "All supported files (*.pck,*.stm,*.En,*.Ja,...)|*.pck;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.ZhCN|" + importFile.Filter;
+                    break;
+                case SupportedGames.RE8:
+                    importFile.Filter += "|RE Engine WWise Package (*.x64)|*.x64";
+                    importFile.Filter += "|RE Engine WWise Package (*.stm)|*.stm";
+                    importFile.Filter += "|RE Engine German WWise Package (*.De)|*.De";
+                    importFile.Filter += "|RE Engine English WWise Package (*.En)|*.En";
+                    importFile.Filter += "|RE Engine Spanish WWise Package (*.Es)|*.Es";
+                    importFile.Filter += "|RE Engine French WWise Package (*.Fr)|*.Fr";
+                    importFile.Filter += "|RE Engine Italian WWise Package (*.It)|*.It";
+                    importFile.Filter += "|RE Engine Japanese WWise Package (*.Ja)|*.Ja";
+                    importFile.Filter += "|RE Engine Russian WWise Package (*.Ru)|*.Ru";
+                    importFile.Filter += "|RE Engine Chinese WWise Package (*.ZhCN)|*.ZhCN";
+                    importFile.Filter = "All supported files (*.pck,*.x64,*.stm,*.En,...)|*.pck;*.x64;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.Ru;*.ZhCN|" + importFile.Filter;
                     break;
                 default:
                     break;
@@ -175,7 +214,8 @@ namespace RingingBloom.Windows
             {
                 viewModel.wems.Clear();
                 BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
-                npck = new NPCKHeader(readFile,mode);
+                currentFileName = importFile.FileName.Split("\\").Last().Split(".")[0];
+                npck = new NPCKHeader(readFile,mode,currentFileName);
                 for (int i = 0; i < npck.WemList.Count; i++)
                 {
                     viewModel.wems.Add(npck.WemList[i]);
@@ -205,11 +245,35 @@ namespace RingingBloom.Windows
                     saveFile.Filter += "|Monster Hunter Rise Fictional WWise Package (*.Fc)|*.Fc";
                     saveFile.Filter = "All supported files (*.pck,*.nsw,*.En,*.Ja,*.Fc)|*.pck;*.nsw;*.En;*.Ja;*.Fc|" + saveFile.Filter;
                     break;
-                case SupportedGames.DMC5:
+                case SupportedGames.RE2DMC5:
                     saveFile.Filter += "|Devil May Cry 5 WWise Package (*.x64)|*.x64";
                     saveFile.Filter += "|Devil May Cry 5 English WWise Package (*.En)|*.En";
                     saveFile.Filter += "|Devil May Cry 5 Japanese WWise Package (*.Ja)|*.Ja";
                     saveFile.Filter = "All supported files (*.pck,*.x64,*.En,*.Ja)|*.pck;*.x64;*.En;*.Ja|" + saveFile.Filter;
+                    break;
+                case SupportedGames.RE3R:
+                    saveFile.Filter += "|RE Engine WWise Package (*.stm)|*.stm";
+                    saveFile.Filter += "|RE Engine German WWise Package (*.De)|*.De";
+                    saveFile.Filter += "|RE Engine English WWise Package (*.En)|*.En";
+                    saveFile.Filter += "|RE Engine Spanish WWise Package (*.Es)|*.Es";
+                    saveFile.Filter += "|RE Engine French WWise Package (*.Fr)|*.Fr";
+                    saveFile.Filter += "|RE Engine Italian WWise Package (*.It)|*.It";
+                    saveFile.Filter += "|RE Engine Japanese WWise Package (*.Ja)|*.Ja";
+                    saveFile.Filter += "|RE Engine Chinese WWise Package (*.ZhCN)|*.ZhCN";
+                    saveFile.Filter = "All supported files (*.pck,*.stm,*.En,*.Ja,...)|*.pck;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.ZhCN|" + saveFile.Filter;
+                    break;
+                case SupportedGames.RE8:
+                    saveFile.Filter += "|RE Engine WWise Package (*.x64)|*.x64";
+                    saveFile.Filter += "|RE Engine WWise Package (*.stm)|*.stm";
+                    saveFile.Filter += "|RE Engine German WWise Package (*.De)|*.De";
+                    saveFile.Filter += "|RE Engine English WWise Package (*.En)|*.En";
+                    saveFile.Filter += "|RE Engine Spanish WWise Package (*.Es)|*.Es";
+                    saveFile.Filter += "|RE Engine French WWise Package (*.Fr)|*.Fr";
+                    saveFile.Filter += "|RE Engine Italian WWise Package (*.It)|*.It";
+                    saveFile.Filter += "|RE Engine Japanese WWise Package (*.Ja)|*.Ja";
+                    saveFile.Filter += "|RE Engine Russian WWise Package (*.Ru)|*.Ru";
+                    saveFile.Filter += "|RE Engine Chinese WWise Package (*.ZhCN)|*.ZhCN";
+                    saveFile.Filter = "All supported files (*.pck,*.x64,*.stm,*.En,...)|*.pck;*.x64;*.stm;*.De;*.En;*.Es;*.Fr;*.It;*.Ja;*.Ru;*.ZhCN|" + saveFile.Filter;
                     break;
                 default:
                     break;
@@ -217,6 +281,10 @@ namespace RingingBloom.Windows
             if (saveFile.ShowDialog() == true)
             {
                 npck.ExportFile(saveFile.FileName);
+                if(mode == SupportedGames.RE2DMC5||mode == SupportedGames.RE3R || mode == SupportedGames.MHRise || mode == SupportedGames.RE8)
+                {
+                    npck.ExportHeader(saveFile.FileName + ".nonstream");
+                }
             }
 
 
@@ -257,6 +325,43 @@ namespace RingingBloom.Windows
                 }
                 
             }
+        }
+        private void LabelChanged(object sender, RoutedEventArgs e)
+        {
+            if (LabelsChanged == false)
+            {
+                LabelsChanged = true;
+            }
+            TextBox textbox = (TextBox)sender;
+            Wem nWem = (Wem)textbox.DataContext;
+            if (!changedIds.Contains(nWem.id))
+            {
+                changedIds.Add(nWem.id);
+            }
+
+        }
+        private void SaveLabels(object sender, CancelEventArgs e)
+        {
+            if (LabelsChanged)
+            {
+                //prompt user
+                MessageBoxResult saveLabels = MessageBox.Show("Save changed labels?", "", MessageBoxButton.YesNo);
+                if (saveLabels == MessageBoxResult.Yes)
+                {
+                    if (currentFileName == null)
+                    {
+                        InputDialog input = new InputDialog();
+                        input.LabelA.Content = "Input a filename for the label file.";
+                        if (input.ShowDialog() == true)
+                        {
+                            input.Close();
+                            currentFileName = input.Input.Text;
+                        }
+                    }
+                    npck.labels.Export(Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/PCK/" + currentFileName + ".lbl", npck.WemList, changedIds);
+                }
+            }
+            LabelsChanged = false;
         }
     }
 }
