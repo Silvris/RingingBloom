@@ -24,7 +24,7 @@ namespace RingingBloom
     /// </summary>
     public partial class MainWindow : Window
     {
-        SupportedGames mode = SupportedGames.MHWorld;
+        SupportedGames mode = SupportedGames.None;
         Options options;
         //Common programs
         BNKEditor bnkEditor = null;

@@ -24,7 +24,7 @@
 
             </Menu>
         </ToolBar>
-        <ListBox Name="WemView" Height="350" Width="750" Background="#282828" VerticalAlignment="Center" Margin="25,0,25,0">
+        <ListBox Name="WemView" Height="350" Background="#282828" VerticalAlignment="Top" Margin="10,50,10,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="715">

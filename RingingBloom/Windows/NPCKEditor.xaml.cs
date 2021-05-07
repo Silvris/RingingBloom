@@ -86,6 +86,7 @@ namespace RingingBloom.Windows
                 foreach (string fileName in openFile.FileNames)
                 {
                     Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
+                    newWem.id = npck.WemList[WemView.SelectedIndex].id;
                     npck.WemList[WemView.SelectedIndex] = newWem;
                     viewModel.wems[WemView.SelectedIndex] = newWem;
                     WemView.ItemsSource = viewModel.wems;
