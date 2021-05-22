@@ -21,7 +21,7 @@ Some how-to-use guides can be found on the [wiki](https://github.com/Silvris/Rin
 * FateEX for testing both the program and several ideas that led to added implementation, as well as contributing some ideas for features
 * hpxro for his [wwiseutil](https://github.com/hpxro7/wwiseutil) which was useful for npck structure.
 * Elliot in the MHW Modding Discord for several things, most notably proper class names for several files.
-* NSACloud for testing
+* NSACloud for testing, and providing information on PCK's language header
 * FluffyQuack for his automated wav-to-wem converter, which was used as reference for the Wem Creator
 
 # Installation
