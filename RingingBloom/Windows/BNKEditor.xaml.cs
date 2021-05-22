@@ -421,6 +421,31 @@ namespace RingingBloom.Windows
             LabelsChanged = false;
             changedIds = new List<uint>();
         }
+
+        private void MassReplace(object sender, RoutedEventArgs e)
+        {
+            List<uint> wemIds = new List<uint>();
+            for (int i = 0; i < nbnk.DataIndex.wemList.Count; i++)
+            {
+                wemIds.Add(nbnk.DataIndex.wemList[i].id);
+            }
+            MassReplace mass = new MassReplace(wemIds, ImportPath);
+            if (mass.ShowDialog() == true)
+            {
+                for (int i = 0; i < mass.holder.wems.Count; i++)
+                {
+                    int index = nbnk.DataIndex.wemList.FindIndex(x => x.id == mass.holder.wems[i].replacingId);
+                    Wem newWem = mass.holder.wems[i].wem;
+                    if (index != -1)
+                    {
+                        newWem.id = nbnk.DataIndex.wemList[index].id;
+                        newWem.languageEnum = nbnk.DataIndex.wemList[index].languageEnum;
+                        nbnk.DataIndex.wemList[index] = newWem;
+                        PopulateTreeView(true);
+                    }
+                }
+            }
+        }
     }
     public class LanguageConvert : IValueConverter
     {

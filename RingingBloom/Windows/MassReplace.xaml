@@ -1,0 +1,33 @@
+﻿<Window x:Class="RingingBloom.Windows.MassReplace"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RingingBloom.Windows"
+        mc:Ignorable="d"
+        Name="Replace"
+        Title="Mass Replace" Height="400" Width="600"
+        Background="#404040">
+    <Grid>
+        <Button Content="Add Wems" Height="30" Width="350" VerticalAlignment="Top" Margin="0,10,0,0" Click="ImportWems"/>
+        <ListBox x:Name="WemGrab" Background="#282828" Margin="25,50,25,50" ItemsSource="{Binding wems}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Foreground="#dcdcdc" Content="Wem Name:"></Label>
+                        <Label Grid.Column="0" HorizontalAlignment="Left" Margin="75,0,0,0" Foreground="#dcdcdc" Content="{Binding wem.name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="1" Foreground="#dcdcdc"  Content="Wem ID:"></Label>
+                        <ComboBox Grid.Column="1" Width="100" Name="IDCombo" SelectedValue ="{Binding replacingId}" ItemsSource="{Binding DataContext.wemIds, ElementName=WemGrab}" Foreground="#303030" Margin="50,0,0,0" VerticalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="Confirm" Height="30" Width="100" VerticalAlignment="Bottom" Margin="0,0,0,10" Click="Confirm"/>
+
+
+    </Grid>
+</Window>

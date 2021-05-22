@@ -38,6 +38,7 @@ namespace RingingBloom.Windows
         {
             InitializeComponent();
             mode = Mode;
+            WemView.DataContext = viewModel;
             WemView.ItemsSource = viewModel.wems;
             if(options.defaultImport != null)
             {
@@ -87,7 +88,7 @@ namespace RingingBloom.Windows
                 {
                     Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
                     newWem.id = npck.WemList[WemView.SelectedIndex].id;
-                    newWem.languageBool = npck.WemList[WemView.SelectedIndex].languageBool;
+                    newWem.languageEnum = npck.WemList[WemView.SelectedIndex].languageEnum;
                     npck.WemList[WemView.SelectedIndex] = newWem;
                     viewModel.wems[WemView.SelectedIndex] = newWem;
                     WemView.ItemsSource = viewModel.wems;
@@ -214,14 +215,15 @@ namespace RingingBloom.Windows
             }
             if (importFile.ShowDialog() == true)
             {
-                viewModel.wems.Clear();
                 BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
                 currentFileName = importFile.FileName.Split("\\").Last().Split(".")[0];
                 npck = new NPCKHeader(readFile,mode,currentFileName);
-                for (int i = 0; i < npck.WemList.Count; i++)
+                viewModel.wems.Clear();
+                for(int i = 0; i < npck.WemList.Count; i++)
                 {
                     viewModel.wems.Add(npck.WemList[i]);
                 }
+                viewModel.languages = new ObservableCollection<string>(npck.GetLanguages());
                 readFile.Close();
             }
         }
@@ -364,6 +366,32 @@ namespace RingingBloom.Windows
                 }
             }
             LabelsChanged = false;
+        }
+
+        private void Mass_Replace(object sender, RoutedEventArgs e)
+        {
+            List<uint> wemIds = new List<uint>();
+            for(int i = 0; i < npck.WemList.Count; i++)
+            {
+                wemIds.Add(npck.WemList[i].id);
+            }
+            MassReplace mass = new MassReplace(wemIds, ImportPath);
+            if(mass.ShowDialog() == true)
+            {
+                for(int i = 0; i < mass.holder.wems.Count; i++)
+                {
+                    int index = npck.WemList.FindIndex(x => x.id == mass.holder.wems[i].replacingId);
+                    Wem newWem = mass.holder.wems[i].wem;
+                    if(index != -1)
+                    {
+                        newWem.id = npck.WemList[index].id;
+                        newWem.languageEnum = npck.WemList[index].languageEnum;
+                        npck.WemList[index] = newWem;
+                        viewModel.wems[index] = newWem;
+                        WemView.ItemsSource = viewModel.wems;
+                    }
+                }
+            }
         }
     }
 }

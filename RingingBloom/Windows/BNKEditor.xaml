@@ -35,6 +35,7 @@
         <ContextMenu x:Key="DIDXRightClick">
             <MenuItem Header="Import Wems" Click="Import_Wems"/>
             <MenuItem Header="Export Wems" Click="Export_Wems"/>
+            <MenuItem Header="Mass Replace" Click="MassReplace"/>
         </ContextMenu>
         <local:ChunkSelector x:Key="ChunkSelect" BKHDTemplate="{StaticResource BKHD}" WemTemplate="{StaticResource Wem}"/>
     </Window.Resources>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RingingBloom.Windows"
         mc:Ignorable="d"
         Name="Window"
-        Title="NPCK Editor" Height="450" Width="800" ResizeMode="CanMinimize"
+        Title="PCK Editor" Height="450" Width="850" ResizeMode="CanMinimize"
         Closing="SaveLabels"
         Background="#404040">
     <Grid>
@@ -15,7 +15,8 @@
                 <MenuItem Header="New" Click="MakeNPCK"/>
                 <MenuItem Header="Import" Click="ImportNPCK"/>
                 <MenuItem Header="Export" Click="ExportNPCK"/>
-                <MenuItem Header="Replace Wem" Click="Replace_Wem"></MenuItem>
+                <MenuItem Header="Replace Wem" Click="Replace_Wem"/>
+                <MenuItem Header="Mass Replace" Click="Mass_Replace"/>
                 <MenuItem Header="Import Wems" Click="Import_Wems"/>
                 <MenuItem Header="Export Wems" Click="Export_Wems"/>
                 <MenuItem Header="Delete Wem" Click="Delete_Wem"/>
@@ -24,22 +25,22 @@
 
             </Menu>
         </ToolBar>
-        <ListBox Name="WemView" Height="350" Background="#282828" VerticalAlignment="Top" Margin="10,50,10,0">
+        <ListBox Name="WemView" Height="350" Background="#282828" VerticalAlignment="Top" Margin="10,50,10,0" ItemsSource="{Binding wems}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid HorizontalAlignment="Left" Width="715">
+                    <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Foreground="#dcdcdc"  Content="Wem ID:"></Label>
-                        <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                        <Label Grid.Column="0" Foreground="#dcdcdc"  Content="Wem ID:"></Label>
+                        <TextBox Grid.Column="0" Width="100" Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                         <Label Grid.Column="1" Foreground="#dcdcdc" Content="Wem Name:"></Label>
                         <TextBox Grid.Column="1" HorizontalAlignment="Left" Width="200" Margin="75,0,0,0" Background="#303030" Foreground="#dcdcdc" Text="{Binding name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="LabelChanged"></TextBox>
-                        <Label Grid.Column="2" Foreground="#dcdcdc" Content="Language Bool:"/>
-                        <CheckBox Grid.Column="2" IsChecked="{Binding languageBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"/>
+                        <Label Grid.Column="2" Foreground="#dcdcdc" Content="Language Enum:"/>
+                        <ComboBox Grid.Column="2" Width="100" SelectedIndex="{Binding languageEnum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DataContext.languages, ElementName=WemView}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"/>
                         <Label Grid.Column="3" Foreground="#dcdcdc" Content="Wem Length:"></Label>
                         <Label Grid.Column="3" Foreground="#dcdcdc" Margin="75,0,0,0" Content="{Binding length}"></Label>
                     </Grid>

@@ -33,6 +33,11 @@ namespace RingingBloom
             br.BaseStream.Seek(retval, SeekOrigin.Begin);
             
         }
+        public PCKString(uint Index, string Value)
+        {
+            index = Index;
+            value = Value;
+        }
     }
     public class NPCKHeader
     {
@@ -52,6 +57,7 @@ namespace RingingBloom
         public NPCKHeader(SupportedGames Mode)
         {
             mode = Mode;
+            pckStrings.Add(new PCKString(0, "sfx"));
         }
         //imported constructor
         public NPCKHeader(BinaryReader br,SupportedGames Mode,string fileName)
@@ -94,7 +100,7 @@ namespace RingingBloom
                 uint one = br.ReadUInt32();
                 uint length = br.ReadUInt32();
                 uint offset = br.ReadUInt32();
-                uint languageBool = br.ReadUInt32();
+                uint languageEnum = br.ReadUInt32();
                 int workingOffset = (int)br.BaseStream.Position;
                 br.BaseStream.Seek(offset, SeekOrigin.Begin);
                 byte[] file = br.ReadBytes((int)length);
@@ -108,10 +114,27 @@ namespace RingingBloom
                 {
                     name = "Imported Wem " + i;
                 }
-                Wem newWem = new Wem(name, id, file, Convert.ToBoolean(languageBool));
+                Wem newWem = new Wem(name, id, file, languageEnum);
                 WemList.Add(newWem);
             }
             //the unknStruct uint is right here, but we've already read what we need
+        }
+
+        public List<string> GetLanguages()
+        {
+            List<string> langList = new List<string>();
+            for(int i = 0; i < pckStrings.Count; i++)
+            {
+                try
+                {
+                    langList.Insert((int)pckStrings[i].index, pckStrings[i].value);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    langList.Add(pckStrings[i].value);//thought is that should order be 2 0 1, the 2 is added, then 0 is inserted in front of it and then 1 is inserted in front of it
+                }
+            }
+            return langList;
         }
 
         public List<byte> GenerateLanguageBytes(SupportedGames mode)
@@ -223,7 +246,7 @@ namespace RingingBloom
                 bw.Write(wem.length);
                 bw.Write(currentOffset);
                 currentOffset += wem.length;
-                bw.Write(Convert.ToInt32(wem.languageBool));
+                bw.Write(wem.languageEnum);
             }
             bw.Write((int)0);
             bw.Close();
@@ -261,7 +284,7 @@ namespace RingingBloom
                 bw.Write(wem.file);
                 bw.Seek(workingOffset,SeekOrigin.Begin);
                 currentOffset += wem.length;
-                bw.Write(Convert.ToInt32(wem.languageBool));
+                bw.Write(wem.languageEnum);
             }
             bw.Close();
         }
