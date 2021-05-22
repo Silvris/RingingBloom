@@ -73,6 +73,11 @@ namespace RingingBloom.Windows
         }
         public void ExportWWPKBK(object sender, RoutedEventArgs e)
         {
+            if(wwpkbk == null)
+            {
+                MessageBox.Show("WWPK/WWBK file not currently loaded.");
+                return;
+            }
             PKBKView.Focus();
             SaveFileDialog saveFile = new SaveFileDialog();
             if (ExportPath != null)

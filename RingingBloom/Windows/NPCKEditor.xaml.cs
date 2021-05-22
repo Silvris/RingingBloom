@@ -148,6 +148,11 @@ namespace RingingBloom.Windows
 
         private void Delete_Wem(object sender, RoutedEventArgs e)
         {
+            if (npck == null)
+            {
+                MessageBox.Show("NPCK not loaded.");
+                return;
+            }
             try
             {
                 npck.WemList.RemoveAt(WemView.Items.IndexOf(WemView.SelectedItem));
@@ -245,6 +250,11 @@ namespace RingingBloom.Windows
 
         private void ExportNPCK(object sender, RoutedEventArgs e)
         {
+            if (npck == null)
+            {
+                MessageBox.Show("NPCK not loaded.");
+                return;
+            }
             SaveFileDialog saveFile = new SaveFileDialog();
             if (ExportPath != null)
             {
@@ -316,12 +326,20 @@ namespace RingingBloom.Windows
                 "[Import] - Imports an NPCK/PCK of the user's choosing.\n" +
                 "[Export] - Exports the currently open npck into a new file.\n" +
                 "[Import Wems] - Imports the chosen wems into the currently opened NPCK/PCK.\n" +
+                "[Replace Wem] - Replaces the selected wem in the view with the one chosen.\n" +
+                "[Mass Replace] - Opens a window to import many wems and select which wems they should replace.\n" +
                 "[Export Wems] - Exports the wems from the currently open npck into a folder.\n" +
-                "[Delete Wem] - Deletes the currently selected wem.");
+                "[Delete Wem] - Deletes the currently selected wem.\n"+
+                "[ID Replace] - Takes a list of wem IDs (separated by commas) and applies them to wems sequentially.");
         }
 
         private void IDReplace(object sender, RoutedEventArgs e)
         {
+            if (npck == null)
+            {
+                MessageBox.Show("NPCK not loaded.");
+                return;
+            }
             InputDialog input = new InputDialog();
             input.LabelA.Content = "Input Wem IDs separated by a comma (,).";
             if(input.ShowDialog() == true)

@@ -122,6 +122,11 @@ namespace RingingBloom.Windows
 
         public void ExportWWCT(object sender, RoutedEventArgs e)
         {
+            if(wwct == null)
+            {
+                MessageBox.Show("WWCT not currently loaded.");
+                return;
+            }
             WWCTView.Focus();
             SaveFileDialog saveFile = new SaveFileDialog();
             if (ExportPath != null)

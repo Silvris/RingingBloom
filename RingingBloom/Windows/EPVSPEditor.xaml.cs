@@ -62,6 +62,11 @@ namespace RingingBloom.Windows
 
         public void ExportEPVSP(object sender, RoutedEventArgs e)
         {
+            if(epvsp == null)
+            {
+                MessageBox.Show("EPVSP file not currently loaded");
+                return;
+            }
             SaveFileDialog exportFile = new SaveFileDialog();
             if(ExportPath != null)
             {
