@@ -29,16 +29,19 @@
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="715">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Label Foreground="#dcdcdc"  Content="Wem ID:"></Label>
                         <TextBox Name="TextBox1" Background="#303030" Foreground="#dcdcdc" Margin="50,0,0,0" Text="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                         <Label Grid.Column="1" Foreground="#dcdcdc" Content="Wem Name:"></Label>
-                        <TextBox Grid.Column="1" Margin="75,0,0,0" Background="#303030" Foreground="#dcdcdc" Text="{Binding name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="LabelChanged"></TextBox>
-                        <Label Grid.Column="2" Foreground="#dcdcdc" Content="Wem Length:"></Label>
-                        <Label Grid.Column="2" Foreground="#dcdcdc" Margin="75,0,0,0" Content="{Binding length}"></Label>
+                        <TextBox Grid.Column="1" HorizontalAlignment="Left" Width="200" Margin="75,0,0,0" Background="#303030" Foreground="#dcdcdc" Text="{Binding name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="LabelChanged"></TextBox>
+                        <Label Grid.Column="2" Foreground="#dcdcdc" Content="Language Bool:"/>
+                        <CheckBox Grid.Column="2" IsChecked="{Binding languageBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0,0,0"/>
+                        <Label Grid.Column="3" Foreground="#dcdcdc" Content="Wem Length:"></Label>
+                        <Label Grid.Column="3" Foreground="#dcdcdc" Margin="75,0,0,0" Content="{Binding length}"></Label>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

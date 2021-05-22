@@ -93,6 +93,7 @@ namespace RingingBloom
                         break;
                 }
             }
+            xml.Close();
         }
 
         public void WriteOptions()

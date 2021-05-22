@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Xml;
@@ -10,27 +11,41 @@ using RingingBloom.WWiseTypes;
 
 namespace RingingBloom
 {
+    public class PCKString
+    {
+        public string value;
+        public uint index;
+
+        public PCKString(BinaryReader br, SupportedGames mode, long start)
+        {
+            uint offset = br.ReadUInt32();
+            index = br.ReadUInt32();
+            long retval = br.BaseStream.Position;
+            br.BaseStream.Seek(start+offset, SeekOrigin.Begin);
+            if(mode == SupportedGames.MHRise)
+            {
+                value = HelperFunctions.ReadNullTerminatedString(br);
+            }
+            else
+            {
+                value = HelperFunctions.ReadUniNullTerminatedString(br);
+            }
+            br.BaseStream.Seek(retval, SeekOrigin.Begin);
+            
+        }
+    }
     public class NPCKHeader
     {
-        public SupportedGames mode = SupportedGames.MHWorld;//can't set it to null
+        public SupportedGames mode = SupportedGames.None;
         public Labels labels = new Labels();
         public byte[] magic = { (byte)'A', (byte)'K', (byte)'P', (byte)'K' };
         public uint headerLength;
         uint unkn2 = 1;
-        uint unkn3 = 20;
-        uint unkn4 = 4;
+        uint languageLength;
+        uint bnkTableLength = 4;
         public uint wemTableLength;
-        uint unkn6 = 4;
-        uint unkn7 = 1;
-        uint unkn8 = 12;
-        uint unknCount = 0;
-        uint unknValue = 0;
-        uint unknA = 0;
-        string audioLang;
-        string SFX = "sfx";
-        uint unkn10 = 0;
-        public uint wemCount;
-
+        uint unknStructLength = 4;//this and bnkTable are not at all interpreted, but they explain the two extra uint 0000 - I assume it's count and they're just 0
+        public List<PCKString> pckStrings = new List<PCKString>();
         public List<Wem> WemList = new List<Wem>();
 
         //created constructor
@@ -54,41 +69,24 @@ namespace RingingBloom
             char[] magicBytes = br.ReadChars(4);
             uint headerLen = br.ReadUInt32();
             unkn2 = br.ReadUInt32();
-            unkn3 = br.ReadUInt32();
-            unkn4 = br.ReadUInt32();
+            languageLength = br.ReadUInt32();
+            bnkTableLength = br.ReadUInt32();
             wemTableLength = br.ReadUInt32();
-            unkn6 = br.ReadUInt32();
-            unkn7 = br.ReadUInt32();
-            unkn8 = br.ReadUInt32();
-            unknCount = br.ReadUInt32();
-            if (unknCount > 0)
+            unknStructLength = br.ReadUInt32();
+            long stringHeaderStart = br.BaseStream.Position;
+            uint stringCount = br.ReadUInt32();
+            for(int i = 0; i < stringCount; i++)
             {
-                unknValue = br.ReadUInt32();
-                unknA = br.ReadUInt32();
-                if (mode == SupportedGames.MHRise)
-                {
-                    audioLang = HelperFunctions.ReadNullTerminatedString(br);
-                }
-                else
-                {
-                    audioLang = HelperFunctions.ReadUniNullTerminatedString(br);
-                }
+
+                PCKString stringData = new PCKString(br, Mode, stringHeaderStart);
+                pckStrings.Add(stringData);
             }
-            if (mode == SupportedGames.MHRise)
+            br.BaseStream.Seek(stringHeaderStart + languageLength, SeekOrigin.Begin);
+            for (int i = 0; i < bnkTableLength/4; i++)
             {
-                string sfx = HelperFunctions.ReadNullTerminatedString(br);
+                br.ReadUInt32();
             }
-            else
-            {
-                string sfx = HelperFunctions.ReadUniNullTerminatedString(br);
-            }
-            unkn10 = br.ReadUInt32();
             //this is 4-aligned at least in RE Engine games
-            byte pad;
-            while(br.BaseStream.Position%4 != 0)
-            {
-                pad = br.ReadByte();
-            }
             uint wemACount = br.ReadUInt32();
             for(int i = 0; i < wemACount; i++)
             {
@@ -96,7 +94,7 @@ namespace RingingBloom
                 uint one = br.ReadUInt32();
                 uint length = br.ReadUInt32();
                 uint offset = br.ReadUInt32();
-                uint zero = br.ReadUInt32();
+                uint languageBool = br.ReadUInt32();
                 int workingOffset = (int)br.BaseStream.Position;
                 br.BaseStream.Seek(offset, SeekOrigin.Begin);
                 byte[] file = br.ReadBytes((int)length);
@@ -110,65 +108,114 @@ namespace RingingBloom
                 {
                     name = "Imported Wem " + i;
                 }
-                Wem newWem = new Wem(name, id, file);
+                Wem newWem = new Wem(name, id, file, Convert.ToBoolean(languageBool));
                 WemList.Add(newWem);
             }
+            //the unknStruct uint is right here, but we've already read what we need
+        }
+
+        public List<byte> GenerateLanguageBytes(SupportedGames mode)
+        {
+            List<byte> languageBytes = new List<byte>();
+
+            byte[] count = BitConverter.GetBytes(pckStrings.Count);
+            for(int i = 0; i < count.Length; i++)
+            {
+                languageBytes.Add(count[i]);
+            }
+            //get "header" size for use later
+            int headerSize = 4 + (pckStrings.Count * 8);
+            //now generate string table and offsets
+            List<byte> stringTable = new List<byte>();
+            int[] offsets = new int[pckStrings.Count];
+            List<string> strings = new List<string>();
+            for(int i = 0; i < pckStrings.Count; i++)
+            {
+                strings.Add(pckStrings[i].value);
+            }
+            strings.Sort();//alphabetically
+            for (int i = 0; i < strings.Count; i++)
+            {
+                byte[] asBytes;
+                if (mode == SupportedGames.MHRise)
+                {
+                    asBytes = Encoding.UTF8.GetBytes(strings[i]);
+                }
+                else
+                {
+                    asBytes = Encoding.Unicode.GetBytes(strings[i]);
+                }
+                    
+                for (int j = 0; j < pckStrings.Count; j++)
+                {
+                    if(pckStrings[j].value == strings[i])
+                    {
+                        offsets[j] = Math.Max(0, headerSize+stringTable.Count);
+                        for(int k = 0;k < asBytes.Length; k++)
+                        {
+                            stringTable.Add(asBytes[k]);
+                        }
+                        if(mode == SupportedGames.MHRise)
+                        {
+                            stringTable.Add(0);
+                        }
+                        else
+                        {
+                            stringTable.Add(0);
+                            stringTable.Add(0);
+                        }
+                    }
+                }
+            }
+            //finally add pckString data to languageBytes
+            for(int i = 0; i < pckStrings.Count; i++)
+            {
+                byte[] offset = BitConverter.GetBytes(offsets[i]);
+                for(int j = 0; j < offset.Length; j++)
+                {
+                    languageBytes.Add(offset[j]);
+                }
+                byte[] index = BitConverter.GetBytes(pckStrings[i].index);
+                for(int j = 0; j < index.Length; j++)
+                {
+                    languageBytes.Add(index[j]);
+                }
+            }
+            //concat string table
+            for(int i =0; i < stringTable.Count; i++)
+            {
+                languageBytes.Add(stringTable[i]);
+            }
+            //align 4
+            while(languageBytes.Count%4 != 0)
+            {
+                languageBytes.Add(0);
+            }
+
+            return languageBytes;
         }
 
         public void ExportHeader(string aFilePath)
         {
-            wemTableLength = ((uint)WemList.Count * 20)+4;
-            headerLength = (wemTableLength) + 48;
-            if (unknCount > 0)
-            {
-                if (mode == SupportedGames.MHRise)
-                {
-                    headerLength += (uint)(4 + (audioLang.Length) + 2);
-                }
-                else
-                {
-                    headerLength += (uint)(8 + (audioLang.Length * 2) + 2);
-                }
-            }
+            //TODO: rewrite this in a way that lets me use it for nonstream and stream
+            wemTableLength = (uint)(WemList.Count * 20) + 4;
+            List<byte> languageBytes = GenerateLanguageBytes(mode);
+            headerLength = (uint)(wemTableLength + 20 + languageBytes.Count + bnkTableLength + unknStructLength);
             BinaryWriter bw = new BinaryWriter(File.Create(aFilePath));
             bw.Write(magic);
             bw.Write(headerLength);
             bw.Write(unkn2);
-            bw.Write(unkn3);
-            bw.Write(unkn4);
+            bw.Write(languageBytes.Count);
+            bw.Write(bnkTableLength);//const in Capcom pcks
             bw.Write(wemTableLength);
-            bw.Write(unkn6);
-            bw.Write(unkn7);
-            bw.Write(unkn8);
-            bw.Write(unknCount);
-            if (unknCount > 0)
+            bw.Write(unknStructLength);//const in Capcom pcks
+            for(int i = 0; i < languageBytes.Count; i++)
             {
-                bw.Write(unknValue);
-                bw.Write(unknA);
-                if (mode == SupportedGames.MHRise)
-                {
-                    HelperFunctions.WriteNullTerminatedString(bw, audioLang);
-                }
-                else
-                {
-                    HelperFunctions.WriteUniNullTerminatedString(bw, audioLang);
-                }
+                bw.Write(languageBytes[i]);
             }
-            if (mode == SupportedGames.MHRise)
-            {
-                HelperFunctions.WriteNullTerminatedString(bw, SFX);
-            }
-            else
-            {
-                HelperFunctions.WriteUniNullTerminatedString(bw, SFX);
-            }
-            bw.Write(unkn10);
-            while (bw.BaseStream.Position % 4 != 0)
-            {
-                bw.Write((byte)1);
-            }
+            bw.Write((int)0);
             bw.Write(WemList.Count);
-            uint currentOffset = headerLength + 8;
+            uint currentOffset = headerLength+8;//the +8 is because magic and header length are not included in header length
             foreach (Wem wem in WemList)
             {
                 bw.Write(wem.id);
@@ -176,70 +223,34 @@ namespace RingingBloom
                 bw.Write(wem.length);
                 bw.Write(currentOffset);
                 currentOffset += wem.length;
-                bw.Write(0);
+                bw.Write(Convert.ToInt32(wem.languageBool));
             }
-            while(bw.BaseStream.Position < headerLength + 8)
-            {
-                bw.Write((byte)0);
-            }
+            bw.Write((int)0);
             bw.Close();
         }
 
         public void ExportFile(string aFilePath)
         {
-            wemTableLength = ((uint)WemList.Count * 20) + 4;
-            headerLength = (wemTableLength) + 48;
-            if (unknCount > 0)
-            {
-                if (mode == SupportedGames.MHRise)
-                {
-                    headerLength += (uint)(8 + (audioLang.Length) + 2);
-                }
-                else
-                {
-                    headerLength += (uint)(8 + (audioLang.Length * 2) + 2);
-                }
-            }
+            wemTableLength = (uint)(WemList.Count * 20)+4;
+            List<byte> languageBytes = GenerateLanguageBytes(mode);
+            headerLength = (uint)(wemTableLength + 20 + languageBytes.Count + bnkTableLength + unknStructLength);
             BinaryWriter bw = new BinaryWriter(File.Create(aFilePath));
             bw.Write(magic);
             bw.Write(headerLength);
             bw.Write(unkn2);
-            bw.Write(unkn3);
-            bw.Write(unkn4);
+            bw.Write(languageBytes.Count);
+            bw.Write(bnkTableLength);//const in Capcom pcks
             bw.Write(wemTableLength);
-            bw.Write(unkn6);
-            bw.Write(unkn7);
-            bw.Write(unkn8);
-            bw.Write(unknCount);
-            if(unknCount > 0)
+            bw.Write(unknStructLength);//const in Capcom pcks
+            for (int i = 0; i < languageBytes.Count; i++)
             {
-                bw.Write(unknValue);
-                bw.Write(unknA);
-                if(mode == SupportedGames.MHRise)
-                {
-                    HelperFunctions.WriteNullTerminatedString(bw, audioLang);
-                }
-                else
-                {
-                    HelperFunctions.WriteUniNullTerminatedString(bw, audioLang);
-                }
+                bw.Write(languageBytes[i]);
             }
-            if (mode == SupportedGames.MHRise)
-            {
-                HelperFunctions.WriteNullTerminatedString(bw, SFX);
-            }
-            else
-            {
-                HelperFunctions.WriteUniNullTerminatedString(bw, SFX);
-            }
-            bw.Write(unkn10);
-            while(bw.BaseStream.Position%4 != 0)
-            {
-                bw.Write((byte)1);
-            }
+            bw.Write((int)0);
             bw.Write(WemList.Count);
-            uint currentOffset = headerLength+8;
-            foreach(Wem wem in WemList)
+            uint currentOffset = headerLength + 8;
+            //later, may need to separate into an "offsets" list and write files afterwards rather than immediately
+            foreach (Wem wem in WemList)
             {
                 bw.Write(wem.id);
                 bw.Write(1);
@@ -250,7 +261,7 @@ namespace RingingBloom
                 bw.Write(wem.file);
                 bw.Seek(workingOffset,SeekOrigin.Begin);
                 currentOffset += wem.length;
-                bw.Write(0);
+                bw.Write(Convert.ToInt32(wem.languageBool));
             }
             bw.Close();
         }

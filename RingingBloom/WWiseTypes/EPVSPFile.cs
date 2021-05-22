@@ -126,6 +126,7 @@ namespace RingingBloom.WWiseTypes
             {
                 triggerDatas.Add(new TriggerData(br));
             }
+            br.Close();
         }
         public void Export(BinaryWriter bw)
         {

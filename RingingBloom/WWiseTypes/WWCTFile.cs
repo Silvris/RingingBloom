@@ -128,6 +128,7 @@ namespace RingingBloom.WWiseTypes
                     wwctStrings.Add(newWWCTS);
                 }
             }
+            br.Close();
         }
 
         //new constructor
@@ -194,6 +195,7 @@ namespace RingingBloom.WWiseTypes
             ExportType(WWCTType.WWGP, bw);
             ExportType(WWCTType.WWENF, bw);
             ExportType(WWCTType.Unkn3, bw);
+            bw.Close();
         }
     }
 }

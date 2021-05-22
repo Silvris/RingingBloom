@@ -62,10 +62,10 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Button Grid.Row="1" Height="30" VerticalAlignment="Top" Width="150" IsEnabled="True" Click="BNKEdit">
-                    <TextBlock Text="NBNK Editor" TextWrapping="Wrap"/>
+                    <TextBlock Text="BNK Editor" TextWrapping="Wrap"/>
                 </Button>
                 <Button Grid.Row="2" Height="30" VerticalAlignment="Top" Width="150" Click="NPCKEdit">
-                    <TextBlock Text="NPCK Editor" TextWrapping="Wrap"/>
+                    <TextBlock Text="PCK Editor" TextWrapping="Wrap"/>
                 </Button>
                 <Button Grid.Row="3" Height="30" VerticalAlignment="Top" Width="150" Click="WemCreate">
                     <TextBlock Text="Wem Creator" TextWrapping="Wrap"/>
@@ -101,10 +101,10 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Button Grid.Row="1" Height="30" VerticalAlignment="Top" Width="150" IsEnabled="True" Click="BNKEdit">
-                    <TextBlock Text="NBNK Editor" TextWrapping="Wrap"/>
+                    <TextBlock Text="BNK Editor" TextWrapping="Wrap"/>
                 </Button>
                 <Button Grid.Row="2" Height="30" VerticalAlignment="Top" Width="150" Click="NPCKEdit">
-                    <TextBlock Text="NPCK Editor" TextWrapping="Wrap"/>
+                    <TextBlock Text="PCK Editor" TextWrapping="Wrap"/>
                 </Button>
                 <Button Grid.Row="3" Height="30" VerticalAlignment="Top" Width="150" Click="WemCreate">
                     <TextBlock Text="Wem Creator" TextWrapping="Wrap"/>

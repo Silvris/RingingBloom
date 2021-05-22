@@ -70,6 +70,7 @@ namespace RingingBloom
                         break;
                 }
             }
+            br.Close();
         }
 
         //created constructor, this really shouldn't be used very often
@@ -96,6 +97,7 @@ namespace RingingBloom
             {
                 bw.Write(holding[i]);
             }
+            bw.Close();
         }
     }
 }

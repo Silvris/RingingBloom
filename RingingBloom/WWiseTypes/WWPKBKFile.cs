@@ -47,6 +47,7 @@ namespace RingingBloom.WWiseTypes
                     byte[] null2 = br.ReadBytes(2);
                 }
             }
+            br.Close();
         }
 
         //created constructor
@@ -90,6 +91,7 @@ namespace RingingBloom.WWiseTypes
                     bw.Write(false);
                 }
             }
+            bw.Close();
         }
     }
 }
