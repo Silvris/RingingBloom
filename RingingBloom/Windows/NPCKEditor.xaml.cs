@@ -52,6 +52,11 @@ namespace RingingBloom.Windows
 
         private void Import_Wems(object sender, RoutedEventArgs e)
         {
+            if (npck == null)
+            {
+                MessageBox.Show("NPCK not loaded.");
+                return;
+            }
             OpenFileDialog openFile = new OpenFileDialog();
             if(ImportPath != null)
             {
@@ -75,6 +80,11 @@ namespace RingingBloom.Windows
 
         private void Replace_Wem(object sender, RoutedEventArgs e)
         {
+            if (npck == null)
+            {
+                MessageBox.Show("NPCK not loaded.");
+                return;
+            }
             OpenFileDialog openFile = new OpenFileDialog();
             if (ImportPath != null)
             {
@@ -99,6 +109,11 @@ namespace RingingBloom.Windows
 
         private void Export_Wems(object sender, RoutedEventArgs e)
         {
+            if (npck == null)
+            {
+                MessageBox.Show("NPCK not loaded.");
+                return;
+            }
             OpenFileDialog exportFile = new OpenFileDialog();
             if (ExportPath != null)
             {
@@ -370,6 +385,11 @@ namespace RingingBloom.Windows
 
         private void Mass_Replace(object sender, RoutedEventArgs e)
         {
+            if(npck == null)
+            {
+                MessageBox.Show("NPCK not loaded.");
+                return;
+            }
             List<uint> wemIds = new List<uint>();
             for(int i = 0; i < npck.WemList.Count; i++)
             {
