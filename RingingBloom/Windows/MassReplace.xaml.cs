@@ -29,6 +29,11 @@ namespace RingingBloom.Windows
             wem = newWem;
             replacingId = 0;
         }
+        public ReplacingWem(Wem newWem,uint iD)
+        {
+            wem = newWem;
+            replacingId = iD;
+        }
     }
     public class ReplacingWems
     {
@@ -71,7 +76,16 @@ namespace RingingBloom.Windows
                 foreach (string fileName in openFile.FileNames)
                 {
                     Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
-                    holder.wems.Add(new ReplacingWem(newWem));
+                    //if less wems have been inserted than total wems in the bank
+                    if (holder.wemIds.Count > holder.wems.Count+1)
+                    {
+                        //create the new wem with the wemID corresponding to its position
+                        holder.wems.Add(new ReplacingWem(newWem, holder.wemIds[WemGrab.Items.Count+1]));
+                    }
+                    else {
+                        //otherwise initialize at 0
+                        holder.wems.Add(new ReplacingWem(newWem));
+                    }
                     //WemGrab.Items.Add(new ReplacingWem(newWem,wemIds));
                 }
 
