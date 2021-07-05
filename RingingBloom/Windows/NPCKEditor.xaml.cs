@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using RingingBloom.Common;
+using RingingBloom.WWiseTypes.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,7 +38,7 @@ namespace RingingBloom.Windows
         {
             InitializeComponent();
             mode = Mode;
-            viewModel = new NPCKViewModel(mode);
+            viewModel = new NPCKViewModel();
             WemView.DataContext = viewModel;
             if(options.defaultImport != null)
             {

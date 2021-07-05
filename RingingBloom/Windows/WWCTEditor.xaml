@@ -17,7 +17,7 @@
                 <MenuItem Header="Import Non-Duplicate" Click="ImportNonDuplicate"></MenuItem>
             </Menu>
         </ToolBar>
-        <ListBox Name="WWCTView" Height="200" Width="800" Margin="46,50,46,69" Background="#282828">
+        <ListBox Name="WWCTView" Height="200" Width="800" ItemsSource="{Binding entries}" Margin="46,50,46,69" Background="#282828">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="750">

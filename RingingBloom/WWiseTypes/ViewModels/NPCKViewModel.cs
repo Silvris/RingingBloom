@@ -8,23 +8,49 @@ using System.Windows;
 using RingingBloom.Common;
 using RingingBloom.Windows;
 
-namespace RingingBloom
+namespace RingingBloom.WWiseTypes.ViewModels
 {
-    public class NPCKViewModel : INotifyPropertyChanged
+    public class NPCKViewModel  : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
         public NPCKHeader npck = null;//shouldn't have to bind directly to this
 
-        public ObservableCollection<Wem> wems { get { return new ObservableCollection<Wem>(npck.WemList); } set { npck.WemList = new List<Wem>(value); OnPropertyChanged("wems"); } }
-        public ObservableCollection<string> languages { get { return new ObservableCollection<string>(npck.GetLanguages()); } set => throw new NotImplementedException(); }
+        public ObservableCollection<Wem> wems 
+        { 
+            get {
+                if(npck == null)
+                {
+                    return new ObservableCollection<Wem>();
+                }
+                else
+                {
+                    return new ObservableCollection<Wem>(npck.WemList);
+                }
+                
+            } 
+            set {
+                npck.WemList = new List<Wem>(value);
+                OnPropertyChanged("wems"); 
+            }
+        }
+        public ObservableCollection<string> languages
+        { 
+            get 
+            { 
+                if(npck == null)
+                {
+                    return new ObservableCollection<string>();
+                }
+                else
+                {
+                    return new ObservableCollection<string>(npck.GetLanguages());
+                }
+            }
+            set => throw new NotImplementedException();
+        }
 
-        public NPCKViewModel(SupportedGames mode)
+        public NPCKViewModel()
         {
-            npck = new NPCKHeader(mode);
+            npck = null;
         }
 
         public void SetNPCK(NPCKHeader file)

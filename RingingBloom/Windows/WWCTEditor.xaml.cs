@@ -24,14 +24,13 @@ namespace RingingBloom.Windows
     /// </summary>
     public partial class WWCTEditor : Window
     {
-        public WWCTFile wwct = null;
         public WWCTViewModel viewModel = new WWCTViewModel();
         private string ImportPath = null;
         private string ExportPath = null;
         public WWCTEditor(Options options)
         {
             InitializeComponent();
-            WWCTView.ItemsSource = viewModel.wwct;
+            WWCTView.DataContext = viewModel;
             if (options.defaultImport != null)
             {
                 ImportPath = options.defaultImport;
@@ -44,11 +43,9 @@ namespace RingingBloom.Windows
 
         public void MakeWWCT(object sender, RoutedEventArgs e)
         {
-            wwct = new WWCTFile();
-            viewModel.wwct.Clear();
+            viewModel.SetWWCT(new WWCTFile());
             WWCTString strin = new WWCTString(Common.WWCTType.WWEV, "", 0);
-            wwct.wwctStrings.Add(strin);
-            viewModel.wwct.Add(strin);
+            viewModel.AddString(strin);
         }
         public void ImportWWCT(object sender, RoutedEventArgs e)
         {
@@ -62,11 +59,7 @@ namespace RingingBloom.Windows
             if(importFile.ShowDialog() == true)
             {
                 BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
-                wwct = new WWCTFile(readFile);
-                for(int i = 0; i < wwct.wwctStrings.Count; i++)
-                {
-                    viewModel.wwct.Add(wwct.wwctStrings[i]);
-                }
+                viewModel.SetWWCT(new WWCTFile(readFile));
                 readFile.Close();
             }
             
@@ -75,7 +68,7 @@ namespace RingingBloom.Windows
 
         public void ImportNonDuplicate(object sender, RoutedEventArgs e)
         {
-            if (wwct != null) {
+            if (viewModel.wwct != null) {
                 OpenFileDialog importFile = new OpenFileDialog();
                 if (ImportPath != null)
                 {
@@ -90,27 +83,7 @@ namespace RingingBloom.Windows
                     BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
                     import = new WWCTFile(readFile);
                     //look for non-duplicates
-                    for (int i = 0; i < import.wwctStrings.Count; i++)
-                    {
-                        bool isDuplicate = false;
-                        for(int j = 0; j < wwct.wwctStrings.Count; j++)
-                        {
-                            if (!isDuplicate)
-                            {
-                                isDuplicate = import.CompareWWCTString(import.wwctStrings[i], wwct.wwctStrings[j]);
-                            }
-                        }
-                        if (!isDuplicate)
-                        {
-                            newStrings.Add(import.wwctStrings[i]);
-                        }
-                    }
-                    //add strings to current file
-                    for(int i = 0; i < newStrings.Count; i++)
-                    {
-                        wwct.wwctStrings.Add(newStrings[i]);
-                        viewModel.wwct.Add(newStrings[i]);
-                    }
+                    viewModel.AddNonDuplicate(import);
                     readFile.Close();
                 }
             }
@@ -122,7 +95,7 @@ namespace RingingBloom.Windows
 
         public void ExportWWCT(object sender, RoutedEventArgs e)
         {
-            if(wwct == null)
+            if(viewModel.wwct == null)
             {
                 MessageBox.Show("WWCT not currently loaded.");
                 return;
@@ -137,7 +110,7 @@ namespace RingingBloom.Windows
             if (saveFile.ShowDialog() == true)
             {
                 BinaryWriter exportFile = new BinaryWriter(new FileStream(saveFile.FileName, FileMode.OpenOrCreate));
-                wwct.ExportFile(exportFile);
+                viewModel.Export(exportFile);
                 exportFile.Close();
             }
         }
@@ -147,8 +120,7 @@ namespace RingingBloom.Windows
             try
             {
                 WWCTString strin = new WWCTString(Common.WWCTType.WWEV, "", 0);
-                wwct.wwctStrings.Add(strin);
-                viewModel.wwct.Add(strin);
+                viewModel.AddString(strin);
             }
             catch (NullReferenceException)
             {
@@ -159,8 +131,7 @@ namespace RingingBloom.Windows
         {
             try
             {
-                wwct.wwctStrings.RemoveAt(WWCTView.Items.IndexOf(WWCTView.SelectedItem));
-                viewModel.wwct.RemoveAt(WWCTView.Items.IndexOf(WWCTView.SelectedItem));
+                viewModel.RemoveString(WWCTView.SelectedIndex);
             }
             catch (NullReferenceException)
             {
