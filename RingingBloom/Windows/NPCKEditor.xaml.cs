@@ -26,8 +26,7 @@ namespace RingingBloom.Windows
     public partial class NPCKEditor : Window
     {
         public SupportedGames mode = SupportedGames.MHWorld;
-        public static NPCKHeader npck = null;
-        public NPCKViewModel viewModel = new NPCKViewModel();
+        public NPCKViewModel viewModel { get; set; }
         private string ImportPath = null;
         private string ExportPath = null;
         private string currentFileName = null;
@@ -38,8 +37,8 @@ namespace RingingBloom.Windows
         {
             InitializeComponent();
             mode = Mode;
+            viewModel = new NPCKViewModel(mode);
             WemView.DataContext = viewModel;
-            WemView.ItemsSource = viewModel.wems;
             if(options.defaultImport != null)
             {
                 ImportPath = options.defaultImport;
@@ -52,7 +51,7 @@ namespace RingingBloom.Windows
 
         private void Import_Wems(object sender, RoutedEventArgs e)
         {
-            if (npck == null)
+            if (viewModel.npck == null)
             {
                 MessageBox.Show("NPCK not loaded.");
                 return;
@@ -66,13 +65,7 @@ namespace RingingBloom.Windows
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
             {
-                foreach (string fileName in openFile.FileNames)
-                {
-                    Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
-                    npck.WemList.Add(newWem);
-                    viewModel.wems.Add(newWem);
-                }
-
+                viewModel.AddWems(openFile.FileNames);
             }
 
 
@@ -80,7 +73,7 @@ namespace RingingBloom.Windows
 
         private void Replace_Wem(object sender, RoutedEventArgs e)
         {
-            if (npck == null)
+            if (viewModel.npck == null)
             {
                 MessageBox.Show("NPCK not loaded.");
                 return;
@@ -94,22 +87,15 @@ namespace RingingBloom.Windows
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
             {
-                foreach (string fileName in openFile.FileNames)
-                {
-                    Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
-                    newWem.id = npck.WemList[WemView.SelectedIndex].id;
-                    newWem.languageEnum = npck.WemList[WemView.SelectedIndex].languageEnum;
-                    npck.WemList[WemView.SelectedIndex] = newWem;
-                    viewModel.wems[WemView.SelectedIndex] = newWem;
-                    WemView.ItemsSource = viewModel.wems;
-                }
+                Wem newWem = HelperFunctions.MakeWems(openFile.FileName, new BinaryReader(File.Open(openFile.FileName, FileMode.Open)));
+                viewModel.ReplaceWem(newWem, WemView.SelectedIndex);
 
             }
         }
 
         private void Export_Wems(object sender, RoutedEventArgs e)
         {
-            if (npck == null)
+            if (viewModel.npck == null)
             {
                 MessageBox.Show("NPCK not loaded.");
                 return;
@@ -126,21 +112,7 @@ namespace RingingBloom.Windows
                 string fullPath = exportFile.FileName;
                 string savePath = System.IO.Path.GetDirectoryName(fullPath);
                 MessageBoxResult exportIds = MessageBox.Show("Export with names?", "Export", MessageBoxButton.YesNo);
-                foreach (Wem newWem in npck.WemList)
-                {
-                    string name;
-                    if (exportIds == MessageBoxResult.Yes)
-                    {
-                        name = savePath + "\\" + newWem.name + ".wem";
-                    }
-                    else
-                    {
-                        name = savePath + "\\" + newWem.id + ".wem";
-                    }
-                    BinaryWriter bw = new BinaryWriter(new FileStream(name, FileMode.OpenOrCreate));
-                    bw.Write(newWem.file);
-                    bw.Close();
-                }
+                viewModel.ExportWems(exportIds, savePath);
             }
 
 
@@ -148,15 +120,14 @@ namespace RingingBloom.Windows
 
         private void Delete_Wem(object sender, RoutedEventArgs e)
         {
-            if (npck == null)
+            if (viewModel.npck == null)
             {
                 MessageBox.Show("NPCK not loaded.");
                 return;
             }
             try
             {
-                npck.WemList.RemoveAt(WemView.Items.IndexOf(WemView.SelectedItem));
-                viewModel.wems.RemoveAt(WemView.Items.IndexOf(WemView.SelectedItem));
+                viewModel.DeleteWem(WemView.SelectedIndex);
             }
             catch (NullReferenceException)
             {
@@ -172,8 +143,7 @@ namespace RingingBloom.Windows
         private void MakeNPCK(object sender, RoutedEventArgs e)
         {
             SaveLabels(sender, new CancelEventArgs());
-            npck = new NPCKHeader(mode);
-            viewModel.wems.Clear();
+            viewModel.SetNPCK(new NPCKHeader(mode));
             Import_Wems(sender, e);
         }
 
@@ -237,20 +207,14 @@ namespace RingingBloom.Windows
             {
                 BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
                 currentFileName = importFile.FileName.Split("\\").Last().Split(".")[0];
-                npck = new NPCKHeader(readFile,mode,currentFileName);
-                viewModel.wems.Clear();
-                for(int i = 0; i < npck.WemList.Count; i++)
-                {
-                    viewModel.wems.Add(npck.WemList[i]);
-                }
-                viewModel.languages = new ObservableCollection<string>(npck.GetLanguages());
+                viewModel.SetNPCK(new NPCKHeader(readFile,mode,currentFileName));
                 readFile.Close();
             }
         }
 
         private void ExportNPCK(object sender, RoutedEventArgs e)
         {
-            if (npck == null)
+            if (viewModel.npck == null)
             {
                 MessageBox.Show("NPCK not loaded.");
                 return;
@@ -309,11 +273,7 @@ namespace RingingBloom.Windows
             }
             if (saveFile.ShowDialog() == true)
             {
-                npck.ExportFile(saveFile.FileName);
-                if(mode == SupportedGames.RE2DMC5||mode == SupportedGames.RE3R || mode == SupportedGames.MHRise || mode == SupportedGames.RE8)
-                {
-                    npck.ExportHeader(saveFile.FileName + ".nonstream");
-                }
+                viewModel.ExportNPCK(saveFile.FileName, mode);
             }
 
 
@@ -335,7 +295,7 @@ namespace RingingBloom.Windows
 
         private void IDReplace(object sender, RoutedEventArgs e)
         {
-            if (npck == null)
+            if (viewModel.npck == null)
             {
                 MessageBox.Show("NPCK not loaded.");
                 return;
@@ -347,20 +307,7 @@ namespace RingingBloom.Windows
                 input.Close();
                 string IDs = input.Input.Text;
                 string[] id2 = IDs.Split(',');
-                for (int i = 0; i < id2.Length; i++)
-                {
-                    try
-                    {
-                        npck.WemList[i].id = Convert.ToUInt32(id2[i]);
-                        viewModel.wems = new ObservableCollection<Wem>(npck.WemList);
-                        WemView.ItemsSource = viewModel.wems;
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        break;
-                    }
-                }
-                
+                viewModel.IDReplace(id2);
             }
         }
         private void LabelChanged(object sender, RoutedEventArgs e)
@@ -395,7 +342,7 @@ namespace RingingBloom.Windows
                             currentFileName = input.Input.Text;
                         }
                     }
-                    npck.labels.Export(Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/PCK/" + currentFileName + ".lbl", npck.WemList, changedIds);
+                    viewModel.ExportLabels(mode, currentFileName, changedIds);
                 }
             }
             LabelsChanged = false;
@@ -403,32 +350,16 @@ namespace RingingBloom.Windows
 
         private void Mass_Replace(object sender, RoutedEventArgs e)
         {
-            if(npck == null)
+            if(viewModel.npck == null)
             {
                 MessageBox.Show("NPCK not loaded.");
                 return;
             }
-            List<uint> wemIds = new List<uint>();
-            for(int i = 0; i < npck.WemList.Count; i++)
-            {
-                wemIds.Add(npck.WemList[i].id);
-            }
+            List<uint> wemIds = viewModel.GetWemIds();
             MassReplace mass = new MassReplace(wemIds, ImportPath);
             if(mass.ShowDialog() == true)
             {
-                for(int i = 0; i < mass.holder.wems.Count; i++)
-                {
-                    int index = npck.WemList.FindIndex(x => x.id == mass.holder.wems[i].replacingId);
-                    Wem newWem = mass.holder.wems[i].wem;
-                    if(index != -1)
-                    {
-                        newWem.id = npck.WemList[index].id;
-                        newWem.languageEnum = npck.WemList[index].languageEnum;
-                        npck.WemList[index] = newWem;
-                        viewModel.wems[index] = newWem;
-                        WemView.ItemsSource = viewModel.wems;
-                    }
-                }
+                viewModel.MassReplace(new List<ReplacingWem>(mass.holder.wems));
             }
         }
     }
