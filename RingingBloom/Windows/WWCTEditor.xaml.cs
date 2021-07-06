@@ -58,7 +58,7 @@ namespace RingingBloom.Windows
             importFile.Filter = "WWise Container files (*.wwct)|*.wwct";
             if(importFile.ShowDialog() == true)
             {
-                BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
+                BinaryReader readFile = HelperFunctions.OpenFile(importFile.FileName);
                 viewModel.SetWWCT(new WWCTFile(readFile));
                 readFile.Close();
             }
@@ -80,7 +80,7 @@ namespace RingingBloom.Windows
                 List<WWCTString> newStrings = new List<WWCTString>();
                 if (importFile.ShowDialog() == true)
                 {
-                    BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
+                    BinaryReader readFile = HelperFunctions.OpenFile(importFile.FileName);
                     import = new WWCTFile(readFile);
                     //look for non-duplicates
                     viewModel.AddNonDuplicate(import);

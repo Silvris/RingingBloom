@@ -23,7 +23,6 @@ namespace RingingBloom.Windows
     /// </summary>
     public partial class WWBKPKEditor : Window
     {
-        public WWPKBKFile wwpkbk = null;
         public WWPKBKViewModel viewModel = new WWPKBKViewModel();
         private string ImportPath = null;
         private string ExportPath = null;
@@ -43,11 +42,9 @@ namespace RingingBloom.Windows
 
         public void MakeWWPKBK(object sender, RoutedEventArgs e)
         {
-            wwpkbk = new WWPKBKFile();
-            viewModel.pkbk.Clear();
+            viewModel.SetWWPKBK(new WWPKBKFile());
             PKBKString strin = new PKBKString("");
-            wwpkbk.paths.Add(strin);
-            viewModel.pkbk.Add(strin);
+            viewModel.AddPath(strin);
         }
         public void ImportWWPKBK(object sender, RoutedEventArgs e)
         {
@@ -60,12 +57,8 @@ namespace RingingBloom.Windows
             importFile.Filter = "All readable files|*.wwbk;*.wwpk|WWise Soundbank Container files (*.wwbk)|*.wwbk|WWise Package Container files (*.wwpk)|*.wwpk";
             if (importFile.ShowDialog() == true)
             {
-                BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
-                wwpkbk = new WWPKBKFile(readFile);
-                for (int i = 0; i < wwpkbk.paths.Count; i++)
-                {
-                    viewModel.pkbk.Add(wwpkbk.paths[i]);
-                }
+                BinaryReader readFile = HelperFunctions.OpenFile(importFile.FileName);
+                viewModel.SetWWPKBK(new WWPKBKFile(readFile));
                 readFile.Close();
             }
 
@@ -73,12 +66,11 @@ namespace RingingBloom.Windows
         }
         public void ExportWWPKBK(object sender, RoutedEventArgs e)
         {
-            if(wwpkbk == null)
+            if(viewModel.wwpkbk == null)
             {
                 MessageBox.Show("WWPK/WWBK file not currently loaded.");
                 return;
             }
-            PKBKView.Focus();
             SaveFileDialog saveFile = new SaveFileDialog();
             if (ExportPath != null)
             {
@@ -88,20 +80,19 @@ namespace RingingBloom.Windows
             if (saveFile.ShowDialog() == true)
             {
                 BinaryWriter exportFile = new BinaryWriter(new FileStream(saveFile.FileName, FileMode.OpenOrCreate));
-                wwpkbk.ExportFile(saveFile.FileName.Substring(saveFile.FileName.Length-4,4),exportFile);
+                viewModel.Export(saveFile.FileName.Substring(saveFile.FileName.Length-4,4),exportFile);
                 exportFile.Close();
             }
         }
 
         private void AddEntry(object sender, RoutedEventArgs e)
         {
-            try
+            if(viewModel.wwpkbk != null)
             {
                 PKBKString strin = new PKBKString("");
-                wwpkbk.paths.Add(strin);
-                viewModel.pkbk.Add(strin);
+                viewModel.AddPath(strin);
             }
-            catch (NullReferenceException)
+            else
             {
                 MessageBox.Show("File not Loaded!");
             }
@@ -110,12 +101,14 @@ namespace RingingBloom.Windows
         {
             try
             {
-                wwpkbk.paths.RemoveAt(PKBKView.Items.IndexOf(PKBKView.SelectedItem));
-                viewModel.pkbk.RemoveAt(PKBKView.Items.IndexOf(PKBKView.SelectedItem));
-            }
-            catch (NullReferenceException)
-            {
-                MessageBox.Show("File not Loaded!");
+                if (viewModel.wwpkbk != null)
+                {
+                    viewModel.RemovePath(PKBKView.SelectedIndex);
+                }
+                else
+                {
+                    MessageBox.Show("File not Loaded!");
+                }
             }
             catch (ArgumentOutOfRangeException)
             {

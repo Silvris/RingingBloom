@@ -75,7 +75,7 @@ namespace RingingBloom.Windows
             {
                 foreach (string fileName in openFile.FileNames)
                 {
-                    Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
+                    Wem newWem = HelperFunctions.MakeWems(fileName, HelperFunctions.OpenFile(fileName));
                     //if less wems have been inserted than total wems in the bank
                     if (holder.wemIds.Count > holder.wems.Count+1)
                     {

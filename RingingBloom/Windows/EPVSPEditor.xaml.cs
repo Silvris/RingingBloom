@@ -47,7 +47,7 @@ namespace RingingBloom.Windows
             importFile.Filter = "MHW EPV Sound Param (*.epvsp)|*.epvsp";
             if (importFile.ShowDialog() == true)
             {
-                BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
+                BinaryReader readFile = HelperFunctions.OpenFile(importFile.FileName);
                 epvsp = new EPVSPFile(readFile);
                 readFile.Close();
             }

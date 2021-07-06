@@ -88,7 +88,7 @@ namespace RingingBloom.Windows
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
             {
-                Wem newWem = HelperFunctions.MakeWems(openFile.FileName, new BinaryReader(File.Open(openFile.FileName, FileMode.Open)));
+                Wem newWem = HelperFunctions.MakeWems(openFile.FileName, HelperFunctions.OpenFile(openFile.FileName));
                 viewModel.ReplaceWem(newWem, WemView.SelectedIndex);
 
             }
@@ -206,7 +206,7 @@ namespace RingingBloom.Windows
             }
             if (importFile.ShowDialog() == true)
             {
-                BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
+                BinaryReader readFile = HelperFunctions.OpenFile(importFile.FileName);
                 currentFileName = importFile.FileName.Split("\\").Last().Split(".")[0];
                 viewModel.SetNPCK(new NPCKHeader(readFile,mode,currentFileName));
                 readFile.Close();

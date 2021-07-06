@@ -64,7 +64,7 @@ namespace RingingBloom.WWiseTypes.ViewModels
         {
             foreach (string fileName in fileNames)
             {
-                Wem newWem = HelperFunctions.MakeWems(fileName, new BinaryReader(File.Open(fileName, FileMode.Open)));
+                Wem newWem = HelperFunctions.MakeWems(fileName, HelperFunctions.OpenFile(fileName));
                 npck.WemList.Add(newWem);
             }
             OnPropertyChanged("wems");
