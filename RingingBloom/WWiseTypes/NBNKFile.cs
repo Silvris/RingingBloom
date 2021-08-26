@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,24 +12,24 @@ using System.Xml;
 using RingingBloom.Common;
 using RingingBloom.NBNK;
 using RingingBloom.WWiseTypes;
+using RingingBloom.WWiseTypes.NBNK;
 using RingingBloom.WWiseTypes.NBNK.HIRC;
 
 namespace RingingBloom
 {
-    class NBNKFile
+    public class NBNKFile
     {
         public BKHD BankHeader = null;
         public DIDX DataIndex = null;
-        //HIRC ObjectHierarchy = null;
-        public List<byte[]> holding;//fun fact a list of lists is doable, but I don't really need it for this
-        public Labels labels =null;
+        public HIRC ObjectHierarchy = null;
+        public List<HoldingChunk> holding = null;
+        public Labels labels = null;
 
-
-        //imported constructor
-        public NBNKFile(BinaryReader br, SupportedGames mode)
+        public void ReadFile(BinaryReader br, SupportedGames mode)
         {
-            holding = new List<byte[]>();
-            while(br.BaseStream.Position < br.BaseStream.Length)
+            labels = null;
+            holding = new List<HoldingChunk>();
+            while (br.BaseStream.Position < br.BaseStream.Length)
             {
                 byte[] magicArr = br.ReadBytes(4);
                 string magic = Encoding.UTF8.GetString(magicArr);
@@ -36,10 +39,10 @@ namespace RingingBloom
                         uint SLength = br.ReadUInt32();
                         BankHeader = new BKHD(SLength, br);
                         uint bnkId = BankHeader.dwSoundbankID;
-                        string path = Directory.GetCurrentDirectory() +"/" +mode.ToString() + "/BNK/" + bnkId.ToString() + ".lbl";
+                        string path = Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/BNK/" + bnkId.ToString() + ".lbl";
                         if (File.Exists(path))
                         {
-                            MessageBoxResult labelRead = MessageBox.Show("Label file found. Read labels?","Labels", MessageBoxButton.YesNo);
+                            MessageBoxResult labelRead = MessageBox.Show("Label file found. Read labels?", "Labels", MessageBoxButton.YesNo);
                             if (labelRead == MessageBoxResult.Yes)
                             {
                                 labels = new Labels(XmlReader.Create(path));
@@ -55,18 +58,18 @@ namespace RingingBloom
                         }
                         break;
                     case "DIDX":
-                        DataIndex = new DIDX(br,labels);
+                        DataIndex = new DIDX(br, labels);
                         break;
-                    /*case "HIRC":
+                    case "HIRC":
                         ObjectHierarchy = new HIRC(br);
-                        break;*/
+                        break;
                     default:
                         //this adds support to not-immediately-interpreted versions of WWise, assuming that the main 3 (BKHD, DIDX, DATA) do not change in structure
                         SLength = br.ReadUInt32();
                         byte[] tLength = BitConverter.GetBytes(SLength);
                         byte[] data = br.ReadBytes((int)SLength);
                         byte[] section = HelperFunctions.Combine(HelperFunctions.Combine(magicArr, tLength), data);
-                        holding.Add(section);
+                        holding.Add(new HoldingChunk(magic, section));
                         break;
                 }
             }
@@ -76,7 +79,7 @@ namespace RingingBloom
         //created constructor, this really shouldn't be used very often
         public NBNKFile()
         {
-            BankHeader = new BKHD();
+
         }
 
         public void ExportNBNK(BinaryWriter bw)
@@ -89,13 +92,16 @@ namespace RingingBloom
             {
                 DataIndex.Export(bw);
             }
-            /*if(ObjectHierarchy != null)
+            if(ObjectHierarchy != null)
             {
-                ObjectHierarchy.ExportHIRC(bw);
-            }*/
-            for(int i = 0; i < holding.Count; i++)
+                ObjectHierarchy.Export(bw);
+            }
+            if(holding.Count > 0)
             {
-                bw.Write(holding[i]);
+                for(int i = 0; i < holding.Count; i++)
+                {
+                    holding[i].Export(bw);
+                }
             }
             bw.Close();
         }

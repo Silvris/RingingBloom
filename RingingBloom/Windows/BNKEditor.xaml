@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RingingBloom.Windows"
+        xmlns:nbnk="clr-namespace:RingingBloom.NBNK"
         mc:Ignorable="d"
         Background="#404040"
         Closing="SaveLabels"
@@ -37,7 +38,14 @@
             <MenuItem Header="Export Wems" Click="Export_Wems"/>
             <MenuItem Header="Mass Replace" Click="MassReplace"/>
         </ContextMenu>
+        <HierarchicalDataTemplate x:Key="HBNKNode" ItemsSource="{Binding Items}">
+            <TextBlock Foreground="#AAAAAA" Text="{Binding Header}"/>
+        </HierarchicalDataTemplate>
+        <DataTemplate x:Key="BNKNode">
+            <TextBlock Foreground="#AAAAAA" Text="{Binding Header}"/>
+        </DataTemplate>
         <local:ChunkSelector x:Key="ChunkSelect" BKHDTemplate="{StaticResource BKHD}" WemTemplate="{StaticResource Wem}"/>
+        <local:NodeSelector x:Key="NodeSelect" SingleTemplate="{StaticResource BNKNode}" HierarchyTemplate="{StaticResource HBNKNode}"/>
     </Window.Resources>
     
     <Grid>
@@ -45,8 +53,8 @@
             <MenuItem Click="ImportBNK" FontSize="15" Header="Import BNK"/>
             <MenuItem Click="ExportBNK" FontSize="15" Header="Export BNK"/>
         </Menu>
-        
-        <TreeView Grid.Column="0" Margin="10,40,10,20" Background="#222222" Name="treeView1" MouseDown="treeView1_MouseDown" SelectedItemChanged="treeView1_SelectedItemChanged">
+
+        <TreeView Grid.Column="0" Margin="10,40,10,20" Background="#222222" Name="treeView1" MouseDown="treeView1_MouseDown" TreeViewItem.Selected="treeView1_Selected" ItemsSource="{Binding nbnk.Chunks}" ItemTemplateSelector="{StaticResource NodeSelect}" SelectedItemChanged="treeView1_SelectedItemChanged">
             
         </TreeView>
         <Grid Grid.Column="1"  Margin="10,40,10,20" Background="#222222">

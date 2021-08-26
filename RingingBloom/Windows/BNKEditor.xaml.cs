@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
 using RingingBloom.Common;
 using RingingBloom.NBNK;
+using RingingBloom.WWiseTypes.NBNK;
+using RingingBloom.WWiseTypes.NBNK.HIRC;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +26,7 @@ namespace RingingBloom.Windows
     public partial class BNKEditor : Window
     {
         SupportedGames mode = SupportedGames.MHWorld;
-        NBNKFile nbnk = null;
+        public NBNKFile nbnk { get; set; }
         private string ImportPath = null;
         private string ExportPath = null;
         private bool LabelsChanged = false;
@@ -32,6 +34,7 @@ namespace RingingBloom.Windows
         public BNKEditor(SupportedGames Mode,Options options)
         {
             InitializeComponent();
+            nbnk = new NBNKFile();
             mode = Mode;
             if(options.defaultImport != null)
             {
@@ -41,6 +44,7 @@ namespace RingingBloom.Windows
             {
                 ExportPath = options.defaultExport;
             }
+            treeView1.DataContext = this;
         }
 
         public void ImportBNK(object sender, RoutedEventArgs e)
@@ -103,9 +107,8 @@ namespace RingingBloom.Windows
             if (importFile.ShowDialog() == true)
             {
                 BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
-                nbnk = new NBNKFile(readFile, mode);
+                nbnk.ReadFile(readFile, mode);
                 readFile.Close();
-                PopulateTreeView(false);
             }
         }
         public void ExportBNK(object sender, RoutedEventArgs e)
@@ -168,80 +171,18 @@ namespace RingingBloom.Windows
             }
         }
         
-        private void PopulateTreeView(bool isDidxExpand)
-        {
-            treeView1.Items.Clear();
-            if (nbnk.BankHeader != null)
-            {
-                //should always be true
-                TreeViewItem bkhd = new TreeViewItem();
-                bkhd.Header = "Bank Header";
-                bkhd.Foreground = HelperFunctions.GetBrushFromHex("#AAAAAA");
-                List<string> tag = new List<string>();
-                tag.Add("BKHD");
-                bkhd.Tag = tag;
-                treeView1.Items.Add(bkhd);
-            }
-            if (nbnk.DataIndex != null)
-            {
-                TreeViewItem didx = new TreeViewItem();
-                didx.Header = "Data Index";
-                didx.Foreground = HelperFunctions.GetBrushFromHex("#AAAAAA");
-                List<string> tag = new List<string>();
-                tag.Add("DIDX");
-                tag.Add("-1");
-                didx.Tag = tag;
-                //ContextMenu contextMenu = FindResource("DIDXRightClick") as ContextMenu;
-                //didx.ContextMenu = contextMenu;
-                didx.IsExpanded = isDidxExpand;
-                for (int i = 0; i < nbnk.DataIndex.wemList.Count; i++)
-                {
-                    TreeViewItem wem = new TreeViewItem();
-                    wem.Header = nbnk.DataIndex.wemList[i].name;
-                    wem.Foreground = HelperFunctions.GetBrushFromHex("#AAAAAA");
-                    List<string> wemTag = new List<string>();
-                    wemTag.Add("DIDX");
-                    wemTag.Add(i.ToString());
-                    wem.Tag = wemTag;
-                    //ContextMenu cm = FindResource("WemRightClick") as ContextMenu;
-                    //this is horrible but good enough to handle this
-                    //cm.Tag = wemTag;
-                    //wem.ContextMenu = cm;
-                    didx.Items.Add(wem);
-                }
-                treeView1.Items.Add(didx);
-            }
-            for (int i = 0; i < nbnk.holding.Count; i++)
-            {
-                byte[] magic = { nbnk.holding[i][0], nbnk.holding[i][1], nbnk.holding[i][2], nbnk.holding[i][3] };
-                TreeViewItem holdingItem = new TreeViewItem();
-                holdingItem.Header = Encoding.UTF8.GetString(magic);
-                holdingItem.Foreground = HelperFunctions.GetBrushFromHex("#AAAAAA");
-                List<string> tag = new List<string>();
-                tag.Add(Encoding.UTF8.GetString(magic));
-                holdingItem.Tag = tag;
-                treeView1.Items.Add(holdingItem);
-            }
-            treeView1_SelectedItemChanged(0, new RoutedEventArgs());
-        }
-
-
+ 
         public void treeView1_SelectedItemChanged(object sender, RoutedEventArgs e)
         {
             if(treeView1.SelectedItem != null)
             {
-                TreeViewItem ti = (TreeViewItem)treeView1.SelectedItem;
-                List<string> tag = (List<string>)ti.Tag;
-                if (tag[0] == "BKHD")
+                if (treeView1.SelectedItem is BKHD)
                 {
-                    ContentController.Content = nbnk.BankHeader;
+                    ContentController.Content = treeView1.SelectedItem;
                 }
-                else if (tag[0] == "DIDX")
+                else if (treeView1.SelectedItem is Wem)
                 {
-                    if(tag[1] != "-1")//block it from trying to look at the "Data Index" tree item
-                    {
-                        ContentController.Content = nbnk.DataIndex.wemList[Convert.ToInt32(tag[1])];
-                    }
+                        ContentController.Content = treeView1.SelectedItem;
                 }
                 else
                 {
@@ -265,21 +206,30 @@ namespace RingingBloom.Windows
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
             {
+                //find DIDX in Chunks
+                int didxIndex = 0;
+                for(int i = 0; i < nbnk.Chunks.Count; i++)
+                {
+                    if(nbnk.Chunks[i] is DIDX)
+                    {
+                        didxIndex = i;
+                    }
+                }
+
                 foreach (string fileName in openFile.FileNames)
                 {
-                    nbnk.DataIndex.AddWem(fileName,0, new BinaryReader(File.Open(fileName, FileMode.Open)));
+                    DIDX didx = (DIDX)nbnk.Chunks[didxIndex];
+                    didx.AddWem(fileName,0, new BinaryReader(File.Open(fileName, FileMode.Open)));
+                    nbnk.Chunks[didxIndex] = didx;//there's probably a cleaner approach to this, maybe make the import wems button show up when selecting "Data Index" header?
+                    //doing that would let me access it through treeview1.SelectedItem, and satiate complaints about context menus
                 }
 
             }
-            PopulateTreeView(true);
 
         }
 
         private void Replace_Wem(object sender, RoutedEventArgs e)
         {
-            MenuItem item = (MenuItem)sender;
-            ContextMenu cm = (ContextMenu)item.Parent;
-            List<string> tag = (List<string>)cm.Tag;
             OpenFileDialog openFile = new OpenFileDialog();
             if (ImportPath != null)
             {
@@ -289,18 +239,32 @@ namespace RingingBloom.Windows
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
             {
+                int didxIndex = 0;
+                DIDX didx = null;
+                for (int i = 0; i < nbnk.Chunks.Count; i++)
+                {
+                    if (nbnk.Chunks[i] is DIDX)
+                    {
+                        didxIndex = i;
+                        didx = (DIDX)nbnk.Chunks[i];
+                    }
+                }
                 foreach (string fileName in openFile.FileNames)
                 {
-                    if(tag[0] == "DIDX")
+                    if(treeView1.SelectedItem is Wem)
                     {
-                        uint newId = nbnk.DataIndex.wemList[Convert.ToInt32(tag[1])].id;
+                        List<Wem> replace = new List<Wem>(didx.Items);
+                        Wem oWem = (Wem)treeView1.SelectedItem;
+                        uint newId = oWem.id;
+                        int index = replace.FindIndex(x => x.id == newId);
                         Wem newWem = new Wem(fileName, newId.ToString(), new BinaryReader(File.Open(fileName, FileMode.Open)));
-                        nbnk.DataIndex.wemList[Convert.ToInt32(tag[1])] = newWem;
+                        replace[index] = newWem;
+                        didx.Items = new System.Collections.ObjectModel.ObservableCollection<Wem>(replace);
+                        nbnk.Chunks[didxIndex] = didx;
                     }
                 }
 
             }
-            PopulateTreeView(true);
         }
 
         private void Export_Wems(object sender, RoutedEventArgs e)
@@ -317,7 +281,15 @@ namespace RingingBloom.Windows
                 string fullPath = exportFile.FileName;
                 string savePath = System.IO.Path.GetDirectoryName(fullPath);
                 MessageBoxResult exportIds = MessageBox.Show("Export with names?", "Export", MessageBoxButton.YesNo);
-                foreach (Wem newWem in nbnk.DataIndex.wemList)
+                DIDX didx = null;
+                for (int i = 0; i < nbnk.Chunks.Count; i++)
+                {
+                    if (nbnk.Chunks[i] is DIDX)
+                    {
+                        didx = (DIDX)nbnk.Chunks[i];
+                    }
+                }
+                foreach (Wem newWem in didx.Items)
                 {
                     string name;
                     if(exportIds == MessageBoxResult.Yes)
@@ -342,14 +314,21 @@ namespace RingingBloom.Windows
         {
             try
             {
-                MenuItem item = (MenuItem)sender;
-                ContextMenu cm = (ContextMenu)item.Parent;
-                List<string> tag = (List<string>)cm.Tag;
-                if (tag[0] == "DIDX")
+                if (treeView1.SelectedItem is Wem)
                 {
-                    nbnk.DataIndex.wemList.RemoveAt(Convert.ToInt32(tag[1]));
+                    int didxIndex = 1;
+                    DIDX didx = null;
+                    for (int i = 0; i < nbnk.Chunks.Count; i++)
+                    {
+                        if (nbnk.Chunks[i] is DIDX)
+                        {
+                            didxIndex = i;
+                            didx = (DIDX)nbnk.Chunks[i];
+                        }
+                    }
+                    didx.Items.Remove((Wem)treeView1.SelectedItem);
+                    nbnk.Chunks[didxIndex] = didx;
                 }
-                PopulateTreeView(true);
             }
             catch (NullReferenceException)
             {
@@ -359,7 +338,6 @@ namespace RingingBloom.Windows
             {
                 MessageBox.Show("No entry selected!");
             }
-            PopulateTreeView(true);
         }
 
         private void LabelChanged(object sender, RoutedEventArgs e)
@@ -381,7 +359,7 @@ namespace RingingBloom.Windows
         {
             // Make sure this is the right button.
             if (e.RightButton != MouseButtonState.Pressed) return;
-
+            /*
             TreeViewItem currentItem = treeView1.SelectedItem as TreeViewItem;
             
             if (currentItem == null) return;
@@ -403,7 +381,7 @@ namespace RingingBloom.Windows
                         }
                         break;
                 }
-            }
+            }*/
             
         }
 
@@ -415,7 +393,23 @@ namespace RingingBloom.Windows
                 MessageBoxResult saveLabels = MessageBox.Show("Save changed labels?", "", MessageBoxButton.YesNo);
                 if(saveLabels == MessageBoxResult.Yes)
                 {
-                    nbnk.labels.Export(Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/BNK/" + nbnk.BankHeader.dwSoundbankID.ToString()+".lbl",nbnk.DataIndex.wemList,changedIds);
+                    BKHD bkhd = null;
+                    DIDX didx = null;
+                    for (int i = 0; i < nbnk.Chunks.Count; i++)
+                    {
+                        if(nbnk.Chunks[i] is BKHD)
+                        {
+                            bkhd = (BKHD)nbnk.Chunks[i];
+                        }
+                        if(nbnk.Chunks[i] is DIDX)
+                        {
+                            didx = (DIDX)nbnk.Chunks[i];
+                        }
+                    }
+                    if (bkhd != null && didx != null)
+                    {
+                        nbnk.labels.Export(Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/BNK/" + bkhd.dwSoundbankID.ToString() + ".lbl", new List<Wem>(didx.Items), changedIds);
+                    }
                 }
             }
             LabelsChanged = false;
@@ -424,27 +418,44 @@ namespace RingingBloom.Windows
 
         private void MassReplace(object sender, RoutedEventArgs e)
         {
-            List<uint> wemIds = new List<uint>();
-            for (int i = 0; i < nbnk.DataIndex.wemList.Count; i++)
+            int didxIndex = 0;
+            DIDX didx = null;
+            for (int i = 0; i < nbnk.Chunks.Count; i++)
             {
-                wemIds.Add(nbnk.DataIndex.wemList[i].id);
+                if (nbnk.Chunks[i] is DIDX)
+                {
+                    didxIndex = i;
+                    didx = (DIDX)nbnk.Chunks[i];
+                }
+            }
+            List<uint> wemIds = new List<uint>();
+            for (int i = 0; i < didx.Items.Count; i++)
+            {
+                wemIds.Add(didx.Items[i].id);
             }
             MassReplace mass = new MassReplace(wemIds, ImportPath);
             if (mass.ShowDialog() == true)
             {
+                List<Wem> replace = new List<Wem>(didx.Items);
                 for (int i = 0; i < mass.holder.wems.Count; i++)
                 {
-                    int index = nbnk.DataIndex.wemList.FindIndex(x => x.id == mass.holder.wems[i].replacingId);
+                    int index = replace.FindIndex(x => x.id == mass.holder.wems[i].replacingId);
                     Wem newWem = mass.holder.wems[i].wem;
                     if (index != -1)
                     {
-                        newWem.id = nbnk.DataIndex.wemList[index].id;
-                        newWem.languageEnum = nbnk.DataIndex.wemList[index].languageEnum;
-                        nbnk.DataIndex.wemList[index] = newWem;
-                        PopulateTreeView(true);
+                        newWem.id = replace[index].id;
+                        newWem.languageEnum = replace[index].languageEnum;
+                        replace[index] = newWem;
                     }
                 }
+                didx.Items = new System.Collections.ObjectModel.ObservableCollection<Wem>(replace);
+                nbnk.Chunks[didxIndex] = didx;
             }
+        }
+
+        private void treeView1_Selected(object sender, RoutedEventArgs e)
+        {
+            treeView1.Tag = e.OriginalSource;
         }
     }
     public class LanguageConvert : IValueConverter
@@ -555,6 +566,49 @@ namespace RingingBloom.Windows
                 else if (item is Wem)
                 {
                     return WemTemplate;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+    public class NodeSelector : DataTemplateSelector
+    {
+        public DataTemplate SingleTemplate { get; set; }
+        public DataTemplate HierarchyTemplate { get; set; }
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            if (item != null)
+            {
+                if(item is Chunk)
+                {
+                    if(item is DIDX)
+                    {
+                        return HierarchyTemplate;
+                    }
+                    else if (item is HIRC)
+                    {
+                        return HierarchyTemplate;
+                    }
+                    else
+                    {
+                        return SingleTemplate;
+                    }
+                    
+                }
+                else if(item is Wem)
+                {
+                    return SingleTemplate;
+                }
+                else if (item is HIRCNode)
+                {
+                    return SingleTemplate;
                 }
                 else
                 {

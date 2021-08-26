@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using RingingBloom.Common;
@@ -8,27 +11,27 @@ using RingingBloom.WWiseTypes;
 
 namespace RingingBloom.NBNK
 {
-    class DIDX : IChunk
+    public class DIDX : Chunk
     {
         //this includes data chunk as well, because no point in separating them
         private char[] magic = new char[] { 'D', 'I', 'D', 'X' };
         private char[] DATA = new char[] { 'D', 'A', 'T', 'A' };
-        public List<Wem> wemList;
-        private int pLoadedMedia { get => wemList.Count; }
-        public int didxSize { get => wemList.Count * 12; }
+
+        private int pLoadedMedia { get => Items.Count; }
+        public int didxSize { get => Items.Count * 12; }
         public int dataSize { get
             {
                 int size = 0;
-                for(int i = 0; i < wemList.Count; i++)
+                for(int i = 0; i < Items.Count; i++)
                 {
-                    size += (int)wemList[i].length;
+                    size += (int)Items[i].length;
                 }
                 return size;
             } }
 
         public DIDX(BinaryReader br, Labels labels)
         {
-            wemList = new List<Wem>();
+            Items = new ObservableCollection<Wem>();
             uint didxLength = br.ReadUInt32();
             uint wemCount = didxLength / 12;
             uint[] ids = new uint[wemCount];
@@ -61,35 +64,40 @@ namespace RingingBloom.NBNK
                     name = labels.wemLabels[ids[i]];
                 }
                 Wem newWem = new Wem(name, ids[i], wemDatas[i]);
-                wemList.Add(newWem);
+                Items.Add(newWem);
             }
             br.BaseStream.Seek(DataOff+dataLength,SeekOrigin.Begin);
+            OnPropertyChanged("Items");
         }
-        public char[] dwTag { get => magic;}
+        public new char[] dwTag { get => magic;}
 
-        public uint dwChunkSize { get => (uint)didxSize; set => throw new NotImplementedException(); }//not using dwChunkSize for this one since we have a combo
+        public new uint dwChunkSize { get => (uint)didxSize; set => throw new NotImplementedException(); }//not using dwChunkSize for this one since we have a combo
+        public new string Header { get => "Data Index"; set => throw new NotImplementedException(); }
+        public ObservableCollection<Wem> Items { get; set; }
+
         public void AddWem(string aName, uint aId, BinaryReader br)
         {
             Wem newWem = new Wem(aName, Convert.ToString(aId), br);
-            wemList.Add(newWem);
+            Items.Add(newWem);
+            OnPropertyChanged("Items");
         }
-        public void Export(BinaryWriter bw)
+        public override void Export(BinaryWriter bw)
         {
             bw.Write(dwTag);
             bw.Write(didxSize);
             uint currentOffset = 0;
             for (int i = 0; i < pLoadedMedia; i++)
             {
-                bw.Write(wemList[i].id);
+                bw.Write(Items[i].id);
                 bw.Write(currentOffset);
-                bw.Write(wemList[i].length);
-                currentOffset += wemList[i].length;
+                bw.Write(Items[i].length);
+                currentOffset += Items[i].length;
             }
             bw.Write(DATA);
             bw.Write(currentOffset);
             for (int i = 0; i < pLoadedMedia; i++)
             {
-                bw.Write(wemList[i].file);
+                bw.Write(Items[i].file);
             }
         }
     }

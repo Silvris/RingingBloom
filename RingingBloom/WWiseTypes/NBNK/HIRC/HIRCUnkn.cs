@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RingingBloom.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,13 +9,14 @@ using System.Windows;
 
 namespace RingingBloom.WWiseTypes.NBNK.HIRC
 {
-    class HIRCUnkn
+    class HIRCUnkn : HIRCNode
     {
-        byte type;
+        HIRCTypes type;
         byte[] Data;
 
-        public HIRCUnkn(byte aType,uint length, BinaryReader br)
+        public HIRCUnkn(HIRCTypes aType,uint length, BinaryReader br)
         {
+            Header = "Unknown Type " + aType.ToString();
             type = aType;
             Data = br.ReadBytes((int)length);
         }
@@ -26,9 +28,14 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
 
         public void Export(BinaryWriter bw)
         {
-            bw.Write(type);
+            bw.Write((byte)type);
             bw.Write(Data.Length);
             bw.Write(Data);
+        }
+
+        public override int CalculateSectionLength()
+        {
+            return Data.Length;
         }
     }
 }

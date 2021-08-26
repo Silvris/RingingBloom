@@ -1,19 +1,27 @@
-﻿using System;
+﻿using RingingBloom.NBNK;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace RingingBloom.Common
 {
-    public class Wem
+    public class Wem : BNKItem
     {
-        public string name { get; set; }
+        private string _Name;
+        public string name { get => _Name; set { _Name = value; OnPropertyChanged("name"); } }
         public uint id { get; set; }
         public uint length { get; set; }
         public uint languageEnum { get; set; }
+        public new string Header { get => name; set { name = value; OnPropertyChanged("Header"); } }
+
         public byte[] file;
         public bool nameChanged = false;
+
 
         public Wem(string aName, string aId, BinaryReader aFile)
         {

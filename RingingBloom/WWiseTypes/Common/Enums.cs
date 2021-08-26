@@ -18,6 +18,7 @@ namespace RingingBloom.Common
     }
     public enum HIRCTypes
     {
+        Empty,//not used but needed to offset these by one without having to go through and set equal to values
         State,
         Sound,
         Action,
@@ -46,10 +47,12 @@ namespace RingingBloom.Common
     public enum SoundSettingsTypes
     {
         Volume,
-        Unkn1,
+        LFE,
         Pitch,
         LowPassFilter,
-        Unkn4,
+        HighPassFilter,
+        BusVolume,
+        MakeUpGain,
         PlaybackPriority,
         PlaybackPriorityOffset,
         LoopCount,

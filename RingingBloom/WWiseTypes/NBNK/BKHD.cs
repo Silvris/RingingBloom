@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,7 +16,7 @@ namespace RingingBloom.NBNK
     /// Bank Header
     /// This doesn't change between WWise versions, so it gets a single file
     /// </summary>
-    public class BKHD : IChunk
+    public class BKHD : Chunk
     {
         private char[] magic = new char[] { 'B', 'K', 'H', 'D' };
         private uint sectionLength;
@@ -24,7 +27,7 @@ namespace RingingBloom.NBNK
         public uint dwProjectID { get; set; }//MHW = 1114
         List<uint> gap = new List<uint>();
 
-        public char[] dwTag
+        public new char[] dwTag
         {
             get
             {
@@ -38,7 +41,7 @@ namespace RingingBloom.NBNK
                 return new string(magic);
             }
         }
-        public uint dwChunkSize { get {
+        public new uint dwChunkSize { get {
                 if (sectionLength >= 20 + (gap.Count * 4)){
                     return sectionLength;
                 }
@@ -49,6 +52,8 @@ namespace RingingBloom.NBNK
                 }
 
             }  set => sectionLength = value; }
+
+        public new string Header { get => "Bank Header"; set => throw new NotImplementedException(); }
 
         //imported constructor, the most common one
         public BKHD(uint SLength, BinaryReader br)
@@ -78,7 +83,7 @@ namespace RingingBloom.NBNK
             gap.Add(0);
         }
 
-        public void Export(BinaryWriter bw)
+        public override void Export(BinaryWriter bw)
         {
             bw.Write(dwTag);
             bw.Write(dwChunkSize);
