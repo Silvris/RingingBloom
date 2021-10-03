@@ -61,15 +61,19 @@ namespace RingingBloom
                         DataIndex = new DIDX(br, labels);
                         break;
                     case "HIRC":
-                        ObjectHierarchy = new HIRC(br);
-                        break;
+                        if(mode == SupportedGames.MHWorld)
+                        {
+                            ObjectHierarchy = new HIRC(br);
+                            break;
+                        }
+                        else
+                        {
+                            ReadDefault(br,magic,magicArr);
+                            break;
+                        }
                     default:
                         //this adds support to not-immediately-interpreted versions of WWise, assuming that the main 3 (BKHD, DIDX, DATA) do not change in structure
-                        SLength = br.ReadUInt32();
-                        byte[] tLength = BitConverter.GetBytes(SLength);
-                        byte[] data = br.ReadBytes((int)SLength);
-                        byte[] section = HelperFunctions.Combine(HelperFunctions.Combine(magicArr, tLength), data);
-                        holding.Add(new HoldingChunk(magic, section));
+                        ReadDefault(br, magic, magicArr);
                         break;
                 }
             }
@@ -81,7 +85,14 @@ namespace RingingBloom
         {
 
         }
-
+        public void ReadDefault(BinaryReader br,string magic, byte[] magicArr)
+        {
+            uint SLength = br.ReadUInt32();
+            byte[] tLength = BitConverter.GetBytes(SLength);
+            byte[] data = br.ReadBytes((int)SLength);
+            byte[] section = HelperFunctions.Combine(HelperFunctions.Combine(magicArr, tLength), data);
+            holding.Add(new HoldingChunk(magic, section));
+        }
         public void ExportNBNK(BinaryWriter bw)
         {
             if(BankHeader != null)

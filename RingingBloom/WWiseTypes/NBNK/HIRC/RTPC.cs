@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace RingingBloom.WWiseTypes.NBNK.HIRC
@@ -15,9 +16,15 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public float To { get; set; }
+        public float To { get => _To; set { _To = value; OnPropertyChanged("To"); } }
         public float From { get; set; }
         public uint Interpolation { get; set; }//might be an enum? gonna look later
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
+        }
         public AkRTPCGraphPoint(BinaryReader br)
         {
             To = br.ReadSingle();

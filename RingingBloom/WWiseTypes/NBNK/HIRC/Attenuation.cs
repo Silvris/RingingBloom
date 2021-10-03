@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace RingingBloom.WWiseTypes.NBNK.HIRC
@@ -12,9 +13,19 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
         public float fLoPass { get; set; }
         public float fHiPass { get; set; }
     }
-    public class Attenuation
+    public class Attenuation : HIRCNode
     {
-        private bool _IsConeEnabled;
+        public bool _IsConeEnabled { get; set; }
         public bool bIsConeEnabled { get; set; }
+
+        public override int CalculateSectionLength()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Export(BinaryWriter bw)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
