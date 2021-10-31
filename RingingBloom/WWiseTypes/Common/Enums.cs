@@ -13,6 +13,7 @@ namespace RingingBloom.Common
         RE2DMC5,//WWise version 125
         RE3R,//WWise version 132
         MHRise,//WWise verison 134
+        MHRiseSwitch,//WWise version 134 (uses UTF-8 strings in PCK)
         RE8 //WWise version 135
 
     }

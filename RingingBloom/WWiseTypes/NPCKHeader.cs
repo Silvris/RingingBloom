@@ -22,7 +22,7 @@ namespace RingingBloom
             index = br.ReadUInt32();
             long retval = br.BaseStream.Position;
             br.BaseStream.Seek(start+offset, SeekOrigin.Begin);
-            if(mode == SupportedGames.MHRise)
+            if(mode == SupportedGames.MHRiseSwitch)
             {
                 value = HelperFunctions.ReadNullTerminatedString(br);
             }
@@ -160,7 +160,7 @@ namespace RingingBloom
             for (int i = 0; i < strings.Count; i++)
             {
                 byte[] asBytes;
-                if (mode == SupportedGames.MHRise)
+                if (mode == SupportedGames.MHRiseSwitch)
                 {
                     asBytes = Encoding.UTF8.GetBytes(strings[i]);
                 }
@@ -178,7 +178,7 @@ namespace RingingBloom
                         {
                             stringTable.Add(asBytes[k]);
                         }
-                        if(mode == SupportedGames.MHRise)
+                        if(mode == SupportedGames.MHRiseSwitch)
                         {
                             stringTable.Add(0);
                         }

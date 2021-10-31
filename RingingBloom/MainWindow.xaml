@@ -136,7 +136,8 @@
                 <MenuItem Header="RE2R/DMC5" Tag="2" Click="ChangeMode"/>
                 <MenuItem Header="RE3R" Tag="3" Click="ChangeMode"/>
                 <MenuItem Header="MHRise" Tag="4" Click="ChangeMode"/>
-                <MenuItem Header="RE8" Tag="5" Click="ChangeMode"/>
+                <MenuItem Header="MHRise Switch" Tag="5" Click="ChangeMode"/>
+                <MenuItem Header="RE8" Tag="6" Click="ChangeMode"/>
             </MenuItem>
             <MenuItem Name="Options" Header="Options" Click="SetOptions"/>
         </Menu>

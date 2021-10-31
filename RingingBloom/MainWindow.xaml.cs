@@ -188,7 +188,7 @@ namespace RingingBloom
                 {
                     return MHWorld;
                 }
-                else if (item is SupportedGames.MHRise||item is SupportedGames.RE2DMC5||item is SupportedGames.RE3R||item is SupportedGames.RE8)
+                else if (item is SupportedGames.MHRise||item is SupportedGames.MHRiseSwitch||item is SupportedGames.RE2DMC5||item is SupportedGames.RE3R||item is SupportedGames.RE8)
                 {
                     return REEngine;
                 }
