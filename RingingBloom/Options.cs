@@ -68,6 +68,9 @@ namespace RingingBloom
                             case "MHRise":
                                 defaultGame = SupportedGames.MHRise;
                                 break;
+                            case "MHRiseSwitch":
+                                defaultGame = SupportedGames.MHRiseSwitch;
+                                break;
                             case "RE8":
                                 defaultGame = SupportedGames.RE8;
                                 break;
