@@ -26,7 +26,7 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             return Data.Length;
         }
 
-        public void Export(BinaryWriter bw)
+        public override void Export(BinaryWriter bw)
         {
             bw.Write((byte)type);
             bw.Write(Data.Length);

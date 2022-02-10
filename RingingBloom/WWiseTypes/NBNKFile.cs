@@ -116,5 +116,27 @@ namespace RingingBloom
             }
             bw.Close();
         }
+
+        public List<Chunk> GetChunks()
+        {
+            List<Chunk> chunks = new List<Chunk>() { };
+            if(BankHeader != null)
+            {
+                chunks.Add(BankHeader);
+            }
+            if(DataIndex != null)
+            {
+                chunks.Add(DataIndex);
+            }
+            if(ObjectHierarchy != null)
+            {
+                chunks.Add(ObjectHierarchy);
+            }
+            foreach(HoldingChunk chunk in holding)
+            {
+                chunks.Add(chunk);
+            }
+            return chunks;
+        }
     }
 }

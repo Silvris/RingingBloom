@@ -3,6 +3,7 @@ using RingingBloom.Common;
 using RingingBloom.NBNK;
 using RingingBloom.WWiseTypes.NBNK;
 using RingingBloom.WWiseTypes.NBNK.HIRC;
+using RingingBloom.WWiseTypes.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +27,7 @@ namespace RingingBloom.Windows
     public partial class BNKEditor : Window
     {
         SupportedGames mode = SupportedGames.MHWorld;
-        public NBNKFile nbnk { get; set; }
+        public NBNKViewModel nbnk { get; set; }
         private string ImportPath = null;
         private string ExportPath = null;
         private bool LabelsChanged = false;
@@ -34,7 +35,7 @@ namespace RingingBloom.Windows
         public BNKEditor(SupportedGames Mode,Options options)
         {
             InitializeComponent();
-            nbnk = new NBNKFile();
+            nbnk = new NBNKViewModel();
             mode = Mode;
             if(options.defaultImport != null)
             {
@@ -114,7 +115,7 @@ namespace RingingBloom.Windows
             if (importFile.ShowDialog() == true)
             {
                 BinaryReader readFile = new BinaryReader(new FileStream(importFile.FileName, FileMode.Open), Encoding.ASCII);
-                nbnk.ReadFile(readFile, mode);
+                nbnk.SetNBNK(readFile, mode);
                 readFile.Close();
             }
         }
@@ -196,7 +197,11 @@ namespace RingingBloom.Windows
                 }
                 else if (treeView1.SelectedItem is Wem)
                 {
-                        ContentController.Content = treeView1.SelectedItem;
+                    ContentController.Content = treeView1.SelectedItem;
+                }
+                else if (treeView1.SelectedItem is DIDX)
+                {
+                    ContentController.Content = treeView1.SelectedItem;
                 }
                 else
                 {
@@ -220,23 +225,13 @@ namespace RingingBloom.Windows
             openFile.Filter = "WWise Wem files (*.wem)|*.wem";
             if (openFile.ShowDialog() == true)
             {
-                //find DIDX in Chunks
-                int didxIndex = 0;
-                for(int i = 0; i < nbnk.Chunks.Count; i++)
-                {
-                    if(nbnk.Chunks[i] is DIDX)
-                    {
-                        didxIndex = i;
-                    }
-                }
-
                 foreach (string fileName in openFile.FileNames)
                 {
-                    DIDX didx = (DIDX)nbnk.Chunks[didxIndex];
-                    didx.AddWem(fileName,0, new BinaryReader(File.Open(fileName, FileMode.Open)));
-                    nbnk.Chunks[didxIndex] = didx;//there's probably a cleaner approach to this, maybe make the import wems button show up when selecting "Data Index" header?
+
+                    nbnk.AddWem(fileName,0, new BinaryReader(File.Open(fileName, FileMode.Open)));
                     //doing that would let me access it through treeview1.SelectedItem, and satiate complaints about context menus
                 }
+                
 
             }
 
@@ -422,7 +417,7 @@ namespace RingingBloom.Windows
                     }
                     if (bkhd != null && didx != null)
                     {
-                        nbnk.labels.Export(Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/BNK/" + bkhd.dwSoundbankID.ToString() + ".lbl", new List<Wem>(didx.Items), changedIds);
+                        nbnk.ExportLabels(Directory.GetCurrentDirectory() + "/" + mode.ToString() + "/BNK/" + bkhd.dwSoundbankID.ToString() + ".lbl", new List<Wem>(didx.Items), changedIds);
                     }
                 }
             }
@@ -432,16 +427,7 @@ namespace RingingBloom.Windows
 
         private void MassReplace(object sender, RoutedEventArgs e)
         {
-            int didxIndex = 0;
-            DIDX didx = null;
-            for (int i = 0; i < nbnk.Chunks.Count; i++)
-            {
-                if (nbnk.Chunks[i] is DIDX)
-                {
-                    didxIndex = i;
-                    didx = (DIDX)nbnk.Chunks[i];
-                }
-            }
+            DIDX didx = nbnk.GetDIDX();
             List<uint> wemIds = new List<uint>();
             for (int i = 0; i < didx.Items.Count; i++)
             {
@@ -463,7 +449,6 @@ namespace RingingBloom.Windows
                     }
                 }
                 didx.Items = new System.Collections.ObjectModel.ObservableCollection<Wem>(replace);
-                nbnk.Chunks[didxIndex] = didx;
             }
         }
 
