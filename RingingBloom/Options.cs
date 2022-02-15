@@ -59,7 +59,7 @@ namespace RingingBloom
                             case "MHWorld":
                                 defaultGame = SupportedGames.MHWorld;
                                 break;
-                            case "RE2/DMC5":
+                            case "RE2DMC5":
                                 defaultGame = SupportedGames.RE2DMC5;
                                 break;
                             case "RE3R":
