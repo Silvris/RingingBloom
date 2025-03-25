@@ -31,5 +31,9 @@ namespace RingingBloom.WWiseTypes.NBNK.HIRC
             From = br.ReadSingle();
             Interpolation = br.ReadUInt32();
         }
+        public int CalculateSectionLength()
+        {
+
+        }
     }
 }
