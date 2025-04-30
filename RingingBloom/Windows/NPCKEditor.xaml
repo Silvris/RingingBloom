@@ -17,6 +17,7 @@
                 <MenuItem Header="Export" Click="ExportNPCK"/>
                 <MenuItem Header="Replace Wem" Click="Replace_Wem"/>
                 <MenuItem Header="Mass Replace" Click="Mass_Replace"/>
+                <MenuItem Header="Automatic Replace" Click="AutomaticReplace"/>
                 <MenuItem Header="Import Wems" Click="Import_Wems"/>
                 <MenuItem Header="Export Wems" Click="Export_Wems"/>
                 <MenuItem Header="Delete Wem" Click="Delete_Wem"/>

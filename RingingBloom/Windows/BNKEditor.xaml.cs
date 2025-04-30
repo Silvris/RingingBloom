@@ -115,6 +115,72 @@ namespace RingingBloom.Windows
                 PopulateTreeView(false);
             }
         }
+
+        private void AutomaticReplace(object sender, RoutedEventArgs e)
+        {
+            if (nbnk == null || nbnk.DataIndex == null || nbnk.DataIndex.wemList.Count == 0)
+            {
+                MessageBox.Show("0 Bnk Files Loaded");
+                return;
+            }
+
+            var dialog = new OpenFileDialog();
+            if (ImportPath != null)
+            {
+                dialog.InitialDirectory = ImportPath;
+            }
+            dialog.CheckFileExists = false;
+            dialog.FileName = "The folder requires the .wem files to have the same names as the IDs";
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            string folderPath = System.IO.Path.GetDirectoryName(dialog.FileName);
+
+            List<uint> replacedIds = new List<uint>();
+            int totalReplaced = 0;
+
+            for (int i = 0; i < nbnk.DataIndex.wemList.Count; i++)
+            {
+                uint wemId = nbnk.DataIndex.wemList[i].id;
+
+                // To verify a corresponding ID.
+                string filePath = System.IO.Path.Combine(folderPath, wemId.ToString() + ".wem");
+
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        uint newId = nbnk.DataIndex.wemList[i].id;
+                        Wem newWem = new Wem(System.IO.Path.GetFileName(filePath), newId.ToString(), new BinaryReader(File.Open(filePath, FileMode.Open)));
+                        nbnk.DataIndex.wemList[i] = newWem;
+
+                        replacedIds.Add(wemId);
+                        totalReplaced++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error replacing {wemId}.wem: {ex.Message}");
+                    }
+                }
+            }
+
+            PopulateTreeView(true);
+
+            if (totalReplaced > 0)
+            {
+                string IDreplaced = string.Join(", ", replacedIds);
+                MessageBox.Show($"{totalReplaced} Wem files replaced\n\nReplaced ID's: {IDreplaced}",
+                    "Done", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("No .wem files were replaced. Check if the filenames match the .wem IDs in the BNK.");
+            }
+        }
+
         public void ExportBNK(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();

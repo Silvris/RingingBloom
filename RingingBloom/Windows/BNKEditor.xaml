@@ -36,6 +36,7 @@
             <MenuItem Header="Import Wems" Click="Import_Wems"/>
             <MenuItem Header="Export Wems" Click="Export_Wems"/>
             <MenuItem Header="Mass Replace" Click="MassReplace"/>
+            <MenuItem Header="Automatic Replace" Click="AutomaticReplace"/>
         </ContextMenu>
         <local:ChunkSelector x:Key="ChunkSelect" BKHDTemplate="{StaticResource BKHD}" WemTemplate="{StaticResource Wem}"/>
     </Window.Resources>

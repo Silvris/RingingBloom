@@ -294,6 +294,68 @@ namespace RingingBloom.Windows
 
         }
 
+        private void AutomaticReplace(object sender, RoutedEventArgs e)
+        {
+            if (viewModel.npck == null)
+            {
+                MessageBox.Show("PCK not loaded.");
+                return;
+            }
+
+            var dialog = new OpenFileDialog();
+            if (ImportPath != null)
+            {
+                dialog.InitialDirectory = ImportPath;
+            }
+            dialog.CheckFileExists = false;
+            dialog.FileName = "The folder requires the .wem files to have the same names as the IDs";
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            string folderPath = System.IO.Path.GetDirectoryName(dialog.FileName);
+
+            List<uint> replacedIds = new List<uint>();
+            int totalReplaced = 0;
+
+            for (int i = 0; i < viewModel.npck.WemList.Count; i++)
+            {
+                uint wemId = viewModel.npck.WemList[i].id;
+
+                string filePath = System.IO.Path.Combine(folderPath, wemId.ToString() + ".wem");
+
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        Wem newWem = HelperFunctions.MakeWems(filePath, HelperFunctions.OpenFile(filePath));
+                        viewModel.ReplaceWem(newWem, i);
+
+                        replacedIds.Add(wemId);
+                        totalReplaced++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error replacing {wemId}.wem: {ex.Message}");
+                    }
+                }
+            }
+
+            if (totalReplaced > 0)
+            {
+                string IDreplaced = string.Join(", ", replacedIds);
+                MessageBox.Show($"{totalReplaced} Wem files replaced\n\nReplaced ID's: {IDreplaced}",
+                    "Done", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("No .wem files were replaced. Check if the filenames match the .wem IDs in the PCK.");
+            }
+        }
+
+
         private void HelpMenu(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("NPCK Editor: for editing WWise Package files.\n\n" +
